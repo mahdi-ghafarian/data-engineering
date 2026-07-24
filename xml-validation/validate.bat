@@ -75,7 +75,7 @@ echo ======================================
 echo Running validate.py
 echo ======================================
 
-"%PYTHON_EXE%" "%~dp0validate.py"
+"%PYTHON_EXE%" "%~dp0script\validate.py"
 
 if errorlevel 1 (
     echo validate.py failed.
