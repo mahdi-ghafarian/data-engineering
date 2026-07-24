@@ -1,0 +1,2039 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns="http://servicecanada.gc.ca/ALMP/contentTypes"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ targetNamespace="http://servicecanada.gc.ca/ALMP/contentTypes">
+
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en-CA">
+      r1.0 2011-11-04     Initial release.
+      r1.1 2012-01-18     Added simpleType "actionPlanResultCodeValue.2012".
+      r1.2 2014-08-27     Added French description for "adressType";"sysAction xsd:positiveInteger";"lenght.1-30" and "systemType".
+      r1.3 2018-01-17     Added codes 13 to 16 for educationCodeValue.
+      Added code 9 for languagesSpokenCodeValue, maritalStatusCodeValue, genderCodeValue.
+      Changed disabilityCodeValue type for integer 0, 1, 9.
+      Added code 8 for actionPlanResultCodeValue.
+      Added simpleType indigenousIdentityCodeValue, immigrationStatusCodeValue, visibleMinorityCodeValue.
+      , actionPlanPreviousEmploymentCodeValue, actionPlanPrecariousEmploymentCodeValue.
+      , interventionCredentialCodeValue, interventionEssentialSkillsCodeValue, provincialOfficeTypeCode.
+      Added codes for interventionCodeValue 111, 112, 113, 114, 211, 212,  213, 214, 215, 221, 222, 223, 224, 311.
+      Added simpleType APEndDate.
+      Added more detail in streetAddress regarding apartment number.
+      r1.4 2018-01-25     Changed the postal code to accept lowercase letters per task 163372.
+      Updated description as well.
+      r1.5 2018-05-24     Added the option ''Unknown'' to the immigrationStatusCodeValue element.
+      Modified the french for the ''self-employed'' option to ''travailleur independant'' so that it is consistant for all elements: actionPlanPreviousEmploymentCodeValue, actionPlanResultCodeValue.
+      r1.6 2018-11-07     Modified interventionCredentialCodeValue element to add the option "Not Applicable".
+      Modified the "unknown" option to include "For exclusive use by LMTA during the transition period."
+      Added information on exclusivity for ILMP and LMTA elements.
+      Added information on which element is mandatory, for which program (LMTA vs. ILMP), and if they are validated on the server side.
+      Modified actionPlanPreviousEmploymentCode element to add the option "Unknown".
+      r1.7 2018-12-04     Modified string types to token to TRIM white spaces.
+      Modified "length.1-30" and changed its name to "basicLengthString"
+      Modified all enumerations to stop empty elements.
+      Added Unknown to languagesSpokenCodeValue, interventionEssentialSkillsCodeValue, visibleMinorityCodeValue.
+      Modified actionPlanPreviousEmploymentCodeValue, added option 9.
+      Added element scheduleTypeCodeValue.
+      r1.8 2018-12-18     Added 'unknown' to elements: maritalStatusCodeValue, educationCodeValue.
+      Changed all references to 'aboriginal' for 'indigenous' in the documentations.
+      Added the type NOCVersionValue for the elements: actionPlanPreviousEmploymentNOCVersion, actionPlanResultRelatedNOCVersion, NOCVersion.
+      Added the type shortLengthString for the elements: actionPlanID, interventionID.
+      Added the type longLengthString for the elements: educationLevelComment, interventionTitle.
+      r1.9 2019-01-10     Changed actionPlanPreviousEmploymentCodeValue value 8 to value 10 (unknown).
+      Simplified all patterns in schema.
+      r2.0 2019-01-17     Final version for LMTA and ILMP.
+      r2.1 2019-02-18     Changed contactPhoneNumber to optional.
+      r2.2 2019-05-10     Modified sysComment to 100 max value.
+      Modified systemType for sysAction.
+      r2.3 2020-06-30     Fixed and issue with the systemType.
+      r2.4 2021-06-01     Modified phone number validation to allow new numbers to pass through.
+      r2.5 2021-07-20     Modified bypass values from "unknown" to "not available".
+      Added bypass values to the following elements: interventionCredentialCodeValue, provinceList, indigenousIdentityCodeValue.
+      Added bypass value to disability element.
+      r2.6 2022-05-24		Added 2021 option to NOCVersionValue element.
+      Added new type "NOCValueCode".
+      r2.6 2025-11-24		Added option 'Work-sharing' to elements: actionPlanResultCodeValue, actionPlanPreviousEmploymentCodeValue.
+      Added new type actionPlanFundingSourceCodeValue.
+      Added new type actionPlanFollowUpResultCodeValue.
+      Added new type interventionCostCategoryCodeValue.
+      Added the type NAICSValueCode for the elements: actionPlanPreviousEmploymentNAICS, actionPlanTargetNAICS, actionPlanFollowUpNAICS.
+      Added the type NAICSVersionValue for the elements: actionPlanPreviousEmploymentNAICSVersion, actionPlanTargetNAICSVersion, actionPlanFollowUpNAICSVersion.
+      Added the type payRateValue for the elements: actionPlanPreviousEmploymentPayRate, actionPlanFollowUpEmploymentPayRate.
+      Added the type employmentHoursType for the elements: actionPlanPreviousEmploymentHours, actionPlanFollowUpEmploymentHours.
+    </xsd:documentation>
+		<xsd:documentation xml:lang="fr-CA">
+      r1.0 2011-11-04     Relâche initiale.
+      r1.1 2012-01-18     Ajout de simpleType "actionPlanResultCodeValue.2012".
+      r1.2 2014-08-27     Ajout de description en français pour "addressType";"sysAction xsd:positiveInteger";"lenght.1-30" et "systemType".
+      r1.3 2018-01-17     Ajout de codes 13 à 16 pour educationCodeValue.
+      Ajout du code 9 pour languagesSpokenCodeValue, maritalStatusCodeValue, genderCodeValue.
+      Modifié le type de disabledCodeValue pour un entier 0, 1, 9.
+      Ajout du code 8 pour actionPlanResultCodeValue.
+      Ajout de simpleType indigenousIdentityCodeValue, immigrationStatusCodeValue, visibleMinorityCodeValue.
+      , actionPlanPreviousEmploymentStatusCodeValue, actionPlanPrecariousEmploymentStatusCodeValue.
+      , interventionCredentialCodeValue, interventionEssentialSkillsCodeValue, provincialOfficeTypeCode.
+      Ajout de nouveaux codes pour interventionCodeValue 111, 112, 113, 114, 211, 212, 213, 214, 215, 221, 222, 223, 224, 311.
+      Ajout de simpleType APEndDate.
+      Ajout de plus de détails dans streetAddress concernant le numéro d'appartement.
+      r1.4 2018-01-25     Changé le code postal pour qu'il accepte les lettres minuscules selon la tâche 163372. Modifié la description aussi.
+      r1.5 2018-05-24     Ajouté l'option ''Inconnu'' à l'élément immigrationStatusCodeValue.
+      Modifié l'option ''travailleur independant'' pour que le terme soit constant pour les éléments: actionPlanPreviousEmploymentCodeValue, actionPlanResultCodeValue.
+      r1.6 2018-11-07     Modifié l'élément interventionCredentialCodeValue pour ajouter l'option "Ne s'applique pas".
+      Modifié l'option "inconnu" pour inclure "À l'usage exclusif d'ETMT pendant la période de transition"
+      Ajouté de l'information sur l'usage exclusif des éléments pour PMTA et ETMT.
+      Ajouté de l'information sur les éléments obligatoires, pour quel programme (ETMT vs. PMTA), et si la validation est fait tu côté serveur.
+      Modification de l'élément actionPlanPreviousEmploymentCode pour ajouter l'option "Inconnu".
+      r1.7 2018-12-04     Modifié le type string au type token pour TRIM les espaces.
+      Modifié "length.1-30" et changé son nom pour "basicLengthString".
+      Modifié les éléments avec énumerations pour arrêter les éléments vides.
+      Ajouté Inconnu à languagesSpokenCodeValue, interventionEssentialSkillsCodeValue, visibleMinorityCodeValue.
+      Modifié actionPlanPreviousEmploymentCodeValue, added option 9.
+      Ajouté l'élément scheduleTypeCodeValue.
+      r1.8 2018-12-18     Ajouté 'inconnu' aux éléments: maritalStatusCodeValue, educationCodeValue.
+      Changé 'aboriginal' pour 'indigenous' dans la documentation.
+      Ajouté le type NOCVersionValue pour les éléments: actionPlanPreviousEmploymentNOCVersion, actionPlanResultRelatedNOCVersion, NOCVersion.
+      Ajouté le type shortLengthString pour les éléments: actionPlanID, interventionID.
+      Ajouté le type longLengthString pour les éléments: educationLevelComment, interventionTitle.
+      r1.9 2019-01-10     Modifié actionPlanPreviousEmploymentCodeValue valeur 8 à 10 (inconnu).
+      Simplifié les restrictions sur les éléments du schéma.
+      r2.0 2019-01-17     Version finale pour ETMT et PMTA.
+      r2.1 2019-02-18     Changé contactPhoneNumber à optionnel.
+      r2.2 2019-05-10     Modifié sysComment valeur max à 100.
+      Modifié systemType for sysAction.
+      r2.3 2020-06-30     Correction dans le systemType.
+      r2.4 2021-06-01     Modifié la validation du numéro de téléphone pour accepter les nouveaux numéros.
+      r2.5 2021-07-20     Modifié les valeurs "inconnu" pour "non disponible".
+      Ajouté la valeur "non disponible" aux éléments suivants: interventionCredentialCodeValue, provinceList, indigenousIdentityCodeValue.
+      Ajouté option "Non disponible" à l'élément "disability"
+      r2.6 2022-05-24		Ajouté option 2021 à l'élément "NOCVersionValue".
+      Ajouté nouveau type "NOCValueCode".
+      r2.6 2025-11-24		Ajouté option 'Work-sharing' aux éléments suivants: actionPlanResultCodeValue, actionPlanPreviousEmploymentCodeValue.
+      Ajouté nouveau type actionPlanFundingSourceCodeValue.
+      Ajouté nouveau type actionPlanFollowUpResultCodeValue.
+      Ajouté nouveau type interventionCostCategoryCodeValue.
+      Ajouté le type NAICSValueCode pour les éléments: actionPlanPreviousEmploymentNAICS, actionPlanTargetNAICS, actionPlanFollowUpNAICS.
+      Ajouté le type NAICSVersionValue pour les éléments: actionPlanPreviousEmploymentNAICSVersion, actionPlanTargetNAICSVersion, actionPlanFollowUpNAICSVersion.
+      Ajouté le type payRateValue pour les éléments: actionPlanPreviousEmploymentPayRate, actionPlanFollowUpEmploymentPayRate.
+      Ajouté le type employmentHoursType pour les éléments: actionPlanPreviousEmploymentHours, actionPlanFollowUpEmploymentHours.
+    </xsd:documentation>
+	</xsd:annotation>
+	<xsd:simpleType name="programTypeValue">
+		<!-- For exclusive use by ILMP. \ À l'usage exclusif de PMTA. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">ASETS</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">SFCEA</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">SPF</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">FCP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">FNJF: First Nation Job Fund</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">FEPN: Fonds pour l'emploi à l'intention des Premières Nations (FEPN)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="NOCVersionValue">
+		<xsd:restriction base="xsd:token">
+			<!-- 0000. Not Available / 0000. Non disponible -->
+			<xsd:pattern value="(0000)|(2006)|(2011)|(2016)|(2021)?" />
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="4" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="shortLengthString">
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="30" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="longLengthString">
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="150" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="provinceList">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Newfoundland and Labrador</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Terre-Neuve et Labrador</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Nova Scotia</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Nouvelle-Écosse</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">New Brunswick</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Nouveau-Brunswick</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prince Edward Island</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ile du Prince-Édouard</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Quebec</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Québec</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Ontario</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ontario</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Manitoba</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Manitoba</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Saskatchewan</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Saskatchewan</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Alberta</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Alberta</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Northwest Territories</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Territoires du Nord-Ouest</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">British Columbia</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Colombie-Britannique</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yukon</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Yukon</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="16">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Nunavut</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Nunavut</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="98">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="addressProvince">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="13">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">United States</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">États-Unis</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Other country</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Autres pays</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="addressProvinceCodeValue">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:union memberTypes="provinceList addressProvince" />
+	</xsd:simpleType>
+	<xsd:simpleType name="educationLocation">
+		<!-- For exclusive use by ILMP. \ À l'usage exclusif de PMTA. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Outside Canada</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">L'extérieur du Canada</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="educationProvinceCodeValue">
+		<!-- For exclusive use by ILMP. \ À l'usage exclusif de PMTA. -->
+		<xsd:union memberTypes="provinceList educationLocation" />
+	</xsd:simpleType>
+	<xsd:simpleType name="educationCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No formal education</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Pas d'éducation formelle</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Up to grade 7-8 (Sec. I = Grade 8)</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Jusqu'à 7-8 ans de scolarité (Sec. I = 8e année)</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Grade 9-10 (Sec. II-III)</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">9-10 ans de scolarité (Sec. II-III)</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Grade 11-12 (Sec. IV-V)</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">11-12 ans de scolarité (Sec. IV-V)</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Secondary school diploma or GED</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Diplôme d'études secondaires ou l'équivalent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Some post-secondary training</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Études postsecondaires partielles</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Apprenticeship or trades certificate or diploma</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Certificat ou diplôme d'apprenti ou d'une école de métier</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">College, CEGEP, or other non-university certificate or diploma</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Certificat ou diplôme d'un collège, d'un cégep ou d'un autre établissement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">University certificate or diploma</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Certificat ou diplôme universitaire</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">University - Bachelor degree</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Université - Baccalauréat</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">University - Master's degree</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Université - Maîtrise</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">University - Doctorate</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Université - Doctorat</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="13">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Less than high school</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Sans diplôme d'études secondaires</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">University degree</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Diplôme universitaire</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="15">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Other</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Autre</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="98">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="99">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="languagesSpokenCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Indigenous language(s) only</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Langue autochtone(s) seulement</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">English only</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Anglais seulement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">French only</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Français seulement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Indigenous language(s) and English</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Langue autochtone(s) et anglais</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Indigenous language(s) and French</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Langue autochtone(s) et français</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">English and French</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Anglais et français</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Indigenous language(s), English and French</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Langue autochtone(s), anglais et français</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">None of the above</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Aucune de ces réponses</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not a federal official language</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Pas une langue officielle fédérale</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="disabilityCodeValue">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:union>
+			<xsd:simpleType>
+				<xsd:restriction base='xsd:boolean'>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:positiveInteger">
+					<xsd:enumeration value="2">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+							<!-- For exclusive use by LMTA. -->
+							<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+							<!-- À l'usage exclusif d'ETMT. -->
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="8">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+							<!-- For exclusive use by LMTA. -->
+							<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+							<!-- À l'usage exclusif d'ETMT. -->
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:enumeration value="9">
+						<xsd:annotation>
+							<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+							<!-- For exclusive use by LMTA. -->
+							<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+							<!-- À l'usage exclusif d'ETMT. -->
+						</xsd:annotation>
+					</xsd:enumeration>
+					<xsd:whiteSpace value="collapse" />
+					<xsd:minInclusive value="1"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>
+	<xsd:simpleType name="maritalStatusCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Married or equivalent</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Marié(e) ou équivalent</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Single</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Célibataire</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Divorced</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Divorcé</xsd:documentation>
+					<!-- For exclusive use by PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Widowed</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Veuf/Veuve</xsd:documentation>
+					<!-- For exclusive use by PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Seperated</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Séparé</xsd:documentation>
+					<!-- For exclusive use by PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="genderCodeValue">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Male</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Homme</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Female</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Femme</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Unspecified</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non spécifié</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EIClaimantCodeValue">
+		<!-- For exclusive use by ILMP. / À l'usage exclusif de PMTA. -->
+		<!-- Mandatory for ILMP (will be validated on the server side). Obligatoire pour PMTA (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employment insurance claimant</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Prestataire d'assurance-emploi</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Reach-back client/former claimant</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ancien prestataire/client réadmissible</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Non employment insurance claimant</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non prestataire d'assurance-emploi</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="aboriginalGroupCodeValue">
+		<!-- For exclusive use by ILMP. / À l'usage exclusif de PMTA. -->
+		<!-- Mandatory for ILMP (will be validated on the server side). Obligatoire pour PMTA (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Registered Indian</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Indiens inscrits</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Non-status Indian</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Indiens non inscrit</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Metis</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Métis</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Inuit</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Inuit</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="scheduleTypeCodeValue">
+		<!-- For exclusive use by ILMP. / À l'usage exclusif de PMTA. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Full-time</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Temps plein</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Part-time</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Temps partiel</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="actionPlanResultCodeValue">
+		<!-- Mandatory when Action Plan Result Date is provided and has passed (will be validated on the server side). 
+    Obligatoire lorsque Action Plan Result Date est fournie et passée (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Unemployed but available for work</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Sans emploi mais disponible pour travailler</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Employé</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Self-employed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Travailleur indépendant</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Returned to School</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Retourné à l'école</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Unspecified – participant could not be reached</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non spécifié – le participant n'a pu être contacté</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not in labour force</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ne fait plus partie de la population active</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Stay in school</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Rester à l'école</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+      <xsd:enumeration value="7">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Work-sharing</xsd:documentation>
+          <!-- For exclusive use by LMTA. -->
+          <xsd:documentation xml:lang="fr-ca">Travail partagé</xsd:documentation>
+          <!-- À l'usage exclusif d'ETMT. -->
+        </xsd:annotation>
+      </xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Starting a new action plan</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Début d'un nouveau plan d'action</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Ready for work</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Prêt à travailler</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="childCareFundingSourceCodeValue">
+		<!-- For exclusive use by ILMP. / À l'usage exclusif de PMTA. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not applicable</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ne s'applique pas</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">FNICCI</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">ISGPNI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">EI/CRF</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">A.-E./FRC</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Provincial funding or subsidy</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Financement ou subvention provinciale</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No funding received</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Aucun financement reçu</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Daycare space not available</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Aucune place disponible dans un service de garde</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Assisted by family/self-funded</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Assisté par un membre de la famille/financement personnel</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="indigenousIdentityCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="immigrationStatusCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="visibleMinorityCodeValue">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="actionPlanPreviousEmploymentCodeValue">
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Unemployed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Sans emploi</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Employé</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Self-employed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Travailleur indépendant</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not in labour force</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Pas dans la population active</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+      <xsd:enumeration value="7">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Work-sharing</xsd:documentation>
+          <!-- For exclusive use by LMTA. -->
+          <xsd:documentation xml:lang="fr-ca">Travail partagé</xsd:documentation>
+          <!-- À l'usage exclusif d'ETMT. -->
+        </xsd:annotation>
+      </xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Student</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Etudiant</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="actionPlanPrecariousEmploymentCodeValue">
+		<!-- For exclusive use by LMTA. / À l'usage exclusif d'ETMT. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Prefer not to report</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Préfère ne pas déclarer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="interventionCredentialCodeValue">
+		<!-- For exclusive use by LMTA. / À l'usage exclusif d'ETMT. -->
+		<!-- Mandatory when Intervention End Date is provided (will be validated on the server side). 
+    Obligatoire lorsque Intervention End Date est fournie (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not applicable</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Ne s'applique pas</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="interventionEssentialSkillsCodeValue">
+		<!-- For exclusive use by LMTA. / À l'usage exclusif d'ETMT. -->
+		<!-- Mandatory when Intervention End Date is provided (will be validated on the server side). 
+    Obligatoire lorsque Intervention End Date est fournie (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Not Available</xsd:documentation>
+					<!-- For exclusive use by LMTA during the transition period. -->
+					<xsd:documentation xml:lang="fr-ca">Non disponible</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT pendant la période de transition. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="interventionCodeValue">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Career research and exploration</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Recherche d'emplois et exploration de carrières</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Diagnostic assessment</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Évaluation diagnostique</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employment counselling</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Counselling d'emploi</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Skills development - Essential skills</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Développement des compétences – Compétences essentielles</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Skills development - Academic upgrading</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Développement des compétences – Perfectionnement scolaire</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Work experience - Job creation partnerships</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation>Expérience de travail – Partenariats pour la création d'emplois</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Work experience - Wage subsidy</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Expérience de travail – Subventions salariales</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Work experience - Student employment</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Expérience de travail – Emplois étudiants</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training - Certificate</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée – Certificat</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training - Diploma</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée – Diplôme</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training - Degree</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée – Grade universitaire</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training - Apprenticeship</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée – Apprentissage</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="13">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training - Vocational</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée – Autres compétences professionnelles</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="14">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Self-employment</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Travail indépendant</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="15">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Job search preparation strategies</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Stratégie de préparation à la recherche d'emploi</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="16">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Job starts support</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Mesures d'aide au début d'un emploi</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="17">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employer referral</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Referer à l'employeur</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="18">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Employment retention supports</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Mesures d'aide au maintien d'un emploi</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="19">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Referral to agencies</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Référence vers des agences</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="20">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Pre-career development</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">Développement pré-carrière</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="111">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Job search assistance</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Aide à la recherche d'emploi</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="112">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Counselling/Case management</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Counseling/Gestion de cas</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="113">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Unassisted services</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Services sans aide</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="114">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Other-employment assistance services</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Autres-services d'aide à l'emploi</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="211">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Occupational skills training</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Formation professionnelle spécialisée</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="212">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Short-term training</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Formation à court terme</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="213">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Literacy, essential skills, language training and adult basic education</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Alphabétisation, compétences essentielles, formation linguistique et formation de base pour adultes</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="214">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Apprenticeship</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Apprenti</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="215">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Other-skills Development</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Autres-développement des compétences</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="221">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">(Targeted) Wage subsidies</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Subventions salariales (ciblées)</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="222">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Job creation partnership</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Partenariats pour la création d'emploi</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="223">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Self-employment assistance</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Aide au travail indépendant</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="224">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">(Targeted) Earnings supplements</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Suppléments de rémunération (ciblés)</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="311">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Fee payer</xsd:documentation>
+					<!-- For exclusive use by LMTA. -->
+					<xsd:documentation xml:lang="fr-ca">Étudiants indépendants</xsd:documentation>
+					<!-- À l'usage exclusif d'ETMT. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="interventionOutcomeCodeValue">
+		<!-- Mandatory when Action Plan Result Date is provided (will be validated on the server side). 
+    Obligatoire lorsque Action Plan Result Date est fournie (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Completed</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Terminé</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">In progress</xsd:documentation>
+					<!-- For exclusive use by ILMP. -->
+					<xsd:documentation xml:lang="fr-ca">En cours</xsd:documentation>
+					<!-- À l'usage exclusif de PMTA. -->
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Incomplete</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Incomplète</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Failed to report</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Omis de se présenter</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Cancelled</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Annulé</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Rescheduled</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Reporté</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="barrierToEmploymentCodeValue">
+		<!-- For exclusive use by ILMP. / À l'usage exclusif de PMTA. -->
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">None</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Aucune</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="2">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Lack of labour force attachment</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Manque d'attachement au marché du travail</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="3">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Lack of work experience</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Manque d'expérience de travail</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="4">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Lack of transportation</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Manque de moyen de transport</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="5">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Remoteness</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Éloignement</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="6">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Language</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Langue</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="7">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Education</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Éducation</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="8">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Economic</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Économique</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="9">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Dependant care</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Garde de personne à charge</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="10">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Lack of marketable skills</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Manque de compétences en demande</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="11">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Physical, emotional, or mental health</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Physique ou santé mentale</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="12">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Other barrier not listed above</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Autres obstacles non listés ci-dessus</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="sysComment">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">Reserved for use by automation solution providers.</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">Réservé pour une utilisation par des fournisseurs de solutions d'automatisation.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="100" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="basicLengthString">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">
+				Derived from 'string' 1-100 length.
+				Line feeds, carriage returns, tabs, leading and trailing spaces, and multiple spaces are removed.
+			</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">
+				Dérivé de 'chaine' 1-100 longueur.
+				Sauts de lignes, retour chariot, tabulations, espaces avant et après, et plusieurs espaces sont supprimés.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1" />
+			<xsd:maxLength value="100" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SIN">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">Social insurance number</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">Numéro d'assurance sociale</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:pattern value="\d{9}" />
+			<xsd:whiteSpace value="collapse"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="agreementNumber">
+		<!-- This element is mandatory. Cet élément est obligatoire. -->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">Agreement number</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">Numéro d'entente</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:pattern value="\d{7,9}" />
+			<xsd:whiteSpace value="collapse" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="APStartDate">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">Start date of the action plan.</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">Date de début du plan d'action.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:date" />
+	</xsd:simpleType>
+	<xsd:simpleType name="APEndDate">
+		<!-- For exclusive use by LMTA. / À l'usage exclusif d'ETMT. -->
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">End date of the action plan</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">Date de fin du plan d'action</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:date" />
+	</xsd:simpleType>
+	<xsd:simpleType name="systemActionType">
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:annotation>
+				<xsd:documentation xml:lang="en-CA">
+					Specifies a non-interactive system action to undertake.
+					Supported Actions:
+					Expire = Data is logically removed to correct orphaned or deadlock instances.
+				</xsd:documentation>
+				<xsd:documentation xml:lang="fr-CA">
+					Indique une action système non-interactif à entreprendre.
+					Actions soutenus:
+					Expirer = est logiquement supprimée afin de corriger les cas de blocage ou d'orphelins.
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:enumeration value="1">
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-ca">Expire</xsd:documentation>
+					<xsd:documentation xml:lang="fr-ca">Expirer</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:whiteSpace value="collapse" />
+			<xsd:minInclusive value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="addressType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">
+				Contains geo-location (mailing address) and phone number.
+				Where appropriate, TBITS Addressing Standard - Attribute Matrix and wikipedia were used as reference.
+
+				The mailing address is used as an address that specifies where mail is to be delivered
+				and that includes information assigned by the municipality and building owners, as well as
+				the assigned Postal Code and other related address information assigned by Canada Post, as required.
+				Note: This type of address can be different from the physical or street address.
+			</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">
+				Contient géo-localisation (adresse postale) et numéro de téléphone.
+				Le cas échéant, NCTTI adressage standard - Attribut Matrix et wikipedia ont été utilisés comme référence.
+
+				L'adresse postale est utilisée comme une adresse où le courrier doit être livré et qui comprend
+				les renseignements attribués par la municipalité et les propriétaires d'immeubles, ainsi que
+				le code postale et toutes autres informations assignées par Postes Canada, au besoin.
+				Note: Ce type d'adresse peut être différent de l'adresse physique ou l'adresse de la rue.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="streetAddress">
+				<!-- This element is mandatory. Cet élément est obligatoire. -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-CA">
+						Specifies a unique location on a street, roadway, or artery within
+						a municipality, based on identification information provided by
+						municipal and/or officially recognized authorities. May also be a
+						postal office box (i.e. PO Box or postal box).
+						If an apartment number exists, add it before the street number and street name.
+						These two numeric elements will be separated by a hyphen (e.g. 7-22 Eddy Street).
+						If the client does not have an address, the token “No Address” must be used.
+						* Pattern constraint serves to document the use of the "No Address/Pas d'adresse" tokens.
+						Max: 150 characters.
+					</xsd:documentation>
+					<xsd:documentation xml:lang="fr-CA">
+						Indique un endroit précis sur une rue, un chemin ou une artère dans
+						une municipalité basé sur l'information fournie par l'autorité
+						municipale et/ou par un parti officiellement reconnu. Peut aussi
+						être une case postale (i.e. CP).
+						Si un numéro d'appartement existe, ajoutez celui-ci devant le numéro municipal et le nom de la rue.
+						Ces deux éléments numériques seront séparés par un trait d'union (ex. 7-22 rue Eddy).
+						Si le client n'a pas d'adresse, veuillez inscrire dans le champ "Pas d'adresse".
+						Max: 150 caractères.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:minLength value="2" />
+						<xsd:maxLength value="150" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="municipality">
+				<!-- This element is mandatory. Cet élément est obligatoire. -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-CA">
+						An area commonly recognized as constituting a town, village, city,
+						(i.e. an official municipality), or a local area that is
+						generally deemed locally to have the status of an official
+						municipality or reserve.
+						If the client does not have a city, the city of the organization may
+						be used.
+						Max: 100 characters.
+					</xsd:documentation>
+					<xsd:documentation xml:lang="fr-CA">
+						Un endroit qui est reconnu comme étant un village, une ville, une
+						municipalité reconnu ou un endroit qui est généralement reconnu
+						comme étant une municipalité ou réserve officielle.
+						Si le client n'a pas d'adresse, la ville où l'organisation est
+						située doit être inscrite dans ce champ.
+						Max: 100 caractères.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:minLength value="3" />
+						<xsd:maxLength value="100" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="province" type="addressProvinceCodeValue">
+				<!-- This element is mandatory. Cet élément est obligatoire. -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-CA">
+						Specifies the client's province or country of residence. If the
+						client does not have an address, provide organization's province.
+					</xsd:documentation>
+					<xsd:documentation xml:lang="fr-CA">
+						Indique la province ou le pays de résidence du client. Si le client
+						n'a pas d'adresse, veuillez inscrire la province où l'organisation
+						est située.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="postalZIPCode">
+				<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-CA">
+						Specifies the client's postal code (may be outside Canada). A code
+						used by various postal authorities in the world (zip code in the
+						USA) to identify a relatively small (10-1,000 people) delivery
+						location.
+						The postal code is not case-sensitive (e.g. a1a1a1 and A1A1A1 are considered the same thing).
+						Where the client is homeless (i.e. client has no address and postal
+						code), the token "No Postal Code" must be used.
+					</xsd:documentation>
+					<xsd:documentation xml:lang="fr-CA">
+						Indique le code postal (peut être à l'extérieur du Canada) du
+						client. Il s'agit d'un code utilisé par les autorités postales dans
+						le monde (code ZIP aux É.-U.) pour identifier les petites (10 –
+						1000 personne) zones de livraison.
+						Le code postal n'est pas sensible aux lettres minuscules ou majuscules (ex.: a1a1a1 et A1A1A1 veulent dire la même chose).
+						Si le client n'a pas d'adresse et de code postal, veuillez inscrire
+						"Pas de code postal" dans le champ.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:pattern
+						  value="[AaBbCcEeGgHhJjKkLlMmNnPpRrSsTtVvXxYy]\d[a-zA-Z]\d[a-zA-Z]\d|\d{5,9}|No Postal Code|Pas de code postal" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="contactPhoneNumber" minOccurs="0">
+				<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+				<xsd:annotation>
+					<xsd:documentation xml:lang="en-CA">
+						Specifies the client's telephone number If the client does not have a
+						telephone number, than the token "No Telephone" must be used.
+						The North American Numbering Plan (NANP) covering 24 countries and
+						territories: the United States and its territories, Canada,
+						Bermuda, and 16 of the Caribbean countries. Also, includes an
+						additional 4 digits for the extension (optional) for total of
+						15 digits.
+					</xsd:documentation>
+					<xsd:documentation xml:lang="fr-CA">
+						Spécifie le numéro de téléphone du client. Si le client n'a pas de numéro
+						de téléphone, veuillez inscrire "Pas de téléphone" dans le champ.
+						Le plan de numérotage nord-américain (NANP) couvre 24 pays et
+						territoires:
+						les États-Unis et ces territoires, le Canada, les Bermudes, et
+						les 16 pays des Caraïbes. De plus, il est possible d'ajouter 4
+						chiffres qui composent l'extension (optionnelle) pour un total
+						de 15 chiffres.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:token">
+						<xsd:pattern value="(Pas de téléphone)|(No Telephone)|(Not Available)|(Non disponible)|(\d{1}-)?\(?\d{3}\)?[\-]\d{3}[\-]\d{4}(:\d{1,4})?" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="sysComment" type="sysComment" minOccurs="0"></xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="provincialOfficeTypeCode">
+		<!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="15"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="systemType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">
+				All information related to the intervention, the action plan or the client
+				will also be 'logically' removed. This feature is intended to better support
+				data salvage efforts by providing a means whereby certain 'deadlock' or 'orphan'
+				cases can be resolved without directly involving the program area. It is not to
+				be used in a casual manner by the case manager in a operational context.
+			</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">
+				Toutes les informations relatives à l'intervention, le plan d'action ou le client seront
+				aussi 'logiquement' enlevé. Cette fonctionnalité est destinée à mieux soutenir les efforts
+				de récupération de données en fournissant un moyen par lequel certaines «impasse» ou des cas
+				«orphelins» peuvent être résolus sans la participation directe de la zone du programme.
+				Il ne doit pas être utilisé d'une manière occasionnelle par le gestionnaire de cas dans un
+				contexte opérationnel.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:element name="socialInsuranceNumber" type="SIN" />
+				<xsd:element name="clientID" type="shortLengthString" />
+			</xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="agreementNumber" type="agreementNumber" />
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="actionPlanStartDate" type="APStartDate" />
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="interventionStartDate" type="xsd:date" />
+				<xsd:element name="interventionCode" type="interventionCodeValue" />
+			</xsd:sequence>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="actionPlanID" type="shortLengthString" minOccurs="0" />
+				<xsd:element name="interventionID" type="shortLengthString" minOccurs="0" />
+			</xsd:sequence>
+			<xsd:element name="systemAction" type="systemActionType" />
+			<xsd:element name="sysComment" type="sysComment" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:simpleType name="NOCValueCode">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en-CA">
+				Used to validate the NOC value elements.
+			</xsd:documentation>
+			<xsd:documentation xml:lang="fr-CA">
+				Utilisé pour valider les éléments du NAS.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:token">
+			<xsd:minLength value="1" />
+			<xsd:pattern value="\d{4,5}" />
+		</xsd:restriction>
+	</xsd:simpleType>
+  <xsd:simpleType name="actionPlanFundingSourceCodeValue">
+    <!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+    <xsd:restriction base="xsd:positiveInteger">
+      <xsd:enumeration value="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Steel Tariffs</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Tarifs acier</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Softwood Lumber Tariffs</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Tarifs bois d’oeuvre résineux</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="3">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Comprehensive Tariffs</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Tarifs soutien complet</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="8">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Not Applicable</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Ne s'applique pas</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:whiteSpace value="collapse" />
+      <xsd:minInclusive value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="actionPlanFollowUpResultCodeValue">
+    <!-- For exclusive use by LMTA. / À l'usage exclusif pour ETMT. -->
+    <!-- Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+												and actionPlanFollowUpDate is provided (will be validated on the server side).
+    Obligatoire lorsque actionPlanFundingSource est '1. Tarifs sur l’acier', '2. Tarifs sur le bois d’œuvre résineux' ou '3. Tarifs globaux' (sera validé côté serveur).
+												et actionPlanFollowUpDate est fourni (sera validé côté serveur).-->
+    <xsd:restriction base="xsd:positiveInteger">
+      <xsd:enumeration value="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Unemployed but available for work</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Sans emploi mais disponible pour travailler</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Employed</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">À l'emploi</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="3">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Self-employed</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Travailleur indépendant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="4">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Returned to School</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Retourné à l'école</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="5">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Unspecified – participant could not be reached</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Non spécifié – le participant n’a pu être contacté</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="6">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Not in labour force</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Pas dans la population active</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="7">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Work-sharing</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Travail partagé</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="8">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Starting a new action plan</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Début d'un nouveau plan d'action </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:whiteSpace value="collapse" />
+      <xsd:minInclusive value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="interventionCostCategoryCodeValue">
+    <!-- For exclusive use by LMTA. / À l'usage exclusif pour ETMT. -->
+    <!-- Mandatory when actionPlanResultDate or the interventionEndDate is provided
+								and when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                and when interventionCost is provided 
+								(will be validated on the server side).
+    Obligatoire lorsque actionPlanResultDate ou interventionEndDate est fourni
+								et actionPlanFundingSource est '1. Tarifs sur l’acier', '2. Tarifs sur le bois d’œuvre résineux' ou '3. Tarifs globaux' (sera validé côté serveur).
+								et interventionCost est fourni
+								(sera validé côté serveur).-->
+    <xsd:restriction base="xsd:integer">
+      <xsd:enumeration value="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Not applicable</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Ne s'applique pas</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Transportation</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Transport</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Dependent support</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Soutien pour les personnes à charge</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="3">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Accommodations</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Hébergement</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="4">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Disability support</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Soutien à la stabilité</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="5">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Mental Health support</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Soutien en santé mentale</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="6">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Supplies support</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Soutien pour la fourniture</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="7">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Mobility relocation may be required</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Relocalisation pour mobilité peut être requise </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="8">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Tuition fees</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Frais de scolarité</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="10">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Other</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Autre</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:whiteSpace value="collapse" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NAICSValueCode">
+    <xsd:annotation>
+        <!-- 000000. Not Available / 000000. Non disponible -->
+      <xsd:documentation xml:lang="en-CA">
+        Used to validate the NAICS value elements.
+      </xsd:documentation>
+      <xsd:documentation xml:lang="fr-CA">
+        Utilisé pour valider les éléments du NAICS.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="\d{3,6}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="NAICSVersionValue">
+    <xsd:restriction base="xsd:token">
+      <!-- 0000. Not Available / 0000. Non disponible -->
+      <xsd:pattern value="(0000)|(2017)|(2022)?" />
+      <xsd:minLength value="1" />
+      <xsd:maxLength value="4" />
+      <xsd:whiteSpace value="collapse"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="payRateValue">
+    <xsd:restriction base="xsd:string">
+      <!-- Restricts the lexical representation -->
+      <xsd:pattern value="\d{4,6}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="employmentHoursType">
+    <xsd:restriction base="xsd:string">
+      <!-- Restricts the lexical representation -->
+      <xsd:pattern value="(168|([1-9]|[1-9][0-9]|1[0-5][0-9]|16[0-7])([.,]5)?)" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="actionPlanPreviousMultipleEmploymentCodeValue">
+    <!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+    <xsd:restriction base="xsd:positiveInteger">
+      <xsd:enumeration value="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:whiteSpace value="collapse" />
+      <xsd:minInclusive value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="actionPlanFollowUpMultipleEmploymentCodeValue">
+    <!-- Mandatory for LMTA (will be validated on the server side). Obligatoire pour ETMT (sera validé côté serveur). -->
+    <xsd:restriction base="xsd:positiveInteger">
+      <xsd:enumeration value="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">Yes</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Oui</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en-ca">No</xsd:documentation>
+          <xsd:documentation xml:lang="fr-ca">Non</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:whiteSpace value="collapse" />
+      <xsd:minInclusive value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

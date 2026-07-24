@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMDA/WDA Data Exchange – Interface Reference Guide (v1.5)</title>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            color: #333; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f4; 
+        }
+        header { 
+            background-color: #26374A; 
+            color: white; 
+            padding: 20px 40px; 
+            border-bottom: 5px solid #D52B1E; 
+        }
+        h1 { margin: 0; font-size: 26px; }
+        .subtitle { font-size: 14px; color: #ccc; margin-top: 5px; }
+        .container { 
+            display: flex; 
+            margin: 20px auto; 
+            max-width: 1300px;
+            background: white; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+        }
+        .sidebar { 
+            width: 270px; 
+            min-width: 270px;
+            background: #fafafa; 
+            padding: 20px; 
+            border-right: 1px solid #ddd; 
+        }
+        .sidebar ul { list-style-type: none; padding: 0; position: sticky; top: 20px; }
+        .sidebar li { margin-bottom: 10px; }
+        .sidebar a { text-decoration: none; color: #26374A; font-weight: bold; display: block; padding: 5px; border-radius: 3px; font-size: 13px; }
+        .sidebar a:hover { background-color: #eee; color: #D52B1E; }
+        .main-content { padding: 40px; flex-grow: 1; }
+        h2 { 
+            color: #26374A; 
+            border-bottom: 2px solid #D52B1E; 
+            padding-bottom: 5px; 
+            margin-top: 40px; 
+            scroll-margin-top: 20px;
+        }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #26374A; margin-top: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: top; }
+        th { background-color: #f8f9fa; color: #26374A; font-weight: bold; }
+        .spec-table th:nth-child(1) { width: 17%; }
+        .spec-table td:nth-child(2) { width: 24%; font-family: monospace; color: #D52B1E; font-size: 12px; }
+        .spec-table th:nth-child(3) { width: 10%; }
+        .spec-table th:nth-child(4) { width: 6%; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .note { background-color: #eef5f9; border-left: 4px solid #005a9c; padding: 15px; margin: 20px 0; font-size: 14px; }
+        .note-changes { background-color: #fff8e1; border-left: 4px solid #f9a825; padding: 15px; margin: 20px 0; font-size: 13px; }
+        .note-tariff { background-color: #fce4ec; border-left: 4px solid #D52B1E; padding: 15px; margin: 20px 0; font-size: 13px; }
+        .note-warn { background-color: #fff3e0; border-left: 4px solid #e65100; padding: 15px; margin: 20px 0; font-size: 13px; }
+        code { background-color: #f1f1f1; padding: 2px 4px; border-radius: 3px; color: #c7254e; font-size: 12px; }
+        .badge-new {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 4px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+        }
+        .badge-updated {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 4px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+        }
+        .mandatory { color: #D52B1E; font-weight: bold; }
+        .conditional { color: #e65100; }
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: #999;
+            max-width: 1300px;
+            margin: 0 auto 20px auto;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>LMDA / WDA Data Exchange Guide</h1>
+    <div class="subtitle">Federal–Provincial XML Interface Reference — Schema Version 1.5 &nbsp;|&nbsp; Source Date Modified: 2026-04-15</div>
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <ul>
+            <li><a href="#changelog">★ v1.5 Change Summary</a></li>
+            <li><a href="#metadata">1. Document Metadata</a></li>
+            <li><a href="#client">2. Client Profile</a></li>
+            <li><a href="#address">&nbsp;&nbsp;2.1 Address</a></li>
+            <li><a href="#actionplan">3. Action Plan</a></li>
+            <li><a href="#followup">3.1 Follow-Up / Contact</a></li>
+            <li><a href="#intervention">4. Intervention</a></li>
+            <li><a href="#intsupport">&nbsp;&nbsp;4.1 Intervention Support</a></li>
+            <li><a href="#sysaction">5. sysAction (Data Salvage)</a></li>
+            <li><a href="#appendix-codes">App. A – Code Tables</a></li>
+            <li><a href="#appendix-agreements">App. B – Agreement Numbers</a></li>
+            <li><a href="#appendix-tariff">App. C – Tariff Mandatory Fields</a></li>
+            <li><a href="#appendix-filenaming">App. D – File Naming</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <!-- OVERVIEW -->
+        <div class="note">
+            <strong>Overview:</strong> This reference guide documents the XML data structure for the <strong>Labour Market Development Agreements (LMDA)</strong> and <strong>Workforce Development Agreements (WDA)</strong> interface, based on <strong>Schema Version 1.5</strong>.
+ It outlines required elements, expected data types, mandatory 
+conditions, and structural hierarchies for the federal–provincial data 
+exchange with ESDC.<br><br>
+            <strong>Legend:</strong> 
+            <span class="mandatory">M</span> = Mandatory &nbsp;|&nbsp; 
+            <span class="conditional">C</span> = Conditional &nbsp;|&nbsp; 
+            O = Optional &nbsp;|&nbsp;
+            <span class="badge-new">NEW in 1.5</span> = Added in Schema 1.5 &nbsp;|&nbsp;
+            <span class="badge-updated">UPDATED</span> = Modified in Schema 1.5
+        </div>
+
+        <!-- CHANGELOG -->
+        <h2 id="changelog">★ Version 1.5 — Change Summary</h2>
+        <div class="note-changes">
+            <strong>Schema 1.4 → 1.5 key changes (consolidated from change history):</strong>
+            <ul style="margin:8px 0 0 0; padding-left:20px;">
+                <li><strong>Metadata:</strong> Added <code>&lt;sysAction&gt;</code> element for record-level data salvage (logical deletion).</li>
+                <li><strong>Client §1.5.6:</strong> Email mandatory for tariff was added (2025/11/03) then <em>removed</em> (2026/03/16). Appendix&nbsp;F still lists it as mandatory—see note in <a href="#appendix-tariff">Appendix C</a>.</li>
+                <li><strong>Action Plan:</strong> Added Previous 
+Multiple Employment, Employer Name, Previous Employment Date/Pay 
+Rate/Hours, Previous NAICS &amp; Version, Target NAICS &amp; Version, 
+Precarious Employment. Added <em>Work-sharing</em> (7) to previous employment and result codes; added <em>Starting new action plan</em> (8) to result codes.</li>
+                <li><strong>Follow-Up / Contact:</strong> New section 
+(Section 4). Added Follow-Up Result Date, Multiple Employment, NOC 
+Version, NAICS, NAICS Version. Follow-up date and result code are <em>conditional</em> (mandatory for tariff). Work-sharing added to result codes.</li>
+                <li><strong>Intervention:</strong> Added <code>&lt;interventionSupport&gt;</code>
+ wrapper [0..10] containing Cost, Cost Category, Cost Category Comment. 
+Added Language of Service (mandatory) and Credential/Certificate. 
+Related NOC expanded to Numeric(5) for NOC 2021; mandatory conditions 
+tightened for tariff and specific intervention codes.</li>
+                <li><strong>Appendixes:</strong> Added Appendix F (Mandatory Tariff Field Description) and Appendix G (Complete Tariff XML Example).</li>
+            </ul>
+        </div>
+
+        <!-- 1. DOCUMENT METADATA -->
+        <h2 id="metadata">1. Document Metadata</h2>
+        <p>Information pertaining to the system context, file structure, and XML envelope.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Root Element</td><td>&lt;ALMP:contentALMP&gt;</td><td>–</td><td class="mandatory">M</td><td>Defines the XML envelope and relevant namespaces (ALMP, p, xsi).</td></tr>
+            <tr><td>Schema Version <span class="badge-updated">UPDATED</span></td><td>&lt;SchemaVersion&gt;</td><td>Numeric</td><td class="mandatory">M</td><td>Must be <strong>1.5</strong> for this schema version.</td></tr>
+            <tr><td>Agreement Holder</td><td>&lt;agreementHolderName&gt;</td><td>AlphaNum(80)</td><td class="mandatory">M</td><td>Province or territory. Must match official list exactly (e.g., “Newfoundland and Labrador”, “Saskatchewan”).</td></tr>
+            <tr><td>System Comment</td><td>&lt;sysComment&gt;</td><td>AlphaNum(100)</td><td>O</td><td>Optional metadata or system-generated tracking notes.</td></tr>
+            <tr><td>System Action <span class="badge-new">NEW in 1.5</span></td><td>&lt;sysAction&gt;</td><td>Complex</td><td>O</td><td>Data salvage wrapper for logical deletion of records. See <a href="#sysaction">Section&nbsp;6</a>.</td></tr>
+        </tbody></table>
+
+        <!-- 2. CLIENT PROFILE -->
+        <h2 id="client">2. Client Profile Configuration</h2>
+        <p>Core demographic and identifiable data pertaining to the LMDA/WDA program participant. Nested within <code>&lt;content&gt;&lt;client&gt;</code>.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Client ID</td><td>&lt;clientID&gt;</td><td>AlphaNum(30)</td><td>O</td><td>Unique provincial identifier for the individual.</td></tr>
+            <tr><td>SIN</td><td>&lt;socialInsuranceNumber&gt;</td><td>Numeric(9)</td><td class="mandatory">M</td><td>Client’s Social Insurance Number.</td></tr>
+            <tr><td>Last Name</td><td>&lt;lastName&gt;</td><td>AlphaNum(100)</td><td class="mandatory">M</td><td>Client’s surname.</td></tr>
+            <tr><td>First Name</td><td>&lt;firstName&gt;</td><td>AlphaNum(100)</td><td>O</td><td>Client’s given name.</td></tr>
+            <tr><td>Date of Birth</td><td>&lt;dateOfBirth&gt;</td><td>Date</td><td class="mandatory">M</td><td>Format: YYYY-MM-DD.</td></tr>
+            <tr><td>Email Address</td><td>&lt;emailAddress&gt;</td><td>AlphaNum(254)</td><td>O</td><td>Primary email. Mandatory for tariff was added (2025/11/03) then <em>removed</em> (2026/03/16). See <a href="#appendix-tariff">Appendix C</a> discrepancy note.</td></tr>
+            <tr><td>Gender Code</td><td>&lt;gender&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Male, 2&nbsp;=&nbsp;Female, 3&nbsp;=&nbsp;Unspecified, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Marital Status</td><td>&lt;maritalStatus&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Married/equivalent, 2&nbsp;=&nbsp;Single, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Dependants</td><td>&lt;numberOfDependantChildren&gt;</td><td>Numeric(2)</td><td class="mandatory">M</td><td>Count 0–98. Use 99 for “Prefer not to report.”</td></tr>
+            <tr><td>Language Spoken</td><td>&lt;languageSpoken&gt;</td><td>Numeric(2)</td><td class="mandatory">M</td><td>2&nbsp;=&nbsp;English
+ only, 3&nbsp;=&nbsp;French only, 6&nbsp;=&nbsp;English &amp; French, 
+9&nbsp;=&nbsp;Not a federal official language.</td></tr>
+            <tr><td>Disability Status</td><td>&lt;disability&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Indigenous Identity</td><td>&lt;indigenousIdentity&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Immigrant Status</td><td>&lt;immigrant&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Immigration Year</td><td>&lt;immigrationYear&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>YYYY. Mandatory if immigrant&nbsp;=&nbsp;1. Use “0000” for prefer not to report.</td></tr>
+            <tr><td>Visible Minority</td><td>&lt;visibleMinority&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+        </tbody></table>
+
+        <!-- 2.1 ADDRESS -->
+        <h3 id="address">2.1 Address Configuration</h3>
+        <p>Locational data nested within the <code>&lt;client&gt;</code> element.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Street Address</td><td>&lt;streetAddress&gt;</td><td>AlphaNum(150)</td><td class="mandatory">M</td><td>Primary civic address.</td></tr>
+            <tr><td>Municipality</td><td>&lt;municipality&gt;</td><td>AlphaNum(100)</td><td class="mandatory">M</td><td>City or municipal region.</td></tr>
+            <tr><td>Province Code</td><td>&lt;province&gt;</td><td>Numeric(2)</td><td class="mandatory">M</td><td>See <a href="#appendix-codes">Appendix A §A.1</a>.</td></tr>
+            <tr><td>Postal Code</td><td>&lt;postalZIPCode&gt;</td><td>AlphaNum(9)</td><td class="mandatory">M</td><td>Canadian: A1A1A1. US: 5–9 digits. Or “No Postal Code”.</td></tr>
+            <tr><td>Phone Number</td><td>&lt;contactPhoneNumber&gt;</td><td>Numeric(10–14)</td><td class="mandatory">M</td><td>Primary contact number. Use “No Telephone” if unavailable.</td></tr>
+        </tbody></table>
+
+        <!-- 3. ACTION PLAN -->
+        <h2 id="actionplan">3. Action Plan Data Model</h2>
+        <p>An Action Plan represents a participant's service episode and
+ contains one or more interventions. A client may have multiple action 
+plans over time, but <strong>only one may be open at a time</strong> — the previous plan must be closed (with a Result Code and Result Date) before a new one can begin. Nested within <code>&lt;content&gt;&lt;client&gt;&lt;actionPlan&gt;</code>.</p>
+        <div class="note-tariff">
+            <strong>⚠ Tariff Note:</strong> When <code>actionPlanFundingSource</code> is <strong>1, 2, or 3</strong> (tariff-related), several additional fields become mandatory. See <a href="#appendix-tariff">Appendix C</a> for the complete list.
+        </div>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Action Plan ID</td><td>&lt;actionPlanID&gt;</td><td>AlphaNum(30)</td><td>O</td><td>System identifier for the specific plan.</td></tr>
+            <tr><td>Agreement Number</td><td>&lt;agreementNumber&gt;</td><td>Numeric(9)</td><td class="mandatory">M</td><td>Funding agreement number. See <a href="#appendix-agreements">Appendix B</a>.</td></tr>
+            <tr><td>Funding Source <span class="badge-updated">UPDATED</span></td><td>&lt;actionPlanFundingSource&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Steel/
+Aluminum Tariffs, 2&nbsp;=&nbsp;Softwood Lumber Tariffs, 
+3&nbsp;=&nbsp;Comprehensive Tariffs, 8&nbsp;=&nbsp;Not Applicable.</td></tr>
+            <tr><td>Education Level</td><td>&lt;educationLevel&gt;</td><td>Numeric(2)</td><td class="mandatory">M</td><td>5&nbsp;=&nbsp;HS
+ Diploma, 6&nbsp;=&nbsp;Some post-sec., 8&nbsp;=&nbsp;College/CEGEP, 
+9&nbsp;=&nbsp;Univ. cert., 13&nbsp;=&nbsp;Less than HS, 
+14&nbsp;=&nbsp;Univ. Degree, 15&nbsp;=&nbsp;Other, 99&nbsp;=&nbsp;Prefer
+ not to report.</td></tr>
+            <tr><td>Education Level Comment</td><td>&lt;educationLevelComment&gt;</td><td>AlphaNum(150)</td><td>O</td><td>Free-text elaboration on education level.</td></tr>
+            <tr><td>Provincial Office</td><td>&lt;provincialOfficeCode&gt;</td><td>AlphaNum(15)</td><td class="mandatory">M</td><td>Identifier for the local delivery agency.</td></tr>
+            <tr><td>Previous Employment <span class="badge-updated">UPDATED</span></td><td>&lt;actionPlanPreviousEmployment&gt;</td><td>Numeric(2)</td><td class="mandatory">M</td><td>1&nbsp;=&nbsp;Unemployed,
+ 2&nbsp;=&nbsp;Employed, 3&nbsp;=&nbsp;Self-Employed, 6&nbsp;=&nbsp;Not 
+in labour force, 7&nbsp;=&nbsp;Work-sharing <span class="badge-new">NEW</span>.</td></tr>
+            <tr><td>Previous Multiple Employment <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousMultipleEmployment&gt;</td><td>Numeric(1)</td><td>O</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No. (Was conditional; relaxed 2026/03/16.)</td></tr>
+            <tr><td>Previous Employer Name <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmployerName&gt;</td><td>AlphaNum(100)</td><td class="conditional">C</td><td>Most recent employer. Mandatory when fundingSource&nbsp;=&nbsp;1, 2, or 3.</td></tr>
+            <tr><td>Previous NOC</td><td>&lt;actionPlanPreviousEmploymentNOC&gt;</td><td>Numeric(5)</td><td class="conditional">C</td><td>NOC code (pre-program). Mandatory for tariff.</td></tr>
+            <tr><td>Previous NOC Version <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentNOCVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>NOC version year: 2011, 2016, or 2021. Mandatory when NOC is provided.</td></tr>
+            <tr><td>Previous NAICS <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentNAICS&gt;</td><td>Numeric(6)</td><td class="conditional">C</td><td>NAICS code for previous employment. Mandatory for tariff.</td></tr>
+            <tr><td>Previous NAICS Version <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentNAICSVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>NAICS version year. Mandatory when NAICS is provided.</td></tr>
+            <tr><td>Previous Employment Date <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Date
+ of last employment. YYYY-MM-DD. Mandatory when 
+previousEmployment&nbsp;=&nbsp;1 (Unemployed) AND 
+fundingSource&nbsp;=&nbsp;1, 2, or 3.</td></tr>
+            <tr><td>Previous Pay Rate <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentPayRate&gt;</td><td>Numeric(6)</td><td class="conditional">C</td><td>Pre-program annualized pay ($). Range: 1000–999999. Mandatory for tariff.</td></tr>
+            <tr><td>Previous Hours <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPreviousEmploymentHours&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>Pre-program weekly hours. Range: 1–168 (0.5 increments). Mandatory for tariff.</td></tr>
+            <tr><td>Target NAICS <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanTargetNAICS&gt;</td><td>Numeric(6)</td><td class="conditional">C</td><td>Goal industry code for the action plan. Mandatory for tariff.</td></tr>
+            <tr><td>Target NAICS Version <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanTargetNAICSVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>Target NAICS version year. Mandatory when Target NAICS is provided.</td></tr>
+            <tr><td>Precarious Employment <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanPrecariousEmployment&gt;</td><td>Numeric(1)</td><td>O</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 9&nbsp;=&nbsp;Prefer not to report.</td></tr>
+            <tr><td>Start Date</td><td>&lt;actionPlanStartDate&gt;</td><td>Date</td><td class="mandatory">M</td><td>Action plan start. YYYY-MM-DD.</td></tr>
+            <tr><td>End Date</td><td>&lt;actionPlanEndDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Action plan end. YYYY-MM-DD.</td></tr>
+            <tr><td>Result Code <span class="badge-updated">UPDATED</span></td><td>&lt;actionPlanResultCode&gt;</td><td>Numeric(1)</td><td class="conditional">C</td><td>1&nbsp;=&nbsp;Unemployed
+ (available), 2&nbsp;=&nbsp;Employed, 3&nbsp;=&nbsp;Self-Employed, 
+4&nbsp;=&nbsp;Returned to school, 5&nbsp;=&nbsp;Unspecified, 
+6&nbsp;=&nbsp;Not in labour force, 7&nbsp;=&nbsp;Work-sharing <span class="badge-new">NEW</span>, 8&nbsp;=&nbsp;Starting new action plan <span class="badge-new">NEW</span>.</td></tr>
+            <tr><td>Result Date</td><td>&lt;actionPlanResultDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Date the result was recorded. YYYY-MM-DD.</td></tr>
+        </tbody></table>
+
+        <!-- 4. FOLLOW-UP / CONTACT -->
+        <h2 id="followup">3.1 Action Plan Follow-Up  <span class="badge-new">NEW in 1.5</span></h2>
+        <p>Embedded <code>&lt;actionPlanFollowUp&gt;</code> blocks representing post-intervention tracking. Maximum <strong>5 follow-ups</strong> per action plan. Tariff-funded plans require at least <strong>2 follow-ups</strong> (at 6 and 12 months).</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Follow-Up ID</td><td>&lt;actionPlanFollowUpID&gt;</td><td>AlphaNum(30)</td><td>O</td><td>Unique ID for the follow-up session.</td></tr>
+            <tr><td>Follow-Up Date</td><td>&lt;actionPlanFollowUpDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Date the follow-up occurred. YYYY-MM-DD. Mandatory when fundingSource&nbsp;=&nbsp;1, 2, 3 AND resultCode is provided.</td></tr>
+            <tr><td>Result Code <span class="badge-updated">UPDATED</span></td><td>&lt;actionPlanFollowUpResultCode&gt;</td><td>Numeric(2)</td><td class="conditional">C</td><td>1&nbsp;=&nbsp;Unemployed,
+ 2&nbsp;=&nbsp;Employed, 3&nbsp;=&nbsp;Self-Employed, 
+4&nbsp;=&nbsp;Returned to school, 5&nbsp;=&nbsp;Unspecified, 
+6&nbsp;=&nbsp;Not in labour force, 7&nbsp;=&nbsp;Work-sharing <span class="badge-new">NEW</span>, 8&nbsp;=&nbsp;Starting new action plan. Mandatory when fundingSource&nbsp;=&nbsp;1, 2, 3 AND followUpDate is provided.</td></tr>
+            <tr><td>Result Date <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanFollowUpResultDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Date the follow-up result was recorded. YYYY-MM-DD.</td></tr>
+            <tr><td>Employer Name</td><td>&lt;actionPlanFollowUpEmployerName&gt;</td><td>AlphaNum(100)</td><td class="conditional">C</td><td>Employer at follow-up. Mandatory when resultCode&nbsp;=&nbsp;2 (Employed) or 7 (Work-sharing) <strong>AND</strong> previousEmployment&nbsp;=&nbsp;1, 3, or 6.</td></tr>
+            <tr><td>Multiple Employment <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanFollowUpMultipleEmployment&gt;</td><td>Numeric(1)</td><td>O</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No. (Was conditional; relaxed 2026/03/16.)</td></tr>
+            <tr><td>Current NOC</td><td>&lt;actionPlanFollowUpNOC&gt;</td><td>Numeric(5)</td><td class="conditional">C</td><td>NOC
+ at follow-up. Mandatory when resultCode&nbsp;=&nbsp;2, 3, or 7 AND 
+fundingSource&nbsp;=&nbsp;1, 2, 3 AND followUpDate is provided.</td></tr>
+            <tr><td>Current NOC Version <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanFollowUpNOCVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>NOC version: 2011, 2016, or 2021. Mandatory when followUpNOC is provided.</td></tr>
+            <tr><td>Current NAICS <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanFollowUpNAICS&gt;</td><td>Numeric(6)</td><td class="conditional">C</td><td>NAICS at follow-up. Same condition as followUpNOC.</td></tr>
+            <tr><td>Current NAICS Version <span class="badge-new">NEW in 1.5</span></td><td>&lt;actionPlanFollowUpNAICSVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>NAICS version year. Mandatory when followUpNAICS is provided.</td></tr>
+            <tr><td>Compensation</td><td>&lt;actionPlanFollowUpEmploymentPayRate&gt;</td><td>Numeric(10)</td><td class="conditional">C</td><td>Annualized
+ pay rate. Mandatory when fundingSource&nbsp;=&nbsp;1, 2, 3 AND 
+resultCode&nbsp;=&nbsp;2, 3, or 7 AND followUpDate is provided.</td></tr>
+            <tr><td>Hours</td><td>&lt;actionPlanFollowUpEmploymentHours&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>Weekly hours. Same condition as PayRate.</td></tr>
+        </tbody></table>
+        <div class="note-warn">
+            <strong>⚠ Field Name Note:</strong> The source document Appendix F uses shortened field names (<code>actionPlanFollowUpPayRate</code>, <code>actionPlanFollowUpHours</code>), but the XML schema uses the full names with “Employment” (<code>actionPlanFollowUpEmploymentPayRate</code>, <code>actionPlanFollowUpEmploymentHours</code>). Always use the full XML tag names in submissions.
+        </div>
+
+        <!-- 5. INTERVENTION -->
+        <h2 id="intervention">4. Intervention Details <span class="badge-updated">EXPANDED</span></h2>
+        <p>Embedded <code>&lt;intervention&gt;</code> blocks representing specific programmatic elements administered under the action plan.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Intervention ID</td><td>&lt;interventionID&gt;</td><td>AlphaNum(30)</td><td>O</td><td>Unique ID for the intervention event.</td></tr>
+            <tr><td>Intervention Code</td><td>&lt;interventionCode&gt;</td><td>Numeric(3)</td><td class="mandatory">M</td><td>EBSM code. See <a href="#appendix-codes">Appendix A §A.2</a>.</td></tr>
+            <tr><td>Title</td><td>&lt;interventionTitle&gt;</td><td>AlphaNum(150)</td><td class="mandatory">M</td><td>Descriptive name of the intervention.</td></tr>
+            <tr><td>Start Date</td><td>&lt;interventionStartDate&gt;</td><td>Date</td><td class="mandatory">M</td><td>Intervention start. YYYY-MM-DD.</td></tr>
+            <tr><td>End Date</td><td>&lt;interventionEndDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Intervention end. YYYY-MM-DD. Mandatory when actionPlanResultDate is provided.</td></tr>
+            <tr><td>Outcome</td><td>&lt;interventionOutcome&gt;</td><td>Numeric(2)</td><td class="conditional">C</td><td>1&nbsp;=&nbsp;Complete,
+ 3&nbsp;=&nbsp;Incomplete, 4&nbsp;=&nbsp;Failed to report, 
+5&nbsp;=&nbsp;Cancelled, 6&nbsp;=&nbsp;Rescheduled. Mandatory when 
+actionPlanResultDate is provided.</td></tr>
+            <tr><td>Related NOC <span class="badge-updated">UPDATED</span></td><td>&lt;interventionRelatedNOC&gt;</td><td>Numeric(5)</td><td class="conditional">C</td><td>NOC
+ targeted by intervention. Expanded from Numeric(4). Mandatory when 
+code&nbsp;=&nbsp;211; also when tariff AND code in {212, 214, 215, 221, 
+222, 223, 224, 311}.</td></tr>
+            <tr><td>Related NOC Version</td><td>&lt;interventionRelatedNOCVersion&gt;</td><td>Numeric(4)</td><td class="conditional">C</td><td>NOC version: 2011, 2016, or 2021. Mandatory when NOC is provided.</td></tr>
+            <tr><td>Language of Service <span class="badge-new">NEW in 1.5</span></td><td>&lt;interventionLanguageOfService&gt;</td><td>Numeric(1)</td><td class="mandatory">M</td><td>2&nbsp;=&nbsp;English, 3&nbsp;=&nbsp;French, 9&nbsp;=&nbsp;Not an official language.</td></tr>
+            <tr><td>Essential Skills</td><td>&lt;interventionEssentialSkills&gt;</td><td>Numeric(1)</td><td class="conditional">C</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No. Mandatory when code&nbsp;=&nbsp;213 and endDate is provided.</td></tr>
+            <tr><td>Credential/Certificate <span class="badge-new">NEW in 1.5</span></td><td>&lt;interventionCredential&gt;</td><td>Numeric(1)</td><td class="conditional">C</td><td>1&nbsp;=&nbsp;Yes, 2&nbsp;=&nbsp;No, 8&nbsp;=&nbsp;N/A. Conditional when endDate is provided.</td></tr>
+        </tbody></table>
+
+        <!-- 5.1 INTERVENTION SUPPORT -->
+        <h3 id="intsupport">4.1 Intervention Support <span class="badge-new">NEW in 1.5</span></h3>
+        <p>Wrapper element <code>&lt;interventionSupport&gt;</code> nested within each <code>&lt;intervention&gt;</code>. Up to <strong>10 occurrences</strong> per intervention.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Element Name</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Cost <span class="badge-new">NEW in 1.5</span></td><td>&lt;interventionCost&gt;</td><td>Numeric(6)</td><td class="conditional">C</td><td>Dollar
+ amount. Range: 1–999999. No decimals. Mandatory when 
+fundingSource&nbsp;=&nbsp;1, 2, 3 AND (interventionOutcome or 
+actionPlanResultCode is provided) AND costCategory is provided.</td></tr>
+            <tr><td>Cost Category <span class="badge-new">NEW in 1.5</span></td><td>&lt;interventionCostCategory&gt;</td><td>Numeric(2)</td><td class="conditional">C</td><td>0&nbsp;=&nbsp;N/
+A, 1&nbsp;=&nbsp;Transportation, 2&nbsp;=&nbsp;Dependent support, 
+3&nbsp;=&nbsp;Accommodations, 4&nbsp;=&nbsp;Disability support, 
+5&nbsp;=&nbsp;Mental health, 6&nbsp;=&nbsp;Supplies, 
+7&nbsp;=&nbsp;Mobility/relocation, 8&nbsp;=&nbsp;Tuition/fees, 
+10&nbsp;=&nbsp;Other. Mandatory when fundingSource&nbsp;=&nbsp;1, 2, 3 
+AND (actionPlanResultDate or interventionEndDate is provided) AND cost 
+is provided. Must be unique when &gt;1 support block.</td></tr>
+            <tr><td>Cost Category Comment <span class="badge-new">NEW in 1.5</span></td><td>&lt;interventionCostCategoryComment&gt;</td><td>AlphaNum(150)</td><td class="conditional">C</td><td>Free-text. <strong>Mandatory when costCategory&nbsp;=&nbsp;10</strong> (Other).</td></tr>
+        </tbody></table>
+
+        <!-- 6. sysAction -->
+        <h2 id="sysaction">5. sysAction — Data Salvage <span class="badge-new">NEW in 1.5</span></h2>
+        <p>The <code>&lt;sysAction&gt;</code> element enables record-level <strong>logical deletion</strong> for data correction and salvage. It is a complex element nested within <code>&lt;content&gt;</code> containing sub-elements that identify the target record to be removed.</p>
+        <table class="spec-table">
+            <tbody><tr><th>Sub-Element</th><th>XML Tag</th><th>Format</th><th>Req.</th><th>Description</th></tr>
+            <tr><td>Client ID</td><td>&lt;clientID&gt;</td><td>AlphaNum(30)</td><td class="conditional">C</td><td>Client identifier for the target record.</td></tr>
+            <tr><td>SIN</td><td>&lt;socialInsuranceNumber&gt;</td><td>Numeric(9)</td><td class="conditional">C</td><td>SIN for the target record. Provide clientID or SIN.</td></tr>
+            <tr><td>Agreement Number</td><td>&lt;agreementNumber&gt;</td><td>Numeric(9)</td><td class="conditional">C</td><td>Agreement number of the target action plan.</td></tr>
+            <tr><td>Action Plan ID</td><td>&lt;actionPlanID&gt;</td><td>AlphaNum(30)</td><td class="conditional">C</td><td>ID of the target action plan.</td></tr>
+            <tr><td>Action Plan Start Date</td><td>&lt;actionPlanStartDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Start date of the target action plan.</td></tr>
+            <tr><td>Intervention ID</td><td>&lt;interventionID&gt;</td><td>AlphaNum(30)</td><td class="conditional">C</td><td>ID of the target intervention.</td></tr>
+            <tr><td>Intervention Start Date</td><td>&lt;interventionStartDate&gt;</td><td>Date</td><td class="conditional">C</td><td>Start date of the target intervention.</td></tr>
+            <tr><td>Intervention Code</td><td>&lt;interventionCode&gt;</td><td>Numeric(3)</td><td class="conditional">C</td><td>EBSM code of the target intervention.</td></tr>
+            <tr><td>System Action</td><td>&lt;systemAction&gt;</td><td>Numeric</td><td class="mandatory">M</td><td><strong>1&nbsp;=&nbsp;Delete</strong> (logical deletion / data salvage). Used to remove previously submitted records.</td></tr>
+            <tr><td>System Comment</td><td>&lt;sysComment&gt;</td><td>AlphaNum(100)</td><td>O</td><td>Reason or notes for the data salvage action.</td></tr>
+        </tbody></table>
+
+        <!-- APPENDIX A: CODE TABLES -->
+        <h2 id="appendix-codes">Appendix A – Code Reference Tables</h2>
+
+        <h3>A.1 Province / Territory Codes</h3>
+        <table>
+            <tbody><tr><th>Code</th><th colspan="4">Province / Territory</th></tr>
+            <tr><td>1</td><td colspan="4">Newfoundland and Labrador</td></tr>
+            <tr><td>2</td><td colspan="4">Nova Scotia</td></tr>
+            <tr><td>3</td><td colspan="4">New Brunswick</td></tr>
+            <tr><td>4</td><td colspan="4">Prince Edward Island</td></tr>
+            <tr><td>5</td><td colspan="4">Quebec</td></tr>
+            <tr><td>6</td><td colspan="4">Ontario</td></tr>
+            <tr><td>7</td><td colspan="4">Manitoba</td></tr>
+            <tr><td>8</td><td colspan="4">Saskatchewan</td></tr>
+            <tr><td>9</td><td colspan="4">Alberta</td></tr>
+            <tr><td>10</td><td colspan="4">Northwest Territories</td></tr>
+            <tr><td>11</td><td colspan="4">British Columbia</td></tr>
+            <tr><td>12</td><td colspan="4">Yukon</td></tr>
+            <tr><td>13</td><td colspan="4">United States</td></tr>
+            <tr><td>14</td><td colspan="4">Other Country</td></tr>
+            <tr><td>16</td><td colspan="4">Nunavut</td></tr>
+        </tbody></table>
+
+        <h3>A.2 Intervention Codes (EBSM)</h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Type</th><th colspan="3">Category</th></tr>
+            <tr><td>111</td><td>Job Search Assistance (JSA)</td><td colspan="3">Employment Assistance Services</td></tr>
+            <tr><td>112</td><td>Counselling / Case Management</td><td colspan="3">Employment Assistance Services</td></tr>
+            <tr><td>113</td><td>Unassisted Services</td><td colspan="3">Employment Assistance Services</td></tr>
+            <tr><td>114</td><td>Other EAS</td><td colspan="3">Employment Assistance Services</td></tr>
+            <tr><td>211</td><td>Occupational Skills Training</td><td colspan="3">Employment Benefits – Skills Development</td></tr>
+            <tr><td>212</td><td>Short-Term Training</td><td colspan="3">Employment Benefits – Skills Development</td></tr>
+            <tr><td>213</td><td>Literacy / Essential Skills / Language / Adult Basic Ed.</td><td colspan="3">Employment Benefits – Skills Development</td></tr>
+            <tr><td>214</td><td>Apprenticeship</td><td colspan="3">Employment Benefits – Skills Development</td></tr>
+            <tr><td>215</td><td>Other Skills Development</td><td colspan="3">Employment Benefits – Skills Development</td></tr>
+            <tr><td>221</td><td>Targeted Wage Subsidies</td><td colspan="3">Employment Benefits</td></tr>
+            <tr><td>222</td><td>Job Creation Partnerships</td><td colspan="3">Employment Benefits</td></tr>
+            <tr><td>223</td><td>Self-Employment Assistance</td><td colspan="3">Employment Benefits</td></tr>
+            <tr><td>224</td><td>Targeted Earnings Supplements</td><td colspan="3">Employment Benefits</td></tr>
+            <tr><td>311</td><td>Fee Payer</td><td colspan="3">Pan-Canadian</td></tr>
+        </tbody></table>
+
+        <h3>A.3 Action Plan / Follow-Up Result Codes <span class="badge-updated">UPDATED</span></h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Result</th><th colspan="3">Notes</th></tr>
+            <tr><td>1</td><td>Unemployed but available</td><td colspan="3">–</td></tr>
+            <tr><td>2</td><td>Employed</td><td colspan="3">–</td></tr>
+            <tr><td>3</td><td>Self-Employed</td><td colspan="3">–</td></tr>
+            <tr><td>4</td><td>Returned to school</td><td colspan="3">–</td></tr>
+            <tr><td>5</td><td>Unspecified</td><td colspan="3">–</td></tr>
+            <tr><td>6</td><td>Not in labour force</td><td colspan="3">–</td></tr>
+            <tr><td>7</td><td>Work-sharing <span class="badge-new">NEW</span></td><td colspan="3">Added in v1.5</td></tr>
+            <tr><td>8</td><td>Starting a new action plan <span class="badge-new">NEW</span></td><td colspan="3">Added in v1.5</td></tr>
+        </tbody></table>
+
+        <h3>A.4 Funding Source Codes</h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Source</th><th colspan="3">Notes</th></tr>
+            <tr><td>1</td><td>Steel / Aluminum Tariffs</td><td colspan="3">Triggers additional mandatory fields (see Appendix C)</td></tr>
+            <tr><td>2</td><td>Softwood Lumber Tariffs</td><td colspan="3">Triggers additional mandatory fields</td></tr>
+            <tr><td>3</td><td>Comprehensive Tariffs</td><td colspan="3">Triggers additional mandatory fields</td></tr>
+            <tr><td>8</td><td>Not Applicable</td><td colspan="3">Standard LMDA/WDA submission</td></tr>
+        </tbody></table>
+
+        <h3>A.5 Intervention Outcome Codes</h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Outcome</th><th colspan="3">Description</th></tr>
+            <tr><td>1</td><td>Complete</td><td colspan="3">Intervention completed successfully.</td></tr>
+            <tr><td>3</td><td>Incomplete</td><td colspan="3">Client did not finish.</td></tr>
+            <tr><td>4</td><td>Failed to report</td><td colspan="3">Client did not report/attend.</td></tr>
+            <tr><td>5</td><td>Cancelled</td><td colspan="3">Intervention was cancelled.</td></tr>
+            <tr><td>6</td><td>Rescheduled</td><td colspan="3">Intervention was rescheduled.</td></tr>
+        </tbody></table>
+
+        <h3>A.6 Cost Category Codes <span class="badge-new">NEW in 1.5</span></h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Category</th><th colspan="3">Description</th></tr>
+            <tr><td>0</td><td>Not Applicable</td><td colspan="3">–</td></tr>
+            <tr><td>1</td><td>Transportation</td><td colspan="3">Travel costs.</td></tr>
+            <tr><td>2</td><td>Dependent Support</td><td colspan="3">Child care or dependent care.</td></tr>
+            <tr><td>3</td><td>Accommodations</td><td colspan="3">Housing or lodging.</td></tr>
+            <tr><td>4</td><td>Disability Support</td><td colspan="3">Accessibility or disability-related.</td></tr>
+            <tr><td>5</td><td>Mental Health Support</td><td colspan="3">Counselling or mental health services.</td></tr>
+            <tr><td>6</td><td>Supplies</td><td colspan="3">Books, tools, equipment.</td></tr>
+            <tr><td>7</td><td>Mobility / Relocation</td><td colspan="3">Costs for relocation to access employment.</td></tr>
+            <tr><td>8</td><td>Tuition / Fees</td><td colspan="3">Course tuition and registration fees.</td></tr>
+            <tr><td>10</td><td>Other</td><td colspan="3">Specify in Cost Category Comment (mandatory).</td></tr>
+        </tbody></table>
+
+        <h3>A.7 Previous Employment Codes <span class="badge-updated">UPDATED</span></h3>
+        <table>
+            <tbody><tr><th>Code</th><th>Status</th><th colspan="3">Notes</th></tr>
+            <tr><td>1</td><td>Unemployed</td><td colspan="3">–</td></tr>
+            <tr><td>2</td><td>Employed</td><td colspan="3">–</td></tr>
+            <tr><td>3</td><td>Self-Employed</td><td colspan="3">–</td></tr>
+            <tr><td>6</td><td>Not in labour force</td><td colspan="3">–</td></tr>
+            <tr><td>7</td><td>Work-sharing <span class="badge-new">NEW</span></td><td colspan="3">Added in v1.5</td></tr>
+        </tbody></table>
+
+        <!-- APPENDIX B: AGREEMENT NUMBERS -->
+        <h2 id="appendix-agreements">Appendix B – Agreement Numbers</h2>
+        <p>Standard agreement number assignments by province/territory and agreement type.</p>
+        <table>
+            <tbody><tr><th>PT</th><th>WDA Number</th><th>LMDA Number</th><th colspan="2">Province / Territory</th></tr>
+            <tr><td>NL</td><td>999111001</td><td>999222001</td><td colspan="2">Newfoundland and Labrador</td></tr>
+            <tr><td>NS</td><td>999111002</td><td>999222002</td><td colspan="2">Nova Scotia</td></tr>
+            <tr><td>NB</td><td>999111003</td><td>999222003</td><td colspan="2">New Brunswick</td></tr>
+            <tr><td>PE</td><td>999111004</td><td>999222004</td><td colspan="2">Prince Edward Island</td></tr>
+            <tr><td>QC</td><td>999111005</td><td>999222005</td><td colspan="2">Quebec</td></tr>
+            <tr><td>ON</td><td>999111006</td><td>999222006</td><td colspan="2">Ontario</td></tr>
+            <tr><td>MB</td><td>999111007</td><td>999222007</td><td colspan="2">Manitoba</td></tr>
+            <tr><td>SK</td><td>999111008</td><td>999222008</td><td colspan="2">Saskatchewan</td></tr>
+            <tr><td>AB</td><td>999111009</td><td>999222009</td><td colspan="2">Alberta</td></tr>
+            <tr><td>NT</td><td>999111010</td><td>999222010</td><td colspan="2">Northwest Territories</td></tr>
+            <tr><td>BC</td><td>999111011</td><td>999222011</td><td colspan="2">British Columbia</td></tr>
+            <tr><td>YT</td><td>999111012</td><td>999222012</td><td colspan="2">Yukon</td></tr>
+            <tr><td>NU</td><td>999111016</td><td>999222016</td><td colspan="2">Nunavut</td></tr>
+        </tbody></table>
+
+        <!-- APPENDIX C: TARIFF MANDATORY FIELDS -->
+        <h2 id="appendix-tariff">Appendix C – Tariff Mandatory Field Summary</h2>
+        <div class="note-tariff">
+            <strong>⚠ Important:</strong> When <code>actionPlanFundingSource</code> = 1, 2, or 3, the following fields become <strong>mandatory</strong> in addition to the standard mandatory fields.
+        </div>
+        <div class="note-warn">
+            <strong>⚠ Discrepancy Note:</strong> The source document Appendix F (Mandatory Tariff Field Description) still lists <code>emailAddress</code> as mandatory for tariff submissions. However, Section 1.5.6 had the mandatory condition <em>removed</em> in the 2026/03/16 revision. <strong>Clarify with ESDC</strong> whether email should be treated as mandatory for tariff-funded plans.
+        </div>
+        <table>
+            <tbody><tr><th>Section</th><th>Field</th><th colspan="3">Condition Details</th></tr>
+            <tr><td>Client</td><td>emailAddress</td><td colspan="3">Listed in Appendix F as tariff-mandatory, but removed from §1.5.6 on 2026/03/16. <strong>Confirm with ESDC.</strong></td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmployerName</td><td colspan="3">Mandatory for tariff funding sources 1, 2, 3.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentNOC</td><td colspan="3">Mandatory for tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentNOCVersion</td><td colspan="3">Mandatory for tariff (when NOC is provided).</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentNAICS</td><td colspan="3">Mandatory for tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentNAICSVersion</td><td colspan="3">Mandatory for tariff (when NAICS is provided).</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentDate</td><td colspan="3">Mandatory when previousEmployment = 1 AND tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentPayRate</td><td colspan="3">Mandatory for tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanPreviousEmploymentHours</td><td colspan="3">Mandatory for tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanTargetNAICS</td><td colspan="3">Mandatory for tariff.</td></tr>
+            <tr><td>Action Plan</td><td>actionPlanTargetNAICSVersion</td><td colspan="3">Mandatory for tariff (when Target NAICS is provided).</td></tr>
+            <tr><td>Intervention</td><td>interventionRelatedNOC</td><td colspan="3">Mandatory when code=211; also when tariff + code in {212, 214, 215, 221, 222, 223, 224, 311}.</td></tr>
+            <tr><td>Intervention</td><td>interventionRelatedNOCVersion</td><td colspan="3">Mandatory when interventionRelatedNOC is provided.</td></tr>
+            <tr><td>Intervention</td><td>interventionCost</td><td colspan="3">Mandatory when tariff AND (outcome or resultCode is provided) AND costCategory is provided.</td></tr>
+            <tr><td>Intervention</td><td>interventionCostCategory</td><td colspan="3">Mandatory when tariff AND (resultDate or endDate is provided) AND cost is provided. Must be unique per support block.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpDate</td><td colspan="3">Mandatory when tariff AND resultCode is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpResultCode</td><td colspan="3">Mandatory when tariff AND followUpDate is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpNOC</td><td colspan="3">Mandatory when tariff AND resultCode = 2, 3, 7 AND followUpDate is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpNAICS</td><td colspan="3">Mandatory when tariff AND resultCode = 2, 3, 7 AND followUpDate is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpEmploymentPayRate</td><td colspan="3">Mandatory when tariff AND resultCode = 2, 3, 7 AND followUpDate is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>actionPlanFollowUpEmploymentHours</td><td colspan="3">Mandatory when tariff AND resultCode = 2, 3, 7 AND followUpDate is provided.</td></tr>
+            <tr><td>Follow-Up</td><td>(minimum count)</td><td colspan="3">Tariff plans require minimum <strong>2 follow-ups</strong> at 6 and 12 months.</td></tr>
+        </tbody></table>
+
+        <!-- APPENDIX D: FILE NAMING -->
+        <h2 id="appendix-filenaming">Appendix D – File Naming Conventions</h2>
+        <p>XML file naming conventions for Saskatchewan submissions.</p>
+        <table>
+            <tbody><tr><th>Type</th><th>Pattern</th><th colspan="3">Example</th></tr>
+            <tr><td>LMDA Data</td><td><code>sklmda_xxx_yyyymmddHHmmss.xml</code></td><td colspan="3"><code>sklmda_001_20260315143000.xml</code></td></tr>
+            <tr><td>WDA Data</td><td><code>skwda_xxx_yyyymmddHHmmss.xml</code></td><td colspan="3"><code>skwda_001_20260315143000.xml</code></td></tr>
+            <tr><td>LMDA Log</td><td><code>sklmda_xxx_yyyymmddHHmmss_log.xml</code></td><td colspan="3"><code>sklmda_001_20260315143000_log.xml</code></td></tr>
+            <tr><td>WDA Log</td><td><code>skwda_xxx_yyyymmddHHmmss_log.xml</code></td><td colspan="3"><code>skwda_001_20260315143000_log.xml</code></td></tr>
+        </tbody></table>
+        <div class="note">
+            <strong>Notes:</strong>
+            <ul style="margin:5px 0 0 0; padding-left:20px;">
+                <li><code>xxx</code> = sequential file number (e.g., 001, 002).</li>
+                <li><code>yyyymmddHHmmss</code> = timestamp of file generation.</li>
+                <li>Each data file contains a single <code>&lt;ALMP:contentALMP&gt;</code> root element.</li>
+                <li>Log files are returned by ESDC with validation results.</li>
+            </ul>
+        </div>
+        <div class="note-warn">
+            <strong>⚠ Schema Note:</strong> XML examples in the source 
+document appendixes (B, C, G) still reference SchemaVersion 1.4. Actual 
+submissions must use SchemaVersion <strong>1.5</strong>.
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    LMDA / WDA Data Exchange Interface Reference — Schema Version 1.5 — 
+Generated 2026-05-13 — Source: TARIFF-SPECS-DG-LMDA-WDA 
+DataExchangeGuide.docx (modified 2026-04-15)
+</footer>
+
+
+
+</body></html>

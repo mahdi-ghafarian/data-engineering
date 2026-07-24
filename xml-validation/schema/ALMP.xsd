@@ -1,0 +1,2258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			xmlns:ALMPType="http://servicecanada.gc.ca/ALMP/contentTypes"
+			xmlns:ALMP="http://servicecanada.gc.ca/ALMP/contentExchange"
+			targetNamespace="http://servicecanada.gc.ca/ALMP/contentExchange">
+    <xsd:import schemaLocation="ALMPTypes.xsd"	namespace="http://servicecanada.gc.ca/ALMP/contentTypes" />
+    <xsd:element name="contentALMP" type="ALMP:contentExchangeType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                Use this to complete a data exchange.
+                r1.1 2014-02-14  Added revision version in the schema.
+                r1.2 2014-08-26  Amended French acronym FCP to PMTA to reflect ALMP and not SPF. Corrected word ''identification''.
+                Amended term ''état matrimonial'' to ''situation de famille''.
+                r1.3 2018-01-17  Modified the schemaVersion restriction to be ''1.1''.
+                Added new elements for clientType: emailAddress, indigenousIdentity, immigrant, immigrationYear, visibleMinority.
+                Added new elements for actionPlanType: educationLevelComment, provincialOfficeCode, actionPlanPreviousEmployment, actionPlanPrecariousEmployment, actionPlanEndDate.
+                Added new elements for interventionType: interventionID, interventionLanguageOfService, interventionEssentialSkills, interventionCredential.
+                Modified these elements to be optional: aboriginalGroup, socialAssistanceRecipient, EIClaimant.
+                Changed documentation for maritalStatus, educationLevel, actionPlanResultCode to reflect the addition of the new codes.
+                Changed documentation for numberOfDependantChildren.
+                r1.4 2018-02-20  Modified educationLevelComment to 150 characters (max).
+                r1.5 2018-03-02  Added Unknown option to the ''immigrant'' element.
+                Added the options for each element in their desctriptions.
+                r1.6 2018-05-10  Changed educationLevelCode 16 ''Prefer not to report'' to 99.
+                Added new elements for interventionType: interventionTitle, NOCVersion.
+                Added union to ''disability'' element of boolean and positiveInteger.
+                r1.7 2018-05-31  Added Unknown and updated the descriptions of the following elements: immigrant, immigrantYear, numberOfDependantChildren.
+                r1.8 2018-11-07  Modified immigrationYear element to include 0000 and 0001.
+                Modified documentation for elements to erase mention of "unknown" value.
+                Added information on which element is ILMP and which is LMTA exclusive.
+                Added information on which element is mandatory, for which program (LMTA vs. ILMP), and if they are validated on the server side.
+                Simplified the email pattern validation.
+                r1.9 2018-12-04  Changed string types to token types to remove leading and trailing white spaces, as well as duplicate white spaces.
+                Modified "length.1-30" and changed its name to "basicLengthString" for lastName and firstName.
+                Changed the actionPlanResultCode element type to "actionPlanResultCodeValue".
+                Modified the SchemaVersion validation so that it only allows the 1 version.
+                Added 0000: Unknown for interventionRelatedNOC and NOCVersion in the documention.
+                Added actionPlanID element to the actionPlanType section.
+                Added actionPlanPreviousEmploymentNOC, actionPlanPreviousEmploymentNOCVersion, actionPlanPreviousEmploymentScheduleType,
+                actionPlanResultRelatedNOC, actionPlanResultRelatedNOCVersion, actionPlanResultEducationLevel, actionPlanFutureEducationLevel element to the actionPlanType section.
+                Added option '9. Ready for work' to the element actionPlanResultCode.
+                r2.0 2018-12-18  Added the values 'unknown' to the elements: maritalStatus, numberOfDependantChildren, immigrant, immigrationYear, visibleMinority,
+                educationLevel, actionPlanPreviousEmployment, interventionLanguageOfService, interventionEssentialSkills.
+                Changed 'aboriginal' to 'indigenous' in the documentation.
+                Added the type NOCVersionValue for the elements: actionPlanPreviousEmploymentNOCVersion, actionPlanResultRelatedNOCVersion, NOCVersion.
+                Added the type shortLengthString for the elements: actionPlanID, interventionID.
+                Added the type longLengthString for the elements: educationLevelComment, interventionTitle.
+                r2.1 2019-01-17  Simplified all patterns in schema.
+                Changed SchemaVersion to also accept 1.2. Final version for LMTA and ILMP.
+                r2.2 2019-01-25  Made interventionTitle optional.
+                Added 1.0 option to schemaVersion.
+                r2.3 2019-05-10  Added clientID element to clientType section.
+                Modified the SchemaVersion to accept 1.3. Removed option 1.2.
+                Changed NOCVersion to interventionRelatedNOCVersion.
+                Changed the client section to optional for the sysAction function.
+                r2.4 2021-07-20  Modified bypass values from "Unknown" to "Not Available".
+                Added "Not Available" bypass value to the following elements: indigenousIdentity, interventionCredential, province.
+                Added bypass value to disability element.
+                r2.5 2022-05-24  Modified the schemaVersion: added 1.4, removed 1.0 and 1.1
+                Modified the following elements so that they have a new element type "NOCValueCode": actionPlanPreviousEmploymentNOC, actionPlanResultRelatedNOC, interventionRelatedNOC.
+                r2.6 2026-04-14
+                •	Modified the schema version to 1.5.
+                •	Modify section 1.5.6 Email to be mandatory for tariff.
+                •	Added section 3.3 Action Plan funding source
+                •	Modified the description for section 3.7 Action Plan Previous Employment.  Added Work-sharing as a new status.
+                •	Added section 3.8 Action Plan Previous Multiple Employment
+                •	Added section 3.9 Action Plan Employer Name
+                •	Added section 3.10 Action Plan Previous Employment NOC and section 3.11 Action Plan Previous Employment NOC Version
+                •	Added section 3.12 Action Plan Previous Employment NAICS and section 3.13 Action Plan Previous Employment NAICS Version
+                •	Added section 3.14 Action Plan Previous Employment Date
+                •	Added section 3.15 Action Plan Previous Employment Pay Rate
+                •	Added section 3.16 Action Plan Previous Employment Hours
+                •	Added section 3.17 Action Plan Target NAICS and section 3.18 Action Plan Target NAICS version
+                •	Modified section 3.22 Action Plan result.  Added Work-sharing as a new status.
+                •	Added  section 4 Action Plan Follow-Up- Contact
+                •	Added section 5.7 Intervention Cost
+                •	Added section 5.8 Intervention Cost Category
+                •	Added section 5.9 Intervention Cost Category Comment
+                •	Modified section 5.10 Intervention related NOC to be mandatory for tariffs and for some intervention.
+                •	Added section 10 Appendix F, Mandatory Tariff field description
+                •	Added section 11 Appendix G, Complete tariff XML example
+                •	Removed mandatory condition in section 1.5.6 for email address
+                •	Fixed section 4.5 actionPlanFollowUpEmployerName format
+                •	Removed mandatory condition in section 3.9 for actionPlanPreviousMultipleEmployment
+                •	Removed mandatory condition in section 4.6 for actionPlanFollowUpMultipleEmployment
+                •	Removed mandatory condition in section 5.7.1 for interventionCost when interventionCostType is 9. Not applicable
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                Utilisez ceci pour completer un échange de données.
+                r1.1 2014-02-14  Ajouté la version de révision du schéma.
+                r1.2 2014-08-26  Modifié l'acronyme français FCP à PMTA pour refléter ALMP et non SPF. Corrigé mot ''identification''.
+                Modifié le terme ''état matrimonial'' à ''situation de famille''.
+                r1.3 2018-01-17  Modifié la restriction de l'élément schemaVersion pour ''1.1''.
+                Ajout de nouveaux éléments pour clientType: emailAdresse, autochtoneIdentité, immigrant, immigrationAnnée, visibleMinorité.
+                Ajout de nouveaux éléments pour actionPlanType: educationLevelComment, provincialOfficeCode, actionPlanPreviousEmployment, actionPlanPrecariousEmployment, actionPlanEndDate.
+                Ajout de nouveaux éléments pour interventionType: interventionID, interventionLanguageOfService, interventionEssentialSkills, interventionCredential.
+                Modifié ces éléments pour être optionnels: aboriginalGroup, socialAssistanceRecipient, EIClaimant.
+                Modification de la documentation pour maritalStatus, educationLevel, actionPlanResultCode pour refléter l'ajout des nouveaux codes.
+                Modification de la documentation pour numberOfDependantChildren.
+                r1.4 2018-02-20  Modifié educationLevelComment pour avoir un maximum de 150 charactères.
+                r1.5 2018-03-02  Ajouté l'option Inconnu à l'élément ''immigrant''.
+                Ajouté les options dans les descriptions de chaque élément.
+                r1.6 2018-05-10  Changé educationLevelCode 16 ''Préfère ne pas déclarer'' à 99.
+                Ajout de nouveaux éléments pour interventionType: interventionTitle, NOCVersion.
+                Ajouté union à l'élément ''disability'' entre booléan et positiveInteger.
+                r1.7 2018-05-31  Ajouté l'option Inconnu et modifié les descriptions des éléments suivants: immigrant, immigrantYear, numberOfDependantChildren.
+                r1.8 2018-11-07  Modifié l'élément immigrationYear pour inclure 0000 et 0001.
+                Modifié documentation des éléments pour enlever la valeur "inconnu".
+                Ajouté de l'information sur quels éléments sont exclusifs à PMTA et lesquels sont exclusifs à LMTA.
+                Ajouté de l'information sur les éléments obligatoires, pour quel programme (ETMT vs. PMTA), et si la validation est fait tu côté serveur.
+                Simplifié la validation de l'adresse courriel.
+                r1.9 2018-12-04  Modifié le type string au type token pour ajouter le TRIM des espaces.
+                Modifié "length.1-30" et changé son nom pour "basicLengthString" pour lastName et firstName.
+                Changé actionPlanResultCode au type "actionPlanResultCodeValue".
+                Modifié la validation pour SchemaVersion pour que seulement 1 version est accepté.
+                Ajouté 0000: Inconnu pour interventionRelatedNOC et NOCVersion dans la documentation.
+                Ajouté l'élément actionPlanID à la section actionPlanType.
+                Ajouté l'élément actionPlanPreviousEmploymentNOC, actionPlanPreviousEmploymentNOCVersion, actionPlanPreviousEmploymentScheduleType,
+                actionPlanResultRelatedNOC, actionPlanResultRelatedNOCVersion, actionPlanResultEducationLevel, actionPlanFutureEducationLevel à la section actionPlanType.
+                Ajouté l'option '9. Prêt pour travailler' à l'élément actionPlanResultCode.
+                r2.0 2018-12-18  Ajouté les valeurs 'inconnu' aux éléments:  maritalStatus, numberOfDependantChildren, immigrant, immigrationYear, visibleMinority,
+                educationLevel, actionPlanPreviousEmployment, interventionLanguageOfService, interventionEssentialSkills.
+                Changé 'aboriginal' pour 'indigenous' dans la documentation.
+                Ajouté le type NOCVersionValue pour les éléments: actionPlanPreviousEmploymentNOCVersion, actionPlanResultRelatedNOCVersion, NOCVersion.
+                Ajouté le type shortLengthString pour les éléments: actionPlanID, interventionID.
+                Ajouté le type longLengthString pour les éléments: educationLevelComment, interventionTitle.
+                r2.1 2019-01-17  Simplifié les restrictions sur les éléments du schéma.
+                Modifié le SchemaVersion pour accepter 1.2. Version finale pour ETMT et PMTA.
+                r2.2 2019-01-25  Changé interventionTitle à optionnel.
+                Modifié le SchemaVersion pour accepter 1.0.
+                r2.3 2019-05-10  Ajouté l'élément clientID à la section clientType.
+                Modifié le SchemaVersion pour accepter 1.3. Enlever option 1.2.
+                Changé le NOCVersion pour interventionRelatedNOCVersion.
+                Changé la section client à facultatif pour la fonction du sysAction.
+                r2.4 2021-07-20  Modifié les valeurs "Inconnu" pour "Non disponible".
+                Ajouté les valeurs "Non disponible" aux éléments suivants: indigenousIdentity, interventionCredential, province.
+                Ajouté option "Non disponible" à l'élément "disability"
+                r2.5 2022-05-24  Modifié l'élément schemaVersion: ajouté l'option 1.4, enlevé les options 1.0 and 1.1
+                Ajouté le nouveau type "NOCValueCode" aux éléments suivant: actionPlanPreviousEmploymentNOC, actionPlanResultRelatedNOC, interventionRelatedNOC.
+                r2.6 2026-04-14 
+                •	Modifié la version du schéma à 1.5.
+                •	Modifié la section 1.5.6 courriel pour la rendre obligatoire pour le tarif.
+                •	Ajouté la section 3.3 Source de financement du plan d'action.
+                •	Ajouté travail partagé comme nouveau statut.
+                •	Ajouté la section 3.8 Nom de l'employeur du plan d'action.
+                •	Ajouté la section 3.9 Multiples emplois précédents du plan d'action.
+                •	Ajouté la section 3.10 CNP de l'emploi précédent du plan d'action et la section 3.11 Version CNP de l'emploi précédent du plan d'action.
+                •	Ajouté la section 3.12 SCIAN de l'emploi précédent du plan d'action et la section 3.13 Version SCIAN de l'emploi précédent du plan d'action.
+                •	Ajouté la section 3.14 Date de l'emploi précédent du plan d'action.
+                •	Ajouté la section 3.15 Taux de rémunération de l'emploi précédent du plan d'action.
+                •	Ajouté la section 3.16 Heures de l'emploi précédent du plan d'action.
+                •	Ajouté la section 3.17 SCIAN cible du plan d'action et la section 3.17 Version SCIAN cible du plan d'action.
+                •	Modifié la section 3.22 Résultat du plan d'action. Ajouté le partage du travail comme un nouveau statut.
+                •	Ajouté la section 4 Suivi du plan d'action - Contact.
+                •	Ajouté la section 5.7 Coût de l'intervention.
+                •	Ajouté la section 5.8 catégorie du coût de l'intervention.
+                •	Ajouté la section 5.9 Commentaire sur la catégorie du coût de l'intervention.
+                •	Modifié la section 5.10 CNP lié à l'intervention pour le rendre obligatoire pour les tarifs et pour certaines interventions.
+                •	Ajouté la section 10 Annexe F, description du champ de tarif obligatoire.
+                •	Ajouté la section 11 Annexe G, exemple XML complet de tarif
+                •	Modifié la section 1.5.6 pour enlever la condition obligatoire du courriel
+                •	Modifié la section 3.9 pour enlever la condition obligatoire de actionPlanPreviousMultipleEmployment
+                •	Corrigé le format de la section 4.5 pour actionPlanFollowUpEmployerName
+                •	Modifié la section 4.6 pour enlever la condition obligatoire de actionPlanFollowUpMultipleEmployment
+                •	Modifié la section 5.7.1 pour enlever la condition obligatoire de interventionCost lorsque interventionCostType est 0. Ne s’applique pas
+
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+    <xsd:complexType name="contentExchangeType">
+        <xsd:sequence>
+            <xsd:element name="SchemaVersion">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        The version of the ALMP XML Schema used to create
+                        and validate the XML data file.
+                        This element is mandatory.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Version du schema XML PMTA utilisée pour créer
+                        et valider le fichier de données XML.
+                        Cet élément est obligatoire.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:token">
+                        <xsd:pattern value="(1.3)|(1.4)|(1.5)?" />
+                        <xsd:minLength value="1" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="agreementHolderName">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        The name by which an agreement holder is commonly known
+                        and/or conducts its activities.
+                        This element is mandatory.
+                        For LMTA, must be one of the following values (will be validated on the server side):
+                        -	Newfoundland and Labrador
+                        -	Nova Scotia
+                        -	New Brunswick
+                        -	Prince Edward Island
+                        -	Quebec
+                        -	Ontario
+                        -	Manitoba
+                        -	Saskatchewan
+                        -	Alberta
+                        -	Northwest Territories
+                        -	British Columbia
+                        -	Yukon
+                        -	Nunavut
+                        Max: 80 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Nom sous lequel le bénéficiaire est connu
+                        ou entreprend ses activités.
+                        Cet élément est obligatoire.
+                        Pour ETMT, doit être une des valeurs suivantes (sera validé côté serveur):
+                        -	Terre-Neuve et Labrador
+                        -	Nouvelle-Écosse
+                        -	Nouveau-Brunswick
+                        -	Île-du-Prince-Édouard
+                        -	Québec
+                        -	Ontario
+                        -	Manitoba
+                        -	Saskatchewan
+                        -	Alberta
+                        -	Territoires du Nord-Ouest
+                        -	Colombie-Britannique
+                        -	Yukon
+                        -	Nunavut
+                        Max: 80 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:token">
+                        <xsd:minLength value="1" />
+                        <xsd:maxLength value="80" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="sysComment" type="ALMPType:sysComment"	minOccurs="0" />
+            <xsd:element name="sysAction" type="ALMPType:systemType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="client" type="ALMP:clientType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="clientType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                Contains all the data about a client,
+                their action plans, and associated interventions.
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                Contient toutes les données sur un client,
+                leur plans d'action, et	interventions associés.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="clientID" type="ALMPType:shortLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        The unique client identier in the provincial or territorial system.
+                        Max: 30 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        L'identificateur unique du client dans le système provincial ou territorial.
+                        Max: 30 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="socialInsuranceNumber" type="ALMPType:SIN">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Client's Social Insurance Number
+                        Must be a valid Social Insurance Number.
+                        This element is mandatory.
+                        Max: 9 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Numéro d'assurance sociale du client
+                        Doit être un numéro d'assurance social valide.
+                        Cet élément est obligatoire.
+                        Max: 9 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="lastName" type="ALMPType:basicLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Client's last name.
+                        Use last name based on valid identification.
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: 100 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Nom de famille du client.
+                        Utilisé le nom de famille suite à la vérification d'une	pièce d'identité.
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: 100 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="initial" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Client's initials.
+                        Initials of client's middle name.
+                        If a client does not have an initial(s),leave this field blank.
+                        Max: 5 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Initiales du client.
+                        Si le client n'a pas d'initiales, ne rien inscrire dans le champ.
+                        Max: 5 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:token">
+                        <xsd:minLength value="1" />
+                        <xsd:maxLength value="5" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="firstName" type="ALMPType:basicLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Client's first name.
+                        Use first name based on valid identification.
+                        Max: 100 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Prénom du client.
+                        Utilisé le prénom suite à la vérification d'une pièce d'indentité.
+                        Max: 100 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="dateOfBirth" type="xsd:date">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Client's date of birth.
+                        This element is mandatory.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Date de naissance du client.
+                        Cet élément est obligatoire.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="emailAddress" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Client's Email Address.
+                        This provide an alternative way to contact the client for survey and focus group purposes.
+                        Max: 254 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Adresse Couriel du client.
+                        Ceci permet d'avoir un autre moyen de communication avec le client
+                        aux fins de participation à des sondage et des groupes de discussion.
+                        Max: 254 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:minLength value="6"/>
+                        <xsd:maxLength value="254"/>
+                        <xsd:pattern value="[^@]+@[^@]+\.[^@]+"/>
+                        <xsd:whiteSpace value="collapse"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="gender" type="ALMPType:genderCodeValue">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Client's gender.
+                        Male, Female, Unspecified, or Prefer not to report.
+                        Unspecified should be used when a participant identifies as other who don’t believe that
+                        there are just two genders and who exist outside of the gender binary.
+                        Non-binary people class themselves as neither exclusively male nor female.
+                        The Prefer not to report option is for any individuals who are uncomfortable with reporting their gender.
+                        1.  Male
+                        2.  Female
+                        3.  Unspecified
+                        9.  Prefer not to report <!-- For exclusive use by LMTA. -->
+                        This element is mandatory.
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Genre du client.
+                        Masculin, Féminin, Non spécifié ou Préfère ne pas déclarer.
+                        Non spécifié devrait être sélectionné lorsque le participant s’identifie comme étant autre
+                        qui ne se sent pas en accord avec les deux genres et qu’il existe hors de ces deux genres binaires.
+                        Les personnes non-binaires s’identifient comme étant ni homme ou ni femme.
+                        Préfère ne pas déclarer est pour les individuels qui ne sont pas confortable avec la divulgation de leur gendre.
+                        1.  Homme
+                        2.  Femme
+                        3.  Non spécifié
+                        9.  Préfère ne pas déclarer <!-- À l'usage exclusif d'ETMT. -->
+                        Cet élément est obligatoire.
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="aboriginalGroup" type="ALMPType:aboriginalGroupCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Based on self-identification or
+                        as established in the agreement.
+                        1.  Registered Indian
+                        2.  Non-status Indian
+                        3.  Métis
+                        4.  Inuit
+                        Mandatory for ILMP (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Basée sur une identification
+                        volontaire ou comme indiqué dans l'entente.
+                        1.  Indien inscrit
+                        2.  Indien non inscrit
+                        3.  Métis
+                        4.  Inuit
+                        Obligatoire pour PMTA (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="maritalStatus" type="ALMPType:maritalStatusCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Marital Status.
+                        1.  Married or equivalent
+                        2.  Single
+                        4.  Divorced <!-- For exclusive use by ILMP. -->
+                        5.  Widowed  <!-- For exclusive use by ILMP. -->
+                        6.  Separated <!-- For exclusive use by ILMP. -->
+                        8.  Not Available <!-- For exclusive use by LMTA. -->
+                        9.  Prefer not to report <!-- For exclusive use by LMTA. -->
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Situation de famille.
+                        1.  Marié(e) ou équivalent
+                        2.  Célibataire
+                        4.  Divorcé  <!-- À l'usage exclusif de PMTA. -->
+                        5.  Veuf/Veuve <!-- À l'usage exclusif de PMTA. -->
+                        6.  Séparé <!-- À l'usage exclusif de PMTA. -->
+                        8.  Non disponible <!-- À l'usage exclusif d'ETMT. -->
+                        9.  Préfère ne pas déclarer <!-- À l'usage exclusif d'ETMT. -->
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="numberOfDependantChildren" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Number of dependants at home.
+                        Can be between 0 and 97.
+                        98. Not Available <!-- For exclusive use by LMTA. -->
+                        99. Prefer not to report <!-- For exclusive use by LMTA. -->
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: 2 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Nombre de personnes à charge à la maison.
+                        Peut être entre 0 et 97.
+                        98. Non disponible <!-- À l'usage exclusif d'ETMT. -->
+                        99. Préfère ne pas déclarer <!-- À l'usage exclusif d'ETMT. -->
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: 2 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:nonNegativeInteger">
+                        <xsd:pattern value="\d{1,2}" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="languageSpoken" type="ALMPType:languagesSpokenCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Language(s) spoken by the client.
+                        1.  Indigenous language(s) only   <!-- For exclusive use by ILMP. -->
+                        2.  English only
+                        3.  French only
+                        4.  Indigenous language(s) and English   <!-- For exclusive use by ILMP. -->
+                        5.  Indigenous language(s) and French   <!-- For exclusive use by ILMP. -->
+                        6.  English and French
+                        7.  Indigenous language(s), English and French  <!-- For exclusive use by ILMP. -->
+                        8.  None of the above   <!-- For exclusive use by ILMP. -->
+                        9.  Not a federal official language <!-- For exclusive use by LMTA. -->
+                        10. Not Available <!-- For exclusive use by LMTA. -->
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Langue(s) parlée(s) par le client.
+                        1.  Langue autochtone(s) seulement   <!-- À l'usage exclusif de PMTA. -->
+                        2.  Anglais seulement
+                        3.  Français seulement
+                        4.  Langue autochtone(s) et anglais   <!-- À l'usage exclusif de PMTA. -->
+                        5.  Langue autochtone(s) et français   <!-- À l'usage exclusif de PMTA. -->
+                        6.  Anglais et français
+                        7.  Langue autochtone(s), anglais et français  <!-- À l'usage exclusif de PMTA. -->
+                        8.  Aucune de ces réponses   <!-- À l'usage exclusif de PMTA. -->
+                        9.  Pas une langue officielle fédérale <!-- À l'usage exclusif d'ETMT. -->
+                        10. Non disponible <!-- À l'usage exclusif d'ETMT. -->
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="disability" type="ALMPType:disabilityCodeValue">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Based on self-identification.
+                        0.  No   <!-- For exclusive use by ILMP. -->
+                        1.  Yes
+                        2.  No   <!-- For exclusive use by LMTA. -->
+                        8.  Not Available   <!-- For exclusive use by LMTA. -->
+                        9.  Prefer not to report <!-- For exclusive use by LMTA. -->
+                        This element is mandatory.
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Basée sur une identification volontaire.
+                        0.  Non  <!-- À l'usage exclusif de PMTA. -->
+                        1.  Oui
+                        2.  Non  <!-- À l'usage exclusif d'ETMT. -->
+                        8.  Non disponible  <!-- À l'usage exclusif d'ETMT. -->
+                        9.  Préfère ne pas déclarer <!-- À l'usage exclusif d'ETMT. -->
+                        Cet élément est obligatoire.
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="indigenousIdentity" type="ALMPType:indigenousIdentityCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Indigenous Identity.
+                        1.  Yes
+                        2.  No
+                        8.  Not Available <!-- For exclusive use by LMTA. -->
+                        9.  Prefer not to report
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Identité autochtone.
+                        1.  Oui
+                        2.  Non
+                        8.  Non disponible <!-- À l'usage exclusif d'ETMT. -->
+                        9.  Préfère ne pas déclarer
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="immigrant" type="ALMPType:immigrationStatusCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Immigrant Status.
+                        1.  Yes
+                        2.  No
+                        8.  Not Available <!-- For exclusive use by LMTA. -->
+                        9.  Prefer not to report
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Statut d'immigrant.
+                        1.  Oui
+                        2.  Non
+                        8.  Non disponible <!-- À l'usage exclusif d'ETMT. -->
+                        9.  Préfère ne pas déclarer
+                        Obligatoire pour PMTA (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="immigrationYear" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        0000. Prefer not to report
+                        0001. Not Available
+                        Immigration Year is mandatory if Immigrant is Yes (will be validated on the server side).
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        0000. Préfère ne pas déclarer
+                        0001. Non disponible
+                        Année d'immigration est obligatoire si Immigrant est Oui (sera validé côté serveur).
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:nonNegativeInteger">
+                        <xsd:pattern value="\d{4}"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="visibleMinority" type="ALMPType:visibleMinorityCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Visible Minority.
+                        Visible minority contains the persons, other than Indigenous peoples,
+                        who are non-Caucasian in race or non-white in color.
+                        1.  Yes
+                        2.  No
+                        8.  Not Available
+                        9.  Prefer not to report
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Minorité visible.
+                        Minorité visible contient les personnes, autre que les Autochtones,
+                        qui ne sont pas de race blanche ou qui n'ont pas la peau blance
+                        1.  Oui
+                        2.  Non
+                        8.  Non disponible
+                        9.  Préfère ne pas déclarer
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="address" type="ALMPType:addressType" minOccurs="0"/>
+            <xsd:element name="actionPlan" type="ALMP:actionPlanType" maxOccurs="unbounded" />
+            <xsd:element name="sysComment" type="ALMPType:sysComment" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="actionPlanType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                Contains all the data of the client's action plan and associated interventions.
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                Contient toutes les	données sur les plans d'actions d'un client et interventions associés.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="actionPlanID" type="ALMPType:shortLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        The unique action plan identier in the provincial or territorial system.
+                        Max: 30 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        L'identificateur unique du plan d'action dans le système provincial ou territorial.
+                        Max: 30 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="agreementNumber" type="ALMPType:agreementNumber">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Agreement Number.
+                        This element is mandatory.
+                        Max: 9 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Numéro d'entente.
+                        Cet élément est obligatoire.
+                        Max: 9 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFundingSource" type="ALMPType:actionPlanFundingSourceCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Funding Source.
+                        Represents the funding source related to the action plan.  This is used to identify training activities provided to workers supported by the Joint Tariff Workforce Response (JTWR) initiative.
+                        1.  Steel Tariffs
+                        2.  Softwood Lumber Tariffs
+                        3.  Comprehensive Tariffs
+                        8.  Not Applicable
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Source de financement du plan d’action.
+                        Représente la source de financement lié au plan d'action. La source de financement est utilisée pour identifier les activités de formation fournies aux travailleurs soutenus par l'initiative main-d'œuvre de réponse tarifaire (IMRF).
+                        1.  Tarifs acier
+                        2.  Tarifs bois d’oeuvre résineux
+                        3.  Tarifs soutien complet
+                        8.  Ne s'applique pas
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="educationLevel" type="ALMPType:educationCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Highest level of education attained at the time of creation of action plan.
+                        1.  No formal education: did not attend school <!-- For exclusive use by ILMP. -->
+                        2.  Up to Grade 7-8:	includes primary level grades 1-6, 7 and 8 (Grade 8 = Sec I) <!-- For exclusive use by ILMP. -->
+                        3.  Grades 9-10 (Sec II and III)  <!-- For exclusive use by ILMP. -->
+                        4.  Grade 11-12 ([Sec IV and V] credits, but not enough to graduate). <!-- For exclusive use by ILMP. -->
+                        5.  High school (Sec V) diploma or equivalent (includes those
+                        recognized by the Ministère	d’éducation du Québec (MEQ) and
+                        First Nation secondary school diploma (as these are often
+                        recognized by CEGEPS for enrolment, but not by the MEQ).
+                        6.  Some post-secondary training: client attended
+                        post-secondary training but did not complete a program.
+                        7.  Apprenticeship and journeyman cards (trades certificate) or
+                        vocational training diploma (DEP-diplômes d’études professionnelles)
+                        work related safety cards and other trade certifications.   <!-- For exclusive use by ILMP. -->
+                        8.  College, CEGEP (includes: 2 year diplôme d’étude
+                        collégiale (DEC) that are pre-university diploma programs
+                        that may not be used	to secure employment);
+                        3 year diplôme d’étude collégiale (DEC) that are technical training
+                        certificates that can secure employment in secretarial,
+                        web design, accounting, etc); AEC attestation d’études collégiale
+                        (similar to a DEC, but more technical with a	duration of 6 months to
+                        one year or a specific number of training hours for each program) or other
+                        non-university certificate or diploma.
+                        9.  University certificate or diploma below bachelor level (includes
+                        credited and non-credited geared to support/compliment/validate
+                        current employment)
+                        10. University - Bachelor degree  <!-- For exclusive use by ILMP. -->
+                        11. University - Master's degree  <!-- For exclusive use by ILMP. -->
+                        12. University - Doctorate  <!-- For exclusive use by ILMP. -->
+                        13. Less than high school <!-- For exclusive use by LMTA. -->
+                        14. University degree <!-- For exclusive use by LMTA. -->
+                        15. Other <!-- For exclusive use by LMTA. -->
+                        98. Not Available <!-- For exclusive use by LMTA. -->
+                        99. Prefer not to report <!-- For exclusive use by LMTA. -->
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Le niveau d’éducation le plus haut atteint lors de la création du plan d’action.
+                        1.  Aucune éducation formelle : n’a jamais été à l’école   <!-- À l'usage exclusif de PMTA. -->
+                        2.  Jusqu’à la 7e ou 8e année inclus le niveau primaire    <!-- À l'usage exclusif de PMTA. -->
+                        (1ère à 6e année) et la 7e ou 8e année out le 1er niveau secondaire.
+                        3.  9e ou 10e année (Sec. II-III)  <!-- À l'usage exclusif de PMTA. -->
+                        4.  11e ou 12e année (Sec. IV-V, mais pas assez de crédits pour graduer)  <!-- À l'usage exclusif de PMTA. -->
+                        5.  Diplôme d’études secondaires (Sec. V ou l’équivalent reconnu par
+                        le Ministère d’éducation du Québec (MEQ)) et le diplôme d’études
+                        secondaires de Premières Nations (reconnu par les CÉGEPS pour
+                        l’inscription, mais non par le MEQ)
+                        6.  Études postsecondaires partielles : a suivit des cours
+                        postsecondaires mais n’a pas complété un programme.
+                        7.  Apprenti ou compagnon d’apprentissage pour l’obtention des cartes   <!-- À l'usage exclusif de PMTA. -->
+                        de travail (certificat de métier) ou diplôme de formation
+                        professionnelle (DEP- diplômes d’études professionnelles), cartes
+                        de sécurité et autres certificats de métier.
+                        8.  Collège, CÉGEP (inclus les programme	d’études collégiales (DEC)
+                        de 2 ans qui est un diplôme pré-universitaire; les programmes
+                        techniques de 3 ans (DEC)(diplôme de secrétariat, en
+                        administration, en design de site Web, technicien comptable,
+                        etc.); les attestation d’études collégiale (AEC) (semblable à un
+                        DEC, mais généralement, la formation est plus technique et a une
+                        durée de 6 à 12 mois ou un nombre spécifique d’heures pour
+                        chaque programme) ou tout autre certificat ou diplôme non-universitaire
+                        9.  Certificat universitaire ou diplôme universitaire plus bas que le
+                        niveau le baccalauréat (inclus les cours crédités et non	crédités qui supporte,
+                        complémente ou valide l’emploi actuel)
+                        10. Université - Baccalauréat   <!-- À l'usage exclusif de PMTA. -->
+                        11. Université - Maîtrise   <!-- À l'usage exclusif de PMTA. -->
+                        12. Université - Doctorat  <!-- À l'usage exclusif de PMTA. -->
+                        13. Sans diplôme d’études secondaires <!-- À l'usage exclusif d'ETMT. -->
+                        14. Diplôme universitaire  <!-- À l'usage exclusif d'ETMT. -->
+                        15. Autre  <!-- À l'usage exclusif d'ETMT. -->
+                        98. Non disponible   <!-- À l'usage exclusif d'ETMT. -->
+                        99. Préfère ne pas déclarer   <!-- À l'usage exclusif d'ETMT. -->
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="educationLevelComment" type="ALMPType:longLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Highest level of education in the case that the education level does not fit
+                        any of the identified Education Level categories.
+                        Mandatory if Other is selected for the educationLevel (will be validated on the server side).
+                        Max: 150 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Niveau d'éducation le plus élevé dans le cas où le niveau d'éducation ne correspond pas
+                        à aucune des catégories identifiées dans le niveau d'éducation.
+                        Obligatoire si Autre est choisi pour educationLevel (sera validé côté serveur).
+                        Max: 150 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="educationProvince" type="ALMPType:educationProvinceCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-ca">
+                        For exclusive use by ILMP.
+                        Province (or area outside Canada) in which highest level of
+                        education was attained.
+                        1.  Newfoundland and Labrador
+                        2.  Nova Scotia
+                        3.  New Brunswick
+                        4.  Prince Edward Island
+                        5.  Quebec
+                        6.  Ontario
+                        7.  Manitoba
+                        8.  Saskatchewan
+                        9.  Alberta
+                        10. Northwest Territories
+                        11. British Columbia
+                        12. Yukon
+                        14. Outside Canada
+                        16. Nunavut
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-ca">
+                        À l'usage exclusif de PMTA.
+                        Province (ou un	endroit en dehors du Canada) où le niveau d’éducation
+                        le plus haut a été atteint.
+                        1.  Terre-Neuve et Labrador
+                        2.  Nouvelle-Écosse
+                        3.  Nouveau-Brunswick
+                        4.  Ile du Prince-Édouard
+                        5.  Québec
+                        6.  Ontario
+                        7.  Manitoba
+                        8.  Saskatchewan
+                        9.  Alberta
+                        10. Territoires du Nord-Ouest
+                        11. Colombie-Britannique
+                        12. Yukon
+                        14. L'extérieur du Canada
+                        16. Nunavut
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="socialAssistanceRecipient" type="xsd:boolean" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Is the client a	Social Assistance Recepient at the time of the
+                        creation of the	action plan.
+                        0. No
+                        1. Yes
+                        Mandatory for ILMP (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Est-ce que le client est un bénéficaire d'aide social au moment
+                        de la création du plan d'action.
+                        0. Non
+                        1. Oui
+                        Obligatoire pour PMTA (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="EIClaimant" type="ALMPType:EIClaimantCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Type of Employment Insurance Claimant when starting the Action Plan.
+                        1.  Employment insurance claimant
+                        2.  Reach-back client/former claimant
+                        3.  Non employment insurance claimant
+                        Mandatory for ILMP (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Type de prestataire	d’assurance-emploi lors de la création du plan d’action.
+                        1.  Prestataire d'assurance-emploi
+                        2.  Ancien prestataire/client réadmissible
+                        3.  Non prestataire d'assurance-emploi
+                        Obligatoire pour PMTA (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="barrierToEmployment" type="ALMPType:barrierToEmploymentCodeValue"
+				minOccurs="0" maxOccurs="11">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Barrier to employment- choose all that apply.
+                        1.  None: Client does not have barriers to employment.
+                        2.  Lack of labour force attachment: a client who has
+                        been out of the job market for more than 3 years.
+                        3.  Lack of work experience: Client has little or no work experience
+                        4.  Lack of transportation: Client who does not have access
+                        to any type of transportation to get to their place of employment or to a counsellor.
+                        5.  Remoteness: Client lives in a remote area that has little or no access
+                        to job opportunities or no suitable jobs locally.
+                        6.  Language: Client lacks fluency in the language required for the local job market.
+                        7.  Education: Client who has insufficient education (i.e. less than high school).
+                        8.  Economic: Client does not have financial resources to purchase required
+                        equipment(boots, uniforms); costs for relocation, etc., needed to obtain employment.
+                        9.  Dependant care: Client does not have access to care for children or family member.
+                        10. Lack of marketable skills: As a	result of a shift in labour market demand,
+                        the client does nothave the required marketable skills (i.e. IT innovation).
+                        11. Client has a physical or mental health barrier
+                        12. Other barrier not listed above: Client who identifies a barrier not provided in the list.
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Obstacles à l'emploi- choisir toutes celles quie s'appliquent
+                        1.  Aucune: Le client n’a pas de barrières face à l’emploi.
+                        2.  Manque d’attachement au marché du travail: Un client qui n’a pas
+                        participé au marché du travail depuis plus de 3 ans.
+                        3.  Manque d’expérience de travail: Le client a peu ou pas d’expérience de travail.
+                        4.  Aucun moyen de transport: Le client n’a pas accès à aucun type de
+                        transport pour se rendre à son lieu de travail ou pour consulter un conseiller.
+                        5.  Éloignement: Le client vit dans un endroit éloigné où il y a peu ou
+                        très peu d’opportunité d’emploi ou d’emploi convenable.
+                        6.  Langue: Le client ne parle pas couramment la langue utilisée sur le marché
+                        du travail de la localité.
+                        7.  Éducation: Le client ne possède pas le niveau d’éducation requis
+                        (p.ex. plus bas que le niveau secondaire).
+                        8.  Économique: Le client n’a pas de ressources financière pour faire l’achat de
+                        l’équipement requis (bottes, uniformes); les coûts pour la relocalisation, etc.,
+                        pour obtenir un emploi.
+                        9.  Garde de personne à charge: Le client n’a pas accès aux services de garde pour
+                        enfants ou pour un membre de la famille.
+                        10. Manque de compétences en demande: Suite à un changement dans la demande du marché
+                        du travail, le client n’a plus les compétences requises
+                        (p.ex. innovation en technologie).
+                        11. Physique ou santé mentale: Le client a une barrière physique ou de santé mentale.
+                        12. Autres barrières non listées ci-dessus: Le client a identifié une barrière qui ne
+                        figure pas sur cette liste.
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="provincialOfficeCode" type="ALMPType:provincialOfficeTypeCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Specifies the number that identifies
+                        the provincial or territorial (P/T) office.
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: 15 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Indique le numéro qui identifie
+                        le bureau provincial ou territorial (P/T).
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: 15 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmployment" type="ALMPType:actionPlanPreviousEmploymentCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Action Plan Previous or Current Employment
+                        Represents the participant’s primary employment prior to participation in programming.
+                        1.   Unemployed
+                        2.   Employed
+                        3.   Self-employed <!-- For exclusive use by LMTA. -->
+                        6.   Not in labour force <!-- For exclusive use by LMTA. -->
+                        7.   Work-sharing <!-- For exclusive use by LMTA. -->
+                        9.   Student <!-- For exclusive use by ILMP. -->
+                        10.  Not Available <!-- For exclusive use by LMTA. -->
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Situation d’emploi à l’inscription du plan d’action
+                        La situation d’emploi principale du participant avant le début de leur participation.
+                        1.   Sans emploi
+                        2.   Employé
+                        3.   Travailleur indépendant <!-- À l'usage exclusif d'ETMT. -->
+                        6.   Pas dans la population active <!-- À l'usage exclusif d'ETMT. -->
+                        7.   Travail partagé <!-- À l'usage exclusif d'ETMT. -->
+                        9.   Étudiant <!-- À l'usage exclusif PMTA. -->
+                        10.  Non disponible  <!-- À l'usage exclusif d'ETMT. -->
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmployerName" type="ALMPType:basicLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Employer Previous or Current Employer Name
+                        Refers to the participant's primary employer prior to participation in programming.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Max: 100 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Nom de l’employeur à l’inscription du plan d’action
+                        Représente le nom de l’employeur principal du participant au début de leur participation.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Max: 100 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousMultipleEmployment" type="ALMPType:actionPlanPreviousMultipleEmploymentCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous or Current Multiple Employment
+                        Represents whether or not the participant held more than one employment position prior to participation in programming.
+                        1.  Yes
+                        2.  No
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Multiples emplois à l’inscription du plan d’action
+                        Représente si le participant a occupé plus d’un emploi avant le début de leur participation.
+                        1.  Oui
+                        2.  Non
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentNOC" type="ALMPType:NOCValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Action Plan Previous or Current Employment NOC.
+                        Refers to the National Occupational Classification Codes related to the client's previous or current employment.
+                        ILMP Only: Mandatory when 'employed' is selected for actionPlanPreviousEmployment (will be validated on the server side).
+                        LMTA Only: Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Must contain 5 digits if actionPlanPreviousEmploymentNOCVersion is 2021.
+                        Must contain 4 digits if actionPlanPreviousEmploymentNOCVersion is 2016 or older.
+                        Max: 5 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Détails de l’emploi du participant à la prise en charge – Code CNP.
+                        Code de la Classification nationale des professions (CNP) lié à l’emploi du participant.
+                        PMTA uniquement: Obligatoire lorsque 'employé' est choisi pour actionPlanPreviousEmployment (sera validé côté serveur).
+                        ETMT uniquement: Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Doit contenir 5 chiffres lorsque actionPlanPreviousEmploymentNOCVersion est 2021.
+                        Doit contenir 4 chiffres lorsque actionPlanPreviousEmploymentNOCVersion est antérieure ou égale à 2016.
+                        Max: 5 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentNOCVersion" type="ALMPType:NOCVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Action Plan Previous or Current Employment NOC Version.
+                        Represents the version of National Occupation Classification code of the Action Plan Previous or Current Employment NOC.
+                        Mandatory when actionPlanPreviousEmploymentNOC is provided (will be validated on the server side).
+                        Note that validation of the actionPlanPreviousEmploymentNOCVersion (e.g. 2016) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Détails de l’emploi du participant à la prise en charge – Version du Code CNP.
+                        Représente la version du code de la classification nationale des professions lié à l’emploi du participant au début du plan d’action.
+                        Obligatoire lorsque actionPlanPreviousEmploymentNOC est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanPreviousEmploymentNOCVersion (ex. 2016) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentScheduleType" type="ALMPType:scheduleTypeCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Previous employment's schedule type.
+                        1.  Full-time
+                        2.  Part-time
+                        Mandatory when 'employed' is selected for actionPlanPreviousEmployment (will be validated on the server side).
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif PMTA.
+                        Type d'horraire de l'emploi précédente.
+                        1.  Temps plein
+                        2.  Temps partiel
+                        Obligatoire lorsque 'employé' est choisi pour actionPlanPreviousEmployment (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentNAICS" type="ALMPType:NAICSValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous or Current Employment NAICS
+                        Refers to the North American Industry Classification System code of the participant’s Action Plan Previous or Current Employment.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Max: 6 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Détails de l’emploi du participant à la prise en charge – Code SCIAN
+                        Code du système de classification des industries de l’Amérique du Nord (SCIAN) lié à l’emploi du participant au début du plan d’action.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Max: 6 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentNAICSVersion" type="ALMPType:NAICSVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous or Current Employment NAICS Version
+                        Represents the version of North American Industry Classification System code provided in Action Plan Previous or Current Employment NAICS.
+                        Mandatory when actionPlanPreviousEmploymentNAICS is provided (will be validated on the server side).
+                        Note that validation of the actionPlanPreviousEmploymentNAICSVersion (e.g. 2022) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Détails de l’emploi du participant à la prise en charge – Version du code SCIAN
+                        Représente la version du code du système de classification des industries de l’Amérique du Nord (SCIAN) lié à l’emploi du participant.
+                        Obligatoire lorsque actionPlanPreviousEmploymentNAICS est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanPreviousEmploymentNAICSVersion (ex. 2022) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentDate" type="xsd:date" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous Employment Date
+                        Represents the previous employment last date of work prior to participation in programming.  This is the last date when the participant worked. The current Action Plan Previous Employment Date must have a value for unemployed participants in order to start another Action Plan.
+                        This element is mandatory when actionPlanPreviousEmployment is '1. Unemployed' and actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Détails de la date de l’emploi du participant à la prise en charge
+                        Représente la dernière date de travail de l'emploi précédent avant la participation au programme. C'est la dernière date à laquelle le participant a travaillé. La date de l'emploi à la prise en charge du plan d'action doit avoir une valeur pour un participant sans emploi afin de commencer un autre plan d'action.
+                        Obligatoire lorsque actionPlanPreviousEmployment est '1. Sans emploi' et actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentPayRate" type="ALMPType:payRateValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous or Current Employment Pay Rate
+                        Represents the participant’s annual pay rate of their primary employment prior to participation in programming.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Max: 6 characters.
+                        Must be between 1000 and 999 999.
+                        Must be a number.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Détails du taux de rémunération de l’emploi du participant à la prise en charge
+                        Représente le taux de rémunération annuel du participant à la prise en charge au programme.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Max: 6 caractères.
+                        Doit être entre 1000 et 999 999.
+                        Doit être un nombre.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPreviousEmploymentHours" type="ALMPType:employmentHoursType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Previous or Current Employment Hours per Week
+                        Represents the participant’s actual hours of work per week in their primary employment prior to participation in programming.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        Max: 4 characters.
+                        Must be between 1 and 168.
+                        Must be a number (when decimals only 0.5 increments are accepted).
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Détails des heures de travail par semaine de l’emploi du participant à la prise en charge
+                        Représente les heures réelles de travail par semaine de l’emploi principal du participant à la prise en charge au programme.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        Max: 4 caractères.
+                        Doit être entre 1 and 168.
+                        Doit être un nombre (lorsque des décimales sont utilisées, seuls les incréments de 0,5 sont acceptés).
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanTargetNAICS" type="ALMPType:NAICSValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Target NAICS
+                        Refers to the North American Industry Classification System code of the targeted employment industry of the Tariff funded participant’s action plan. Whenever there is a particular industry into which the client hopes to enter or in which they are being supported in maintaining their employment.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' (will be validated on the server side).
+                        000000: Not Available.
+                        Max: 6 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        SCIAN ciblé par le plan d’action
+                        Fait référence au code du système de classification des industries de l’Amérique du Nord ciblée par le plan d'action du participant financé par les tarifs. Chaque fois qu'il y a une industrie particulière dans laquelle le client espère entrer ou dans laquelle il est soutenu pour maintenir son emploi.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        000000: Non disponible.
+                        Max: 6 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanTargetNAICSVersion" type="ALMPType:NAICSVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Target NAICS Version
+                        Represents the version of North American Industry Classification System provided in Action Plan Target NAICS.
+                        Mandatory when actionPlanTargetNAICS  is provided (will be validated on the server side).
+                        Note that validation of the actionPlanTargetNAICSVersion (e.g. 2022) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Version du SCIAN ciblé par le plan d’action
+                        Représente la version du code du système de classification des industries de l’Amérique du Nord (SCIAN) ciblé par le plan d’action du participant.
+                        Obligatoire lorsque actionPlanTargetNAICS est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanTargetNAICSVersion (ex. 2022) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanPrecariousEmployment" type="ALMPType:actionPlanPrecariousEmploymentCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Precariously Employed.
+                        1.  Yes
+                        2.  No
+                        9.  Prefer not to report
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Employé précaire.
+                        1.  Oui
+                        2.  Non
+                        9.  Préfère ne pas déclarer
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanStartDate" type="ALMPType:APStartDate" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Start date of the action plan.
+                        A client cannot have more than a single ongoing Action Plan. In
+                        order to have a new Action Plan, Action Plan Result Date of the
+                        previous Action Plan must be filled in.
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Date de début du plan d'action.
+                        Un client ne peut pas avoir plus qu'un seul plan d’action
+                        ouvert au même moment. Pour créer un nouveau plan d’action, le
+                        champ Date du résultat du plan d’action du premier plan d’action
+                        doit être rempli.
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanEndDate" type="ALMPType:APEndDate" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        End date of the action plan.
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Date de fin du plan d'action.
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanResultCode" type="ALMPType:actionPlanResultCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Result of the action plan.
+                        Mandatory when Action Plan Result Date is provided and has passed (will be validated on the server side).
+                        1.   Unemployed but available for work
+                        2.   Employed
+                        3.   Self-employed
+                        4.   Returned to school
+                        5.   Unspecified – participant could not be reached
+                        6.   No longer in labour force;
+                        Participant may be deceased, incarcerated, no longer actively searching	for work.
+                        7.   Stay in school <!-- For exclusive use by ILMP. -->
+                        7.   Work-sharing <!-- For exclusive use by LMTA. -->
+                        8.   Starting a new action plan <!-- For exclusive use by LMTA. -->
+                        9.   Ready for work <!-- For exclusive use by ILMP. -->
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Résultat du plan d’action.
+                        Obligatoire lorsque Action Plan Result Date est fourni et a passé (sera validé côté serveur).
+                        1.   Sans emploi mais disponible pour travailler
+                        2.   Employé
+                        3.   Travailleur indépendant
+                        4.   Retourné à l'école
+                        5.   Non spécifié – le participant n’a pu être contacté
+                        Le participant n’a pu être contacté par téléphone ou par un autre moyen.
+                        6.   Ne fait plus partie de la population active –
+                        Le client est peut-être décédé, incarcéré ou ne cherche plus activement du travail.
+                        7.   Rester à l'école <!-- À l'usage exclusif de PMTA. -->
+                        7.   Travail partagé <!-- À l'usage exclusif d'ETMT. -->
+                        8.   Début d'un nouveau plan d'action <!-- À l'usage exclusif d'ETMT. -->
+                        9.   Prêt à travailler <!-- À l'usage exclusif de PMTA. -->
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanResultRelatedNOC" type="ALMPType:NOCValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Refers to National Occupational Codes related to the client's employment.
+                        Mandatory when 'employed' is selected for actionPlanResultCode (will be validated on the server side).
+                        Must contain 5 digits if actionPlanResultRelatedNOCVersion is 2021.
+                        Must contain 4 digits if actionPlanResultRelatedNOCVersion is 2016 or older.
+                        Max: 5 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Fait référence au code de la classification nationale des professions relié à l'emploi du client.
+                        Obligatoire lorsque 'employé' est choisi pour actionPlanResultCode (sera validé côté serveur).
+                        Doit contenir 5 chiffres lorsque actionPlanResultRelatedNOCVersion est 2021.
+                        Doit contenir 4 chiffres lorsque actionPlanResultRelatedNOCVersion est antérieure ou égale à 2016.
+                        Max: 5 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanResultRelatedNOCVersion"  type="ALMPType:NOCVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Refers to National Occupational Codes .
+                        Mandatory when actionPlanResultRelatedNOC is provided (will be validated on the server side).
+                        Note that validation of the actionPlanResultRelatedNOCVersion (e.g. 2016) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Fait référence au code de la classification nationale des professions.
+                        Obligatoire lorsque actionPlanResultRelatedNOC est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanResultRelatedNOCVersion (ex. 2016) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanResultEducationLevel" type="ALMPType:educationCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Education level after the action plan.
+                        Mandatory when actionPlanResultCode is provided (will be validated on the server side).
+                        1.  No formal education: did not attend school.
+                        2.  Up to grade 7-8.
+                        3.  Grades 9-10 (Sec II and III).
+                        4.  Grade 11-12 (Sec IV and V).
+                        5.  High school (Sec V) diploma or equivalent.
+                        6.  Some post-secondary training.
+                        7.  Apprenticeship and journeyman cards (trades certificate) or
+                        vocational training diploma (DEP-diplômes d’études professionnelles).
+                        8.  College or CEGEP.
+                        9.  University certificate or diploma below bachelor level.
+                        10. University - Bachelor degree.
+                        11. University - Master's degree.
+                        12. University - Doctorate.
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Niveau d'éducation après le plan d’action.
+                        Obligatoire lorsque actionPlanResultCode est fourni (sera validé côté serveur).
+                        1.  Aucune éducation formelle : n’a jamais été à l’école.
+                        2.  Jusqu’à la 7e ou 8e année du niveau primaire.
+                        3.  9e ou 10e année (Sec. II-III).
+                        4.  11e ou 12e année (Sec. IV-V).
+                        5.  Diplôme d’études secondaires (Sec. V ou l’équivalent reconnu par
+                        le Ministère d’éducation du Québec (MEQ)) et le diplôme d’études
+                        secondaires de Premières Nations (reconnu par les CÉGEPS pour
+                        l’inscription, mais non par le MEQ).
+                        6.  Études postsecondaires partielles : a suivit des cours
+                        postsecondaires mais n’a pas complété un programme.
+                        7.  Apprenti ou compagnon d’apprentissage pour l’obtention des cartes
+                        de travail (certificat de métier) ou diplôme de formation
+                        professionnelle (DEP- diplômes d’études professionnelles).
+                        8.  Collège ou CÉGEP.
+                        9.  Certificat universitaire ou diplôme universitaire plus bas que le niveau le baccalauréat.
+                        10. Université - Baccalauréat.
+                        11. Université - Maîtrise.
+                        12. Université - Doctorat.
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanResultDate" type="xsd:date" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        End date of Action Plan.
+                        Date when the final outcome of the action plan was reached.
+                        Current Action Plan Result Date must have a	value in order to start another action plan.
+                        Mandatory when Action Plan Result is provided (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Date de fin du plan d’action.
+                        Cette date du résultat d’un plan d’action doit être
+                        inscrite lorsque le plan d’action est complète.
+                        Il doit y avoir une valeur dans le champ Date de
+                        résultat du plan d’action avant de pouvoir ouvrir un nouveau plan d’action.
+                        Obligatoire lorsque Action Plan Result est fourni (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFutureEducationLevel" type="ALMPType:educationCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Education level planned in the future.
+                        Mandatory when 'returned to school' is selected for actionPlanResultCode (will be validated on the server side).
+                        5.  High school (Sec V) diploma or equivalent.
+                        8.  College or CEGEP.
+                        9.  University certificate or diploma below bachelor level.
+                        10. University - Bachelor degree.
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Niveau d'éducation plannifié dans le futur.
+                        Obligatoire lorsque 'retourné à l'école' est choisi pour actionPlanResultCode (sera validé côté serveur).
+                        5.  Diplôme d’études secondaires (Sec. V ou l’équivalent reconnu par
+                        le Ministère d’éducation du Québec (MEQ)) et le diplôme d’études
+                        secondaires de Premières Nations (reconnu par les CÉGEPS pour l’inscription, mais non par le MEQ).
+                        8.  Collège ou CÉGEP.
+                        9.  Certificat universitaire ou diplôme universitaire plus bas que le niveau le baccalauréat.
+                        10. Université - Baccalauréat.
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanChildCareNeed" type="xsd:boolean" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Is child care required for this action plan?
+                        0.  No
+                        1.  Yes
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Est-ce que le service de garde est nécessaire pour ce plan d'action?
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanChildCareFundedCode" type="ALMPType:childCareFundingSourceCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-ca">
+                        For exclusive use by ILMP.
+                        Type of financial support allocated to childcare.
+                        1.  Not applicable
+                        2.  FNICCI
+                        3.  EI/CRF
+                        4.  Provincial funding or subsidy
+                        5.  No funding received
+                        6.  Daycare space not available
+                        7.  Assisted by family/self-funded
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-ca">
+                        À l'usage exclusif de PMTA.
+                        Type de support	financier qui a été alloué pour le service de garde.
+                        1.  Ne s'applique pas
+                        2.  ISGPNI
+                        3.  E./FRC
+                        4.  Financement ou subvention provinciale
+                        5.  Aucun financement reçu
+                        6.  Aucune place disponible dans un service de garde
+                        7.  Assisté par un membre de la famille/financement personnel
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUp" type="ALMP:actionPlanFollowUpType" minOccurs="0" maxOccurs="5" />
+            <xsd:element name="intervention" type="ALMP:interventionType" maxOccurs="unbounded" />
+            <xsd:element name="sysComment" type="ALMPType:sysComment" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="actionPlanFollowUpType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                For exclusive use by LMTA.
+                Action Plan Follow-up.
+                This contains data about the participant’s action plan follow-up. An Action Plan Follow-up must have two (2) follow-ups, approximately 6 and 12 months after the participant’s final intervention of this action plan for activities supported by the Joint tariff Workforce Response (JTWR) initiative. The current Action Plan must have one (1) follow-up for participant in order to start another Action Plan.  The current Action Plan may have a maximum of five (5) follow ups.
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                À l'usage exclusif d'ETMT.
+                Suivi du plan d’action.
+                Contient toutes les données sur le suivi du plan d'action du participant. Un suivi du plan d'action doit comporter deux (2) tentatives de suivi, environ 6 et 12 mois après la dernière intervention du participant dans ce plan d'action pour les activités de formation fournies aux travailleurs soutenus par l'initiative main-d'œuvre de réponse tarifaire (IMRF). Le plan d'action actuel doit avoir un (1) suivi pour le participant afin de commencer un autre plan d'action. Le plan d'action actuel peut comporter un maximum de cinq (5) tentatives de suivi.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="actionPlanFollowUpID" type="ALMPType:shortLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Identifier
+                        Represents the unique action plan follow-up identifier in the provincial or territorial system.
+                        Max: 30 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Identificateur pour le suivi du plan d’action
+                        Identificateur unique du suivi de plan d’action dans le système provincial et territorial.
+                        Max: 30 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpDate" type="xsd:date" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Contact Date
+                        Represents the date of contact in the months following the end of their final participation in programming (the end of the participant’s last intervention or the end of their action plan.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpResultCode is provided (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Date de contact du suivi du plan d’action
+                        Représente la date de contact ou de tentative de contact (environ six ou douze mois) suivant leur dernière intervention ou la fin du plan d'action.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        et actionPlanFollowUpResultCode est fourni (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpResultCode" type="ALMPType:actionPlanFollowUpResultCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Result Code
+                        Represents the result achieved by the participant at contact for their follow-up after the end of the action plan, or their final intervention.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpDate is provided (will be validated on the server side).
+                        1.   Unemployed but available for work
+                        2.   Employed
+                        3.   Self-employed
+                        4.   Returned to school
+                        5.   Unspecified – participant could not be reached
+                        6.   No longer in labour force
+                        7.   Work-sharing
+                        8.   Starting a new action plan
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Suivi du plan d’action – code du résultat
+                        Représente le résultat obtenu par le participant lors du contact tenté pour leur suivi après la fin du plan d'action, ou leur dernière intervention.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        et actionPlanFollowUpDate est fourni (sera validé côté serveur).
+                        1.   Sans emploi mais disponible pour travailler
+                        2.   À l'emploi
+                        3.   Travailleur indépendant
+                        4.   Retourné à l'école
+                        5.   Non spécifié – le participant n’a pu être contacté
+                        6.   Pas dans la population active
+                        7.   Travail partagé
+                        8.   Début d'un nouveau plan d'action
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpResultDate" type="xsd:date" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Result Date
+                        Represents the date when the result reported in the action plan follow-up was achieved by the participant.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and when actionPlanFollowUpDate is provided
+                        and actionPlanFollowUpResultCode is not equal to the previous result achieved by the participant (actionPlanResultCode or the previous actionPlanFollowUpResultCode)
+                        (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Date de résultat pour le suivi du plan d’action
+                        Représente la date du résultat obtenu par le participant pendant le suivi du plan d’action.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet'
+                        et actionPlanFollowUpDate est fourni
+                        et actionPlanFollowUpResultCode n'est pas égal au résultat précédemment obtenu par le participant (actionPlanResultCode ou le précédent actionPlanFollowUpResultCode)
+                        (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpEmployerName" type="ALMPType:basicLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Employer Name
+                        For participants who gained or changed their primary employer since the start of their participation in programming, this refers to the name of their primary employer at the current follow-up time-point.
+                        Mandatory when actionPlanFollowUpResultCode is '2. Employed' or '7. Work-sharing'
+                        and when ActionPlanPreviousEmployment '1. Unemployed', '3. Self-employed' or '6. Not in the labour force'
+                        (will be validated on the server side).
+                        Max: 100 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Nom de l’employeur pour le suivi du plan d’action
+                        Indique l'employeur principal actuel du participant lors du suivi du plan d’action.
+                        Obligatoire lorsque actionPlanFollowUpResultCode est '2. Employé' ou '7. Travail partagé'
+                        et ActionPlanPreviousEmployment est '1. Sans emploi', '3. Travailleur independent' ou '6. Pas dans la population active'
+                        (sera validé côté serveur).
+                        Max: 100 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpMultipleEmployment" type="ALMPType:actionPlanFollowUpMultipleEmploymentCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Multiple Employment
+                        Represents whether or not the participant held more than one employment position at the follow-up.
+                        1.  Yes
+                        2.  No
+                        Max: Must be a valid numeric value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Multiples emplois pour le suivi du plan d’action
+                        Représente si le participant a occupé plus d’un emploi lors du suivi du plan d’action.
+                        1.  Oui
+                        2.  Non
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpNOC" type="ALMPType:NOCValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up NOC
+                        Refers to National Occupational Classification code related to the participant's primary employment at the follow-up.
+                        Mandatory when actionPlanFollowUpResultCode is '2. Employed',  '3. Self-employed' or '7. Work-sharing'
+                        and actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpDate is provided.
+                        (will be validated on the server side).
+                        Must contain 5 digits if actionPlanPreviousEmploymentNOCVersion is 2021.
+                        Must contain 4 digits if actionPlanPreviousEmploymentNOCVersion is 2016 or older.
+                        Max: 5 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Code CNP pour le suivi du plan d’action
+                        Code de la Classification nationale des professions (CNP) lié à l’emploi principal au suivi du participant.
+                        Obligatoire lorsque actionPlanFollowUpResultCode  est '2. Employé',  '3. Travailleur indépendant' ou '7. Travail partagé'
+                        et actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet'
+                        et actionPlanFollowUpDate est fourni.
+                        (sera validé côté serveur).
+                        Doit contenir 5 chiffres lorsque actionPlanPreviousEmploymentNOCVersion est 2021.
+                        Doit contenir 4 chiffres lorsque actionPlanPreviousEmploymentNOCVersion est antérieure ou égale à 2016.
+                        Max: 5 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpNOCVersion" type="ALMPType:NOCVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up NOC Version
+                        Represents the version of National Occupation Classification code provided in action plan follow-up NOC.
+                        Mandatory when actionPlanFollowUpNOC is provided (will be validated on the server side).
+                        Note that validation of the actionPlanFollowUpNOCVersion (e.g. 2021) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Version du code CNP pour le suivi du plan d’action
+                        Représente la version du code de la classification nationale des professions lié à l’emploi principal du participant.
+                        Obligatoire lorsque actionPlanFollowUpNOC est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanFollowUpNOCVersion (ex. 2021) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpNAICS" type="ALMPType:NAICSValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up NAICS
+                        Refers to the North American Industry Classification System code related to the participant's primary employment at the follow-up.
+                        Mandatory when actionPlanFollowUpResultCode is '2. Employed',  '3. Self-employed' or '7. Work-sharing'
+                        and actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpDate is provided.
+                        (will be validated on the server side).
+                        Max: 6 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Code SCIAN pour le suivi du plan d’action
+                        Code du système de classification des industries de l’Amérique du Nord (SCIAN) lié à l’emploi principal au suivi du participant.
+                        Obligatoire lorsque actionPlanFollowUpResultCode  est '2. Employé',  '3. Travailleur indépendant' ou '7. Travail partagé'
+                        et actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet'
+                        et actionPlanFollowUpDate est fourni.
+                        (sera validé côté serveur).
+                        Max: 6 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpNAICSVersion" type="ALMPType:NAICSVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-Up NAICS Version
+                        Represents the version of North American Industry Classification System code provided in Action Plan Follow-up NAICS.
+                        Mandatory when actionPlanFollowUpNAICS  is provided (will be validated on the server side).
+                        Note that validation of the actionPlanFollowUpNAICSVersion (e.g. 2022) will be done on the server side.
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Version du code SCIAN pour le suivi du plan d’action
+                        Représente la version du code du système de classification des industries de l’Amérique du Nord (SCIAN) lié à l’emploi principal du participant lié au suivi du plan d’action.
+                        Obligatoire lorsque actionPlanFollowUpNAICS est fourni (sera validé côté serveur).
+                        Noter que la validation du actionPlanFollowUpNAICSVersion (ex. 2022) sera fait côté serveur.
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpEmploymentPayRate" type="ALMPType:payRateValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-up Pay Rate
+                        Represents the participant’s primary employment annual pay rate after participation in programming during at the follow-up.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpResultCode  is '2. Employed',  '3. Self-employed' or '7. Work-sharing'
+                        and actionPlanFollowUpDate is provided.
+                        (will be validated on the server side).
+                        Max: 6 characters.
+                        Must be between 1000 and 999 999.
+                        Must be a number.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Taux de rémunération de l’emploi du participant au suivi
+                        Représente le taux de rémunération annuel de l’emploi principal du participant au suivi du plan d’action.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        et actionPlanFollowUpResultCode  est '2. Employé',  '3. Travailleur indépendant' ou '7. Travail partagé'
+                        et actionPlanFollowUpDate est fourni.
+                        (sera validé côté serveur).
+                        Max: 6 caractères.
+                        Doit être entre 1000 and 999 999.
+                        Doit être un nombre.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="actionPlanFollowUpEmploymentHours" type="ALMPType:employmentHoursType" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Action Plan Follow-Up Hours per Week
+                        Represents the participant’s actual hours of work per week in their primary employment for those who were working at the follow-up time-point.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and actionPlanFollowUpResultCode  is '2. Employed',  '3. Self-employed' or '7. Work-sharing'
+                        and actionPlanFollowUpDate is provided.
+                        (will be validated on the server side).
+                        Max: 4 characters.
+                        Must be between 1 and 168.
+                        Must be a number (when decimals only 0,5 increments are accepted).
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Heures de travail par semaine de l’emploi du participant au suivi
+                        Représente les heures réelles de travail par semaine du participant de leur emploi principal au suivi du plan d’action.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        et actionPlanFollowUpResultCode  est '2. Employé',  '3. Travailleur indépendant' ou '7. Travail partagé'
+                        et actionPlanFollowUpDate est fourni.
+                        (sera validé côté serveur).
+                        Max: 4 caractères.
+                        Doit être entre 1 et 168.
+                        Doit être un nombre (lorsque des décimales sont utilisées, seuls les incréments de 0,5 sont acceptés).
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="sysComment" type="ALMPType:sysComment" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="interventionType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                Contains all the data of the action plan's interventions.
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                Contient toutes les	données sur les interventions du plan d'action.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="interventionID" type="ALMPType:shortLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        The unique intervention identier in the provincial or territorial system.
+                        Max: 30 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        L'identificateur unique de l'intervention dans le système provincial ou territorial.
+                        Max: 30 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionTitle" type="ALMPType:longLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA
+                        Represents the original title of the intervention in the provincial or territorial system
+                        before mapping to standard Intervention Code.
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: 150 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Représente le titre original de l'intervention dans le système provincial ou territorial avant
+                        la mise en correspondance avec le code d'intervention standard.
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: 150 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionCode" type="ALMPType:interventionCodeValue">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Intervention code
+                        This element is mandatory.
+                        1.   Career research and exploration  <!-- For exclusive use by ILMP. -->
+                        2.   Diagnostic assessment   <!-- For exclusive use by ILMP. -->
+                        3.   Employment counselling   <!-- For exclusive use by ILMP. -->
+                        4.   Skills development - Essential skills   <!-- For exclusive use by ILMP. -->
+                        5.   Skills development - Academic upgrading   <!-- For exclusive use by ILMP. -->
+                        6.   Work experience - Job creation partnerships   <!-- For exclusive use by ILMP. -->
+                        7.   Work experience - Wage subsidy   <!-- For exclusive use by ILMP. -->
+                        8.   Work experience - Student employment  <!-- For exclusive use by ILMP. -->
+                        9.   Occupational skills training - Certificate  <!-- For exclusive use by ILMP. -->
+                        10.  Occupational skills training - Diploma  <!-- For exclusive use by ILMP. -->
+                        11.  Occupational skills training - Degree   <!-- For exclusive use by ILMP. -->
+                        12.  Occupational skills training - Apprenticeship   <!-- For exclusive use by ILMP. -->
+                        13.  Occupational skills training - Vocational  <!-- For exclusive use by ILMP. -->
+                        14.  Self-employment   <!-- For exclusive use by ILMP. -->
+                        15.  Job search preparation strategies   <!-- For exclusive use by ILMP. -->
+                        16.  Job starts support   <!-- For exclusive use by ILMP. -->
+                        17.  Employer referral   <!-- For exclusive use by ILMP. -->
+                        18.  Employment retention supports    <!-- For exclusive use by ILMP. -->
+                        19.  Referral to agencies    <!-- For exclusive use by ILMP. -->
+                        20.  Pre-career development  <!-- For exclusive use by ILMP. -->
+                        111. Job search assistance  <!-- For exclusive use by LMTA. -->
+                        112. Counselling/Case management  <!-- For exclusive use by LMTA. -->
+                        113. Unassisted services   <!-- For exclusive use by LMTA. -->
+                        114. Other-employment assistance services  <!-- For exclusive use by LMTA. -->
+                        211. Occupational skills training   <!-- For exclusive use by LMTA. -->
+                        212. Short-term training   <!-- For exclusive use by LMTA. -->
+                        213. Literacy, essential skills, language training and adult basic education  <!-- For exclusive use by LMTA. -->
+                        214. Apprenticeship   <!-- For exclusive use by LMTA. -->
+                        215. Other-skills development   <!-- For exclusive use by LMTA. -->
+                        221. (Targeted) Wage subsidies  <!-- For exclusive use by LMTA. -->
+                        222. Job creation partnership   <!-- For exclusive use by LMTA. -->
+                        223. Self-employment assistance  <!-- For exclusive use by LMTA. -->
+                        224. (Targeted) Earnings supplements   <!-- For exclusive use by LMTA. -->
+                        311. Fee payer  <!-- For exclusive use by LMTA. -->
+                        Max: Must be a valid value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Code d'intervention
+                        Cet élément est obligatoire. <!-- À l'usage exclusif de PMTA. -->
+                        1.   Recherche d'emplois et exploration de carrières  <!-- À l'usage exclusif de PMTA. -->
+                        2.   Évaluation diagnostique  <!-- À l'usage exclusif de PMTA. -->
+                        3.   Counselling d'emploi  <!-- À l'usage exclusif de PMTA. -->
+                        4.   Développement des compétences – Compétences essentielles   <!-- À l'usage exclusif de PMTA. -->
+                        5.   Développement des compétences – Perfectionnement scolaire  <!-- À l'usage exclusif de PMTA. -->
+                        6.   Expérience de travail – Partenariats pour la création d'emplois   <!-- À l'usage exclusif de PMTA. -->
+                        7.   Expérience de travail – Subventions salariales  <!-- À l'usage exclusif de PMTA. -->
+                        8.   Expérience de travail – Emplois étudiants  <!-- À l'usage exclusif de PMTA. -->
+                        9.   Formation professionnelle spécialisée – Certificat  <!-- À l'usage exclusif de PMTA. -->
+                        10.  Formation professionnelle spécialisée – Diplôme  <!-- À l'usage exclusif de PMTA. -->
+                        11.  Formation professionnelle spécialisée – Grade universitaire  <!-- À l'usage exclusif de PMTA. -->
+                        12.  Formation professionnelle spécialisée – Apprentissage  <!-- À l'usage exclusif de PMTA. -->
+                        13.  Formation professionnelle spécialisée – Autres compétences professionnelles  <!-- À l'usage exclusif de PMTA. -->
+                        14.  Travail indépendant  <!-- À l'usage exclusif de PMTA. -->
+                        15.  Stratégie de préparation à la recherche d'emploi  <!-- À l'usage exclusif de PMTA. -->
+                        16.  Mesures d'aide au début d'un emploi  <!-- À l'usage exclusif de PMTA. -->
+                        17.  Referer à l'employeur  <!-- À l'usage exclusif de PMTA. -->
+                        18.  Mesures d'aide au maintien d'un emploi  <!-- À l'usage exclusif de PMTA. -->
+                        19.  Référence vers des agences   <!-- À l'usage exclusif de PMTA. -->
+                        20.  Développement pré-carrière <!-- À l'usage exclusif de PMTA. -->
+                        111. Aide à la recherche d'emploi  <!-- À l'usage exclusif d'ETMT. -->
+                        112. Counseling/Gestion de cas  <!-- À l'usage exclusif d'ETMT. -->
+                        113. Services sans aide   <!-- À l'usage exclusif d'ETMT. -->
+                        114. Autres-services d'aide à l'emploi  <!-- À l'usage exclusif d'ETMT. -->
+                        211. Formation professionnelle spécialisée  <!-- À l'usage exclusif d'ETMT. -->
+                        212. Formation à court terme  <!-- À l'usage exclusif d'ETMT. -->
+                        213. Alphabétisation, compétences essentielles, formation linguistique et formation de base pour adultes  <!-- À l'usage exclusif d'ETMT. -->
+                        214. Apprenti   <!-- À l'usage exclusif d'ETMT. -->
+                        215. Autres-développement des compétences  <!-- À l'usage exclusif d'ETMT. -->
+                        221. Subventions salariales (ciblées)  <!-- À l'usage exclusif d'ETMT. -->
+                        222. Partenariats pour la création d'emploi  <!-- À l'usage exclusif d'ETMT. -->
+                        223. Aide au travail indépendant  <!-- À l'usage exclusif d'ETMT. -->
+                        224. Suppléments de rémunération (ciblés)  <!-- À l'usage exclusif d'ETMT. -->
+                        311. Étudiants indépendants  <!-- À l'usage exclusif d'ETMT. -->
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionStartDate" type="xsd:date">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Start date of the intervention
+                        This element is mandatory.
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Date de début de l'intervention
+                        Cet élément est obligatoire.
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionEndDate" type="xsd:date" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        End date of the	intervention.
+                        Mandatory when the Action Plan Result Date is provided (will be validated on the server side).
+                        Max: 10 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Date de fin de l'intervention.
+                        Obligatoire lorsque Action Plan Result Date est fourni (sera validé côté serveur).
+                        Max: 10 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionOutcome" type="ALMPType:interventionOutcomeCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Outcome of the intervention.
+                        1.  Completed
+                        2.  In progress <!-- For exclusive use by ILMP. -->
+                        3.  Incomplete
+                        4.  Failed to report
+                        5.  Cancelled
+                        6.  Rescheduled
+                        Mandatory when the Action Plan Result Date  or Intervention End Date is provided
+                        and has passed (will be validated on the server side).
+                        Max: Must be a valid value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Résultat de	l'intervention.
+                        1.  Terminé
+                        2.  En cours <!-- À l'usage exclusif de PMTA. -->
+                        3.  Incomplète
+                        4.  Omis de se présenter
+                        5.  Annulé
+                        6.  Reporté
+                        Obligatoire lorsque Action Plan Result Date est fourni (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionDuration" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Number of days of intervention.
+                        Max: 3 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Durée en jours de l'intervention.
+                        Max: 3 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:nonNegativeInteger">
+                        <xsd:maxInclusive value="999" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="interventionCost" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by ILMP.
+                        Cost of the	intervention.
+                        Max: 6 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif de PMTA.
+                        Coût de	l'intervention.
+                        Max: 6 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:nonNegativeInteger">
+                        <xsd:maxInclusive value="999999" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="interventionSupport" type="ALMP:interventionCostType" minOccurs="0" maxOccurs="10" />
+            <xsd:element name="interventionRelatedNOC" type="ALMPType:NOCValueCode" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Intervention Related NOC
+                        Represents the National Occupation Classification Code related to training, work experience and self-employment assistance interventions.
+                        LMTA: Mandatory if interventionCode is 211 or (actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs' and interventionCode  is  212, 214, 215, 221, 222, 223, 224, or 311) (will be validated on the server side).
+                        ILMP: Mandatory if interventionCode is 6-13 (will be validated on the server side).
+                        0000: Not Available.
+                        Must contain 5 digits if interventionRelatedNOCVersion is 2021.
+                        Must contain 4 digits if interventionRelatedNOCVersion is 2016 or older.
+                        Max: 5 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Code CNP relié à l’intervention
+                        Code de la Classification nationale des professions relié à la formation professionnelle spécialisée.
+                        ETMT: Obligatoire si interventionCode est 211 ou (actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' et interventionCode est 212, 214, 215, 221, 222, 223, 224 ou 311) (sera validé côté serveur).
+                        PMTA: Obligatoire si interventionCode est 6-13 (sera validé côté serveur).
+                        0000: Non disponible.
+                        Doit contenir 5 chiffres lorsque interventionRelatedNOCVersion est 2021.
+                        Doit contenir 4 chiffres lorsque interventionRelatedNOCVersion est antérieure ou égale à 2016.
+                        Max: 5 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionRelatedNOCVersion" type="ALMPType:NOCVersionValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        Refers to National Occupational Codes.
+                        Mandatory when interventionRelatedNOC is provided (will be validated on the server side).
+                        Note that validation of the NOCVersion (e.g. 2016) will be done on the server side.
+                        0000: Not Available
+                        Max: 4 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        Fait référence au code de la classification nationale des professions.
+                        Obligatoire lorsque interventionRelatedNOC est fourni (sera validé côté serveur).
+                        Noter que la validation du NOCVersion (ex. 2016) sera fait côté serveur.
+                        0000: Non disponible
+                        Max: 4 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionLanguageOfService" type="ALMPType:languagesSpokenCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Federal Official Language of Service.
+                        2.  English only
+                        3.  French only
+                        9.  Not an official federal language
+                        10. Not Available
+                        Mandatory for LMTA (will be validated on the server side).
+                        Max: Must be a valid value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Langue officielle fédérale de service.
+                        2.  Anglais seulement
+                        3.  Français seulement
+                        9.  Pas une langue fédéral officielle
+                        10. Non disponible
+                        Obligatoire pour ETMT (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionEssentialSkills" type="ALMPType:interventionEssentialSkillsCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Increase in Literacy and Essential Skills
+                        1.  Yes
+                        2.  No
+                        8.  Not Available
+                        Mandatory when interventionCode is 213 (will be validated on the server side).
+                        Max: Must be a valid value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Augmentation de l'alphabétisation et des compétences essentielles.
+                        1.  Oui
+                        2.  Non
+                        8.  Non disponible
+                        Obligatoire lorsque interventionCode est 213 (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionCredential" type="ALMPType:interventionCredentialCodeValue" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Credential/Certificate Earned
+                        1.  Yes
+                        2.  No
+                        8.  Not Applicable
+                        9.  Not Available
+                        Mandatory when interventionEndDate is provided (will be validated on the server side).
+                        Max: Must be a valid value.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Accréditation/Certificat réussi
+                        1.  Oui
+                        2.  Non
+                        8.  Ne s'applique pas
+                        9.  Non disponible
+                        Obligatoire lorsque interventionEndDate est fourni (sera validé côté serveur).
+                        Max: Doit être une valeur numérique valide.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="sysComment" type="ALMPType:sysComment" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="interventionCostType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en-CA">
+                For exclusive use by LMTA.
+                Intervention Support
+                Represents the final costs of wrap-around supports provided to the participant while they participated in the intervention. The participant may have zero, one or multiple different types of wrap-around support. These final costs should be entered when participation in the intervention or action plan has ended. This is the total cost for the wrap-around supports provided to the tariff funded participant.
+            </xsd:documentation>
+            <xsd:documentation xml:lang="fr-CA">
+                À l'usage exclusif d'ETMT.
+                Soutien de l’intervention
+                Représente les coûts finaux des soutiens supplémentaires fournis au participant pendant sa participation à l'intervention. Le participant peut avoir zéro, un ou plusieurs types différents de soutiens supplémentaires. Ces coûts finaux doivent être saisis lorsque la participation à l'intervention ou au plan d'action a pris fin. C'est le coût total des soutiens supplémentaires fournis au participant financé par les tarifs.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="interventionCost">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Intervention Cost
+                        Cost of financial and/or wrap around support allocated to the intervention cost.
+                        Mandatory when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        and interventionOutcome or actionPlanResultCode is provided
+                        and when interventionCostCategory is other than ‘0. Not Applicable’
+                        (will be validated on the server side).
+                        Max: 6 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Coûts de l’intervention
+                        Représente la catégorie de soutien financier et/ou de soutien supplémentaire alloué au coût de l'intervention.
+                        Obligatoire lorsque actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet'
+                        et interventionOutcome ou actionPlanResultCode est fourni
+                        et lorsque interventionCostCategory est autre que ‘0. Ne s’applique pas’
+                        (sera validé côté serveur).
+                        Max: 6 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:nonNegativeInteger">
+                        <xsd:maxInclusive value="999999" />
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="interventionCostCategory" type="ALMPType:interventionCostCategoryCodeValue">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Intervention Cost Category
+                        Represents the category of wrap-around support that was costed for the intervention. 
+                        0. Not applicable
+                        1. Transportation
+                        2. Dependent support
+                        3. Accommodations
+                        4. Disability support
+                        5. Mental Health support
+                        6. Supplies support
+                        7. Mobility relocation may be required
+                        8. Tuition fees
+                        10. Other
+                        Mandatory when actionPlanResultDate or the interventionEndDate is provided
+                        and when actionPlanFundingSource  is '1. Steel Tariffs', '2. Softwood Lumber Tariffs' or '3. Comprehensive Tariffs'
+                        (will be validated on the server side).
+                        Must be unique when more than one intervention cost.
+                        If interventionCost have a value greater than 0, then the interventionCostCategory value must be other than ‘0. Not Applicable’.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Catégorie des coûts de l’intervention
+                        Type de soutien financier et/ou de soutien supplémentaire alloué au coût de l'intervention.
+                        0. Ne s'applique pas
+                        1. Transport
+                        2. Soutien pour les personnes à charge
+                        3. Hébergement
+                        4. Soutien à la stabilité
+                        5. Soutien en santé mentale
+                        6. Soutien pour la fourniture
+                        7. Relocalisation pour mobilité peut être requise
+                        8. Frais de scolarité
+                        10. Autre
+                        Obligatoire lorsque actionPlanResultDate ou interventionEndDate est fourni
+                        et actionPlanFundingSource est '1. Tarifs acier', '2. Tarifs bois d’oeuvre résineux' ou '3. Tarifs soutien complet' (sera validé côté serveur).
+                        (sera validé côté serveur).
+                        Doit être unique lorsque plus qu’un type de coût de l’intervention.
+                        Si interventionCost a une valeur plus grande que 0, alors la valeur de interventionCostCategory ne doit pas être ‘0. Ne s’applique pas’.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="interventionCostCategoryComment" type="ALMPType:longLengthString" minOccurs="0">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="en-CA">
+                        For exclusive use by LMTA.
+                        Intervention Cost Category Comment
+                        Represents the other wrap-around supports provided to the tariff funded participant participating to the intervention in the case that the intervention cost type does not fit any of the identified intervention cost type categories. If the intervention cost type was identified as “Other” a description of the participant’s intervention cost type can be provided in the intervention cost type Comment.
+                        Mandatory when interventionCostCategory  is '10. Other' (will be validated on the server side).
+                        Max: 150 characters.
+                    </xsd:documentation>
+                    <xsd:documentation xml:lang="fr-CA">
+                        À l'usage exclusif d'ETMT.
+                        Commentaire de la catégorie du coût de l’intervention
+                        Représente le type de coût de l’intervention dans le cas où le type de coût ne correspond pas à aucune des catégories identifiées dans le Type de coût de l’intervention. Si le type de coût est « Autre », une description du type du coût du participant doit être fournie dans le commentaire du type de coût.
+                        Obligatoire lorsque interventionCostCategory est '10. Autre' (sera validé côté serveur).
+                        Max: 150 caractères.
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
