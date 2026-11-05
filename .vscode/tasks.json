@@ -1,0 +1,37 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "sqlproj: Build lmta-datawarehouse",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:/Github (local)/data-engineering/lmta-datawarehouse/lmta-datawarehouse.sqlproj"
+			],
+			"problemMatcher": "$sqlproj-problem-matcher",
+			"isBackground": true,
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Builds the lmta-datawarehouse SQL project"
+		},
+		{
+			"label": "sqlproj: Build lmta-warehouse",
+			"type": "process",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"c:/Github (local)/data-engineering/lmta-warehouse/lmta-warehouse.sqlproj"
+			],
+			"problemMatcher": "$sqlproj-problem-matcher",
+			"isBackground": true,
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Builds the lmta-warehouse SQL project"
+		}
+	]
+}
