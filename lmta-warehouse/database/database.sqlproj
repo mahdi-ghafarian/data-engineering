@@ -11,6 +11,7 @@
     <Folder Include="scripts" />
     <Folder Include="scripts\post-deployment" />
     <Folder Include="scripts\pre-deployment" />
+    <Folder Include="scripts\seed" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="scripts\post-deployment\PostDeployment.sql" />
