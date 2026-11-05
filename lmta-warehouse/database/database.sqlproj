@@ -9,12 +9,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="scripts" />
+    <Folder Include="scripts\post-deployment" />
+    <Folder Include="scripts\pre-deployment" />
   </ItemGroup>
   <ItemGroup>
-    <PostDeploy Include="scripts\PostDeployment.sql" />
+    <PostDeploy Include="scripts\post-deployment\PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <PreDeploy Include="scripts\PreDeployment.sql" />
+    <PreDeploy Include="scripts\pre-deployment\PreDeployment.sql" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
