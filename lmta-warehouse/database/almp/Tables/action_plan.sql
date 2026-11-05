@@ -1,0 +1,31 @@
+CREATE TABLE [almp].[action_plan] (
+    [submission_id]                            BIGINT        NOT NULL,
+    [client_id]                                BIGINT        NOT NULL,
+    [action_plan_id]                           BIGINT        NOT NULL,
+    [actionPlanID]                             VARCHAR (30)  NULL,
+    [agreementNumber]                          VARCHAR (9)   NOT NULL,
+    [actionPlanFundingSource]                  INT           NULL,
+    [educationLevel]                           INT           NULL,
+    [educationLevelComment]                    VARCHAR (150) NULL,
+    [provincialOfficeCode]                     VARCHAR (15)  NULL,
+    [actionPlanPreviousEmployment]             INT           NULL,
+    [actionPlanPreviousEmployerName]           VARCHAR (100) NULL,
+    [actionPlanPreviousMultipleEmployment]     INT           NULL,
+    [actionPlanPreviousEmploymentNOC]          VARCHAR (5)   NULL,
+    [actionPlanPreviousEmploymentNOCVersion]   VARCHAR (4)   NULL,
+    [actionPlanPreviousEmploymentNAICS]        VARCHAR (6)   NULL,
+    [actionPlanPreviousEmploymentNAICSVersion] VARCHAR (4)   NULL,
+    [actionPlanPreviousEmploymentDate]         DATE          NULL,
+    [actionPlanPreviousEmploymentPayRate]      VARCHAR (6)   NULL,
+    [actionPlanPreviousEmploymentHours]        VARCHAR (4)   NULL,
+    [actionPlanTargetNAICS]                    VARCHAR (6)   NULL,
+    [actionPlanTargetNAICSVersion]             VARCHAR (4)   NULL,
+    [actionPlanPrecariousEmployment]           INT           NULL,
+    [actionPlanStartDate]                      DATE          NULL,
+    [actionPlanEndDate]                        DATE          NULL,
+    [actionPlanResultCode]                     INT           NULL,
+    [actionPlanResultDate]                     DATE          NULL,
+    [sysComment]                               VARCHAR (100) NULL
+);
+GO
+

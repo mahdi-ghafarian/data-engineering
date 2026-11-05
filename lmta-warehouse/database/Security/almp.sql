@@ -1,0 +1,4 @@
+CREATE SCHEMA [almp]
+    AUTHORIZATION [dbo];
+GO
+
