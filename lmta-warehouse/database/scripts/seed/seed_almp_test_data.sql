@@ -63,7 +63,7 @@ VALUES
     'Synthetic ALMP 1.5 test submission'
 );
 
-
+GO
 /* =====================================================================
    2. CLIENTS
 
@@ -201,6 +201,7 @@ VALUES
     'Synthetic client three'
 );
 
+GO
 
 /* =====================================================================
    3. ACTION PLANS
@@ -366,7 +367,7 @@ VALUES
     'Open synthetic action plan'
 );
 
-
+GO
 /* =====================================================================
    4. INTERVENTIONS
 
@@ -487,6 +488,7 @@ VALUES
     'Open synthetic intervention'
 );
 
+GO
 
 /* =====================================================================
    5. INTERVENTION SUPPORT
@@ -547,6 +549,7 @@ VALUES
     'Synthetic local transportation'
 );
 
+GO
 
 /* =====================================================================
    6. ACTION PLAN FOLLOW-UPS
@@ -641,6 +644,8 @@ VALUES
     'Synthetic employment follow-up'
 );
 
+GO
+
 
 /* =====================================================================
    7. SYSTEM ACTION
@@ -687,6 +692,7 @@ VALUES
     'Synthetic system-action test row'
 );
 
+GO
 
 /* =====================================================================
    8. VERIFICATION

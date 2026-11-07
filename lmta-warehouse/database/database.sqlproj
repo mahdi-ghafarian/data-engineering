@@ -19,6 +19,10 @@
   <ItemGroup>
     <PreDeploy Include="scripts\pre-deployment\PreDeployment.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Remove="scripts\seed\seed_almp_test_data.sql" />
+    <Build Remove="scripts\post-deployment\load_ref_almp_code.sql" />
+  </ItemGroup>
   <Target Name="BeforeBuild">
     <Delete Files="$(BaseIntermediateOutputPath)\project.assets.json" />
   </Target>

@@ -199,7 +199,7 @@ VALUES
 ('NAICSVersion','NAICSVersionValue','2017','NAICS 2017','LMTA',0,'1.5','2026-04-15',NULL,1),
 ('NAICSVersion','NAICSVersionValue','2022','NAICS 2022','LMTA',0,'1.5','2026-04-15',NULL,1);
 
-
+GO
 /*==============================================================
   2. VERIFY
 ==============================================================*/
@@ -211,9 +211,12 @@ FROM ref.almp_code
 GROUP BY code_domain
 ORDER BY code_domain;
 
+GO
 
 SELECT *
 FROM ref.almp_code
 ORDER BY
     code_domain,
-    almp_code;-- Write your own SQL object definition here, and it'll be included in your package.
+    almp_code;
+
+GO
