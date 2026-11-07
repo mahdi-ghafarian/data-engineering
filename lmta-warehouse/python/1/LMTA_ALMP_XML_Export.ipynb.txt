@@ -1,0 +1,535 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "fa42435b-826e-4109-bb06-8c704ebdc08f",
+   "metadata": {},
+   "source": [
+    "# LMTA ALMP XML Export\n",
+    "\n",
+    "**Notebook engine:** PySpark.\n",
+    "\n",
+    "This notebook uses the PySpark runtime only for Microsoft Fabric integration and `notebookutils`. It does not use Spark DataFrames. Warehouse access, XML construction, XSD validation, and Lakehouse file output are ordinary Python."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3e2c0565-89c2-4610-a841-cac497017bcd",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Install Packages"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "483ab5b0-001e-40b1-9062-c3ed48af0361",
+   "metadata": {
+    "editable": false,
+    "jupyter": {
+     "outputs_hidden": true
+    },
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "run_control": {
+     "frozen": false
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.livy.statement-meta+json": {
+       "execution_finish_time": "2026-11-07T02:53:33.7628177Z",
+       "execution_start_time": "2026-11-07T02:53:33.2796305Z",
+       "livy_statement_state": "available",
+       "normalized_state": "finished",
+       "parent_msg_id": "b809e9fc-cbf9-4c30-8a9b-a916c1bf2e5c",
+       "queued_time": "2026-11-07T02:53:27.2640045Z",
+       "session_id": "bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb",
+       "session_start_time": null,
+       "spark_jobs_updating": false,
+       "spark_pool": null,
+       "state": "finished",
+       "statement_id": 3,
+       "statement_ids": [
+        3
+       ]
+      },
+      "text/plain": [
+       "StatementMeta(, bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb, 3, Finished, Available, Finished, False)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Run only once\n",
+    "# %pip install lxml pyodbc"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bba7ea51-18a9-495c-8fd9-30acddc34373",
+   "metadata": {},
+   "source": [
+    "If Fabric restarts the session after package installation, continue with the next cell.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c1b2638c-6c8d-4ca9-b2c6-6d139398d6dc",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Import Modules"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "d1b846c6-2fe8-4f68-abc9-36b0f28e3809",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.livy.statement-meta+json": {
+       "execution_finish_time": "2026-11-07T03:01:38.7862613Z",
+       "execution_start_time": "2026-11-07T03:01:37.7042474Z",
+       "livy_statement_state": "available",
+       "normalized_state": "finished",
+       "parent_msg_id": "26299293-a30f-45fe-958b-53fdadd0a0e3",
+       "queued_time": "2026-11-07T03:01:37.7031223Z",
+       "session_id": "bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb",
+       "session_start_time": null,
+       "spark_jobs_updating": false,
+       "spark_pool": null,
+       "state": "finished",
+       "statement_id": 12,
+       "statement_ids": [
+        12
+       ]
+      },
+      "text/plain": [
+       "StatementMeta(, bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb, 12, Finished, Available, Finished, False)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Loaded from: /lakehouse/default/Files/LMTA/code/python/lmta_almp_export.py\n",
+      "Module version: 2026.11.07-clean-4\n",
+      "ExportConfig available: True\n",
+      "test_connection available: True\n",
+      "run_export available: True\n"
+     ]
+    }
+   ],
+   "source": [
+    "from pathlib import Path\n",
+    "import sys\n",
+    "import importlib\n",
+    "import json\n",
+    "\n",
+    "MODULE_DIR = Path(\"/lakehouse/default/Files/LMTA/code/python\")\n",
+    "MODULE_PATH = MODULE_DIR / \"lmta_almp_export.py\"\n",
+    "\n",
+    "if not MODULE_PATH.exists():\n",
+    "    raise FileNotFoundError(f\"Upload the new module to: {MODULE_PATH}\")\n",
+    "\n",
+    "if str(MODULE_DIR) not in sys.path:\n",
+    "    sys.path.insert(0, str(MODULE_DIR))\n",
+    "\n",
+    "sys.modules.pop(\"lmta_almp_export\", None)\n",
+    "importlib.invalidate_caches()\n",
+    "import lmta_almp_export\n",
+    "\n",
+    "print(\"Loaded from:\", lmta_almp_export.__file__)\n",
+    "print(\"Module version:\", lmta_almp_export.MODULE_VERSION)\n",
+    "print(\"ExportConfig available:\", hasattr(lmta_almp_export, \"ExportConfig\"))\n",
+    "print(\"test_connection available:\", hasattr(lmta_almp_export, \"test_connection\"))\n",
+    "print(\"run_export available:\", hasattr(lmta_almp_export, \"run_export\"))\n",
+    "\n",
+    "ExportConfig = lmta_almp_export.ExportConfig\n",
+    "test_connection = lmta_almp_export.test_connection\n",
+    "run_export = lmta_almp_export.run_export\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7e7ac213-bd8f-4433-949c-d21c8189a73e",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Create Configuration"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "91cd40ee-1457-4476-b463-e57ca222f978",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.livy.statement-meta+json": {
+       "execution_finish_time": "2026-11-07T03:01:54.9120223Z",
+       "execution_start_time": "2026-11-07T03:01:54.5577678Z",
+       "livy_statement_state": "available",
+       "normalized_state": "finished",
+       "parent_msg_id": "659edc5e-f744-4273-8866-fc57e50ccd8c",
+       "queued_time": "2026-11-07T03:01:54.5566905Z",
+       "session_id": "bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb",
+       "session_start_time": null,
+       "spark_jobs_updating": false,
+       "spark_pool": null,
+       "state": "finished",
+       "statement_id": 13,
+       "statement_ids": [
+        13
+       ]
+      },
+      "text/plain": [
+       "StatementMeta(, bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb, 13, Finished, Available, Finished, False)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Configuration created for submission: 1001\n"
+     ]
+    }
+   ],
+   "source": [
+    "# EDIT THESE VALUES ONLY\n",
+    "SUBMISSION_ID = 1001\n",
+    "SQL_SERVER = \"esfe5ty3mtjebec6tiziwzcpvm-efk4ghrfe6uuzkqv3r573kj6be.datawarehouse.fabric.microsoft.com\"\n",
+    "SQL_DATABASE = \"LMTA\"\n",
+    "PROGRAM_TYPE = \"LMDA\"       # LMDA or WDA\n",
+    "SEQUENCE_NUMBER = 1\n",
+    "MAIN_XSD_NAME = \"ALMP.xsd\"\n",
+    "\n",
+    "# Production requirement: populate exact XSD xs:sequence order.\n",
+    "ELEMENT_ORDER = {\n",
+    "    # \"submission\": [...],\n",
+    "    # \"sys_action\": [...],\n",
+    "    # \"client\": [...],\n",
+    "    # \"action_plan\": [...],\n",
+    "    # \"followup\": [...],\n",
+    "    # \"intervention\": [...],\n",
+    "    # \"support\": [...],\n",
+    "}\n",
+    "\n",
+    "config = ExportConfig(\n",
+    "    submission_id=SUBMISSION_ID,\n",
+    "    sql_server=SQL_SERVER,\n",
+    "    sql_database=SQL_DATABASE,\n",
+    "    program_type=PROGRAM_TYPE,\n",
+    "    sequence_number=SEQUENCE_NUMBER,\n",
+    "    main_xsd_name=MAIN_XSD_NAME,\n",
+    "    table_element_order=ELEMENT_ORDER,\n",
+    ")\n",
+    "\n",
+    "print(\"Configuration created for submission:\", config.submission_id)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "828c4876-a7cd-420f-9a5e-6f522cdb225a",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Test Connection"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "6eddfa38-fd19-41ad-8e99-33e419b3a935",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.livy.statement-meta+json": {
+       "execution_finish_time": "2026-11-07T03:01:59.3182337Z",
+       "execution_start_time": "2026-11-07T03:01:58.3507481Z",
+       "livy_statement_state": "available",
+       "normalized_state": "finished",
+       "parent_msg_id": "44cafd2b-757c-4f3e-98b4-370cc9c629c0",
+       "queued_time": "2026-11-07T03:01:58.3495012Z",
+       "session_id": "bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb",
+       "session_start_time": null,
+       "spark_jobs_updating": false,
+       "spark_pool": null,
+       "state": "finished",
+       "statement_id": 14,
+       "statement_ids": [
+        14
+       ]
+      },
+      "text/plain": [
+       "StatementMeta(, bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb, 14, Finished, Available, Finished, False)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{\n",
+      "  \"connected\": true,\n",
+      "  \"driver\": \"libmsodbcsql-18.4.so.1.1\",\n",
+      "  \"database\": \"LMTA\",\n",
+      "  \"latest_submission_id\": 1001\n",
+      "}\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Run this before XML generation.\n",
+    "connection_result = test_connection(config)\n",
+    "print(json.dumps(connection_result, indent=2, default=str))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a6967d5a-f611-4ca7-8f31-78abd669ec0e",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Run Export\n",
+    "**Required ICT_DL1 locations**\n",
+    "\n",
+    "- Module: `Files/LMTA/code/python/lmta_almp_export.py`\n",
+    "- Main XSD: `Files/LMTA/reference/xsd/current/ALMP.xsd`\n",
+    "- Imported XSDs: same `current` folder\n",
+    "- Valid XML: `Files/LMTA/output/xml/valid/`\n",
+    "- Invalid XML: `Files/LMTA/output/xml/invalid/`\n",
+    "- Validation reports: `Files/LMTA/output/validation/`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1d3afc17-2b49-401c-ae18-742906cc6e01",
+   "metadata": {
+    "advisor": {
+     "adviceMetadata": "{\"artifactId\":\"6987b9ce-68f2-400e-b774-54c8a9169fad\",\"activityId\":\"bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb\",\"applicationId\":\"application_1794019941539_0001\",\"jobGroupId\":\"15\",\"advices\":{\"error\":1}}"
+    },
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Run only after the connection test succeeds and SUBMISSION_ID exists.\n",
+    "# Return validation reports instead of raising so the report cell can display errors.\n",
+    "config.fail_on_validation_error = False\n",
+    "result = None\n",
+    "result = run_export(config)\n",
+    "print(json.dumps(result, indent=2, default=str))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2735319b-2137-4356-88b4-3d88c54639f6",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "## Validation Report"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49a74829-8bdd-413d-99ec-4faed439fbd1",
+   "metadata": {
+    "advisor": {
+     "adviceMetadata": "{\"artifactId\":\"6987b9ce-68f2-400e-b774-54c8a9169fad\",\"activityId\":\"bea9d60a-cb2e-4201-98d7-33c9dcd0fcdb\",\"applicationId\":\"application_1794019941539_0001\",\"jobGroupId\":\"16\",\"advices\":{\"error\":1}}"
+    },
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import json\n",
+    "from pathlib import Path\n",
+    "\n",
+    "if result is None:\n",
+    "    raise RuntimeError(\"Run the Run Export cell successfully before displaying its validation report.\")\n",
+    "\n",
+    "report_path = Path(result[\"validation_report_path\"])\n",
+    "if not report_path.is_file():\n",
+    "    raise FileNotFoundError(f\"Validation report not found for the current export run: {report_path}\")\n",
+    "\n",
+    "report = json.loads(report_path.read_text(encoding=\"utf-8\"))\n",
+    "errors = report.get(\"errors\")\n",
+    "if not isinstance(errors, list):\n",
+    "    raise ValueError(f\"Validation report has no errors list: {report_path}\")\n",
+    "\n",
+    "print(\"Valid:\", report[\"valid\"])\n",
+    "print(\"XML:\", report[\"xml_path\"])\n",
+    "print(\"XSD:\", report[\"xsd_path\"])\n",
+    "print(\"Validation report:\", report_path)\n",
+    "print(\"\\nVALIDATION ERRORS\")\n",
+    "print(\"=\" * 80)\n",
+    "if errors:\n",
+    "    for i, error in enumerate(errors, start=1):\n",
+    "        print(f\"\\nError {i}\")\n",
+    "        print(\"-\" * 40)\n",
+    "        print(json.dumps(error, indent=2, default=str))\n",
+    "else:\n",
+    "    print(\"No validation errors.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3df9cf77-fdd8-421a-a2ee-96d7a09f46c6",
+   "metadata": {
+    "microsoft": {
+     "language": "python",
+     "language_group": "synapse_pyspark"
+    },
+    "nteract": {
+     "transient": {
+      "deleting": false
+     }
+    }
+   },
+   "source": [
+    "### Debugging\n",
+    "Add debugging code here."
+   ]
+  }
+ ],
+ "metadata": {
+  "dependencies": {
+   "lakehouse": {
+    "default_lakehouse": "86945391-3672-4dbc-ad43-7dea9fbc8df2",
+    "default_lakehouse_name": "ICT_DL1",
+    "default_lakehouse_workspace_id": "1ec35521-2725-4ca9-aa15-dc7bfda93e09",
+    "known_lakehouses": [
+     {
+      "id": "86945391-3672-4dbc-ad43-7dea9fbc8df2"
+     }
+    ]
+   }
+  },
+  "kernel_info": {
+   "name": "synapse_pyspark"
+  },
+  "kernelspec": {
+   "display_name": "Synapse PySpark",
+   "language": "python",
+   "name": "synapse_pyspark"
+  },
+  "language_info": {
+   "name": "python"
+  },
+  "microsoft": {
+   "language": "python",
+   "language_group": "synapse_pyspark",
+   "ms_spell_check": {
+    "ms_spell_check_language": "en"
+   }
+  },
+  "nteract": {
+   "version": "nteract-front-end@1.0.0"
+  },
+  "spark_compute": {
+   "compute_id": "/trident/default",
+   "session_options": {
+    "conf": {
+     "spark.synapse.nbs.session.timeout": "1200000"
+    }
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
