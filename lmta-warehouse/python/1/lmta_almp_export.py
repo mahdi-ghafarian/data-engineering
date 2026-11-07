@@ -4,26 +4,36 @@ Run from a Fabric PySpark notebook with ICT_DL1 attached as the default
 Lakehouse. This module uses ordinary Python, pyodbc, and lxml. It does not use
 Spark DataFrames.
 """
+# --------------------------------------------------------------------
+# Import libraries
+# --------------------------------------------------------------------
 from __future__ import annotations
 
-import json
-import re
-import struct
+import json # write validation reports
+import re   # Validate SQL object names and SIN
+import struct # Convert the Fabric authentication token into the format ODBC expects
 from datetime import date, datetime
-from decimal import Decimal
-from pathlib import Path
+from decimal import Decimal # Correctly serialize SQL decimal values
+from pathlib import Path    # Work with XSD/output file paths
 from typing import Any, Iterable, Mapping, Sequence
 
-import pyodbc
-from lxml import etree
+import pyodbc   # connect to Fabric Warehouse
+from lxml import etree  # build and validate XML
 
-MODULE_VERSION = "2026.11.06-6"
+# --------------------------------------------------------------------
+# Define module version
+# --------------------------------------------------------------------
+MODULE_VERSION = "2026.11.07-1"
 
+# --------------------------------------------------------------------
+# Define namespaces, table names, and column order for XML export
+# --------------------------------------------------------------------
 ALMP_NS = "http://servicecanada.gc.ca/ALMP/contentExchange"
 TYPE_NS = "http://servicecanada.gc.ca/ALMP/contentTypes"
 XSI_NS = "http://www.w3.org/2001/XMLSchema-instance"
 NSMAP = {"ALMP": ALMP_NS, "p": TYPE_NS, "xsi": XSI_NS}
 
+# TABLES maps logical Python names to warehouse tables
 TABLES = {
     "submission": "almp.submission",
     "sys_action": "almp.sys_action",
@@ -34,25 +44,32 @@ TABLES = {
     "support": "almp.intervention_support",
 }
 
+# SORT_COLUMNS defines the order in which rows are exported to XML. 
+# It is used to ensure that the XML output is consistent and predictable, 
+# which is important for validation and comparison purposes.
 SORT_COLUMNS = (
-    "sort_seq", "client_key", "client_id", "action_plan_key", "action_plan_id",
-    "followup_key", "action_plan_followup_id", "intervention_key",
-    "intervention_id", "support_key", "intervention_support_id",
-    "sys_action_key", "sys_action_id",
+    "client_id", "action_plan_id", "action_plan_followup_id",
+    "intervention_id", "intervention_support_id", "sys_action_id",
 )
 
+# Technical columns are separated from XML data columns to avoid exporting them into the XML. They are used for
+# sorting and for validation purposes.
 TECHNICAL_COLUMNS = {
-    "submission_id", "batch_id", "client_key", "client_id",
-    "action_plan_key", "action_plan_id", "followup_key",
-    "action_plan_followup_id", "intervention_key", "intervention_id",
-    "support_key", "intervention_support_id", "sys_action_key",
-    "sys_action_id", "sort_seq", "source_system", "source_key", "load_id",
-    "source_as_of_date", "created_at", "updated_at", "loaded_at", "status",
-    "period_start", "period_end", "reporting_frequency", "xml_file_name",
-    "xml_path", "xsd_valid", "validation_status", "validation_message",
-    "validated_at", "exported_at",
+    "submission_id", "client_id", "action_plan_id",
+    "action_plan_followup_id", "intervention_id",
+    "intervention_support_id", "sys_action_id",
 }
 
+# --------------------------------------------------------------------
+# ExportConfig holds the settings
+
+# The configuration object answers questions such as:
+# - Which submission are we exporting?
+# - Which Fabric Warehouse?
+# - Where are the XSD files?
+# - Is this LMDA or WDA?
+# - Where should valid/invalid XML go?
+# --------------------------------------------------------------------
 
 class ExportConfig:
     def __init__(
@@ -104,6 +121,10 @@ class ExportConfig:
     def validation_dir(self) -> Path:
         return Path(self.lmta_root) / "output" / "validation"
 
+# --------------------------------------------------------------------
+# Connect to Fabric Warehouse and read submission data
+# _fabric_token() gets your Fabric identity
+# --------------------------------------------------------------------
 
 def _fabric_token() -> str:
     errors = []
@@ -124,6 +145,10 @@ def _odbc_token_bytes(token: str) -> bytes:
     encoded = token.encode("utf-16-le")
     return struct.pack(f"<I{len(encoded)}s", len(encoded), encoded)
 
+# --------------------------------------------------------------------
+# Connect to the Fabric Warehouse using pyodbc and the Fabric token
+# connect_to_warehouse() opens the SQL connection
+# --------------------------------------------------------------------
 
 def connect_to_warehouse(cfg: ExportConfig) -> pyodbc.Connection:
     connection_string = (
@@ -137,7 +162,7 @@ def connect_to_warehouse(cfg: ExportConfig) -> pyodbc.Connection:
         autocommit=True,
     )
 
-
+# test_connection() is just a smoke test
 def test_connection(cfg: ExportConfig) -> dict[str, Any]:
     connection = connect_to_warehouse(cfg)
     try:
@@ -153,14 +178,14 @@ def test_connection(cfg: ExportConfig) -> dict[str, Any]:
     finally:
         connection.close()
 
-
+# _quote_object_name() safely quotes a SQL object name for use in queries
 def _quote_object_name(object_name: str) -> str:
     parts = object_name.split(".")
     if len(parts) != 2 or not all(re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", p) for p in parts):
         raise ValueError(f"Invalid SQL object name: {object_name}")
     return ".".join(f"[{part}]" for part in parts)
 
-
+# _table_columns() discovers the table schema
 def _table_columns(connection: pyodbc.Connection, object_name: str) -> list[str]:
     schema_name, table_name = object_name.split(".")
     cursor = connection.cursor()
@@ -175,7 +200,7 @@ def _table_columns(connection: pyodbc.Connection, object_name: str) -> list[str]
     finally:
         cursor.close()
 
-
+# _read_submission_rows() loads one table
 def _read_submission_rows(
     connection: pyodbc.Connection,
     cfg: ExportConfig,
@@ -205,7 +230,7 @@ def _read_submission_rows(
     finally:
         cursor.close()
 
-
+# read_submission() loads the whole submission
 def read_submission(cfg: ExportConfig) -> dict[str, list[dict[str, Any]]]:
     connection = connect_to_warehouse(cfg)
     try:
@@ -222,7 +247,7 @@ def read_submission(cfg: ExportConfig) -> dict[str, list[dict[str, Any]]]:
         )
     return data
 
-
+# _xml_text() converts SQL/Python values into XML text
 def _xml_text(value: Any) -> str:
     if isinstance(value, datetime):
         return value.isoformat(timespec="seconds")
@@ -236,7 +261,7 @@ def _xml_text(value: Any) -> str:
         return str(int(value)) if value.is_integer() else format(value, ".15g")
     return str(value).strip()
 
-
+# _add_element() creates XML elements safely
 def _add_element(parent: etree._Element, tag: str, value: Any) -> None:
     if value is None:
         return
@@ -246,14 +271,14 @@ def _add_element(parent: etree._Element, tag: str, value: Any) -> None:
     child = etree.SubElement(parent, tag)
     child.text = text
 
-
+# _business_columns() determines which columns become XML
 def _business_columns(row: Mapping[str, Any], cfg: ExportConfig, dataset: str) -> list[str]:
     configured = cfg.table_element_order.get(dataset)
     if configured:
         return [column for column in configured if column in row]
     return [column for column in row if column.lower() not in TECHNICAL_COLUMNS]
 
-
+# _append_row() adds one row to the XML tree
 def _append_row(
     parent: etree._Element,
     row: Mapping[str, Any],
@@ -271,14 +296,14 @@ def _append_row(
         if column not in excluded_set:
             _add_element(parent, column, row.get(column))
 
-
+# _group_by_candidates() groups rows by the first present candidate key
 def _first_present(row: Mapping[str, Any], candidates: Sequence[str]) -> Any:
     for column in candidates:
         if column in row:
             return row.get(column)
     return None
 
-
+# Grouping reconstructs database relationships
 def _group_by_candidates(
     rows: Sequence[Mapping[str, Any]], candidates: Sequence[str]
 ) -> dict[Any, list[Mapping[str, Any]]]:
@@ -287,7 +312,7 @@ def _group_by_candidates(
         grouped.setdefault(_first_present(row, candidates), []).append(row)
     return grouped
 
-
+# build_xml() is the heart of the exporter
 def build_xml(
     data: Mapping[str, Sequence[Mapping[str, Any]]], cfg: ExportConfig
 ) -> etree._ElementTree:
@@ -366,7 +391,7 @@ def build_xml(
         _add_element(client_node, "sysComment", client.get("sysComment"))
     return etree.ElementTree(root)
 
-
+# _luhn_valid() checks that a SIN is nine digits and passes the MOD 10 checksum
 def _luhn_valid(value: str) -> bool:
     if not re.fullmatch(r"\d{9}", value or ""):
         return False
@@ -379,7 +404,7 @@ def _luhn_valid(value: str) -> bool:
             total += digit
     return total % 10 == 0
 
-
+# validate_content() checks business rules that cannot be expressed in XSD
 def validate_content(
     data: Mapping[str, Sequence[Mapping[str, Any]]]
 ) -> list[dict[str, Any]]:
@@ -389,6 +414,7 @@ def validate_content(
     interventions = _group_by_candidates(data["intervention"], ("action_plan_key", "action_plan_id"))
     supports = _group_by_candidates(data["support"], ("intervention_key", "intervention_id"))
 
+    # issue() appends a validation error to the list
     def issue(rule: str, entity: str, key: Any, column: str | None, message: str) -> None:
         errors.append({
             "validation_type": "CONTENT", "severity": "ERROR",
@@ -428,7 +454,7 @@ def validate_content(
                   "An intervention can contain no more than ten support rows.")
     return errors
 
-
+# validate_xsd() asks the real ALMP XSD whether the XML is valid
 def validate_xsd(xml_bytes: bytes, xsd_path: Path) -> list[dict[str, Any]]:
     if not xsd_path.exists():
         return [{"validation_type": "XSD", "severity": "ERROR",
@@ -448,23 +474,23 @@ def validate_xsd(xml_bytes: bytes, xsd_path: Path) -> list[dict[str, Any]]:
         "message": error.message,
     } for error in schema.error_log]
 
-
+# _ensure_directories() creates the output directories if they do not exist
 def _ensure_directories(cfg: ExportConfig) -> None:
     for path in (cfg.xsd_dir, cfg.valid_dir, cfg.invalid_dir, cfg.validation_dir):
         path.mkdir(parents=True, exist_ok=True)
 
-
+# _output_name() generates the federal-style filename
 def _output_name(cfg: ExportConfig) -> str:
     prefix = "sklmda" if cfg.program_type == "LMDA" else "skwda"
     return f"{prefix}_{cfg.sequence_number:03d}_{datetime.now():%Y%m%d%H%M%S}.xml"
 
-
+# _write_new() intentionally refuses to overwrite files
 def _write_new(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("x", encoding="utf-8", newline="\n") as handle:
         handle.write(content)
 
-
+# run_export() orchestrates everything
 def run_export(cfg: ExportConfig) -> dict[str, Any]:
     _ensure_directories(cfg)
     data = read_submission(cfg)
