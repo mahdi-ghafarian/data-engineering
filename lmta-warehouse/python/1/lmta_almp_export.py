@@ -23,7 +23,7 @@ from lxml import etree  # build and validate XML
 # --------------------------------------------------------------------
 # Define module version
 # --------------------------------------------------------------------
-MODULE_VERSION = "2026.11.07-1"
+MODULE_VERSION = "2026.11.07-2"
 
 # --------------------------------------------------------------------
 # Define namespaces, table names, and column order for XML export
@@ -52,8 +52,8 @@ SORT_COLUMNS = (
     "intervention_id", "intervention_support_id", "sys_action_id",
 )
 
-# Technical columns are separated from XML data columns to avoid exporting them into the XML. They are used for
-# sorting and for validation purposes.
+# Technical columns are separated from XML data columns to avoid exporting 
+# them into the XML. They are used for sorting and for validation purposes.
 TECHNICAL_COLUMNS = {
     "submission_id", "client_id", "action_plan_id",
     "action_plan_followup_id", "intervention_id",
@@ -61,15 +61,14 @@ TECHNICAL_COLUMNS = {
 }
 
 # --------------------------------------------------------------------
-# ExportConfig holds the settings
-
+# XML Export Configuration
+# ---------------------------------------------------------------------
 # The configuration object answers questions such as:
 # - Which submission are we exporting?
 # - Which Fabric Warehouse?
 # - Where are the XSD files?
 # - Is this LMDA or WDA?
 # - Where should valid/invalid XML go?
-# --------------------------------------------------------------------
 
 class ExportConfig:
     def __init__(
@@ -100,7 +99,7 @@ class ExportConfig:
             "streetAddress", "municipality", "province", "country",
             "postalZIPCode", "contactPhoneNumber", "addressSysComment",
         ))
-        if not self.sql_server or "REPLACE-" in self.sql_server.upper():
+        if not self.sql_server:
             raise ValueError("Enter the actual LMTA Warehouse SQL server endpoint.")
         if self.program_type not in {"LMDA", "WDA"}:
             raise ValueError("program_type must be LMDA or WDA")
@@ -121,11 +120,12 @@ class ExportConfig:
     def validation_dir(self) -> Path:
         return Path(self.lmta_root) / "output" / "validation"
 
-# --------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# DATABESE CONNECTION AND DATA RETRIEVAL
+# ---------------------------------------------------------------------
+
 # Connect to Fabric Warehouse and read submission data
 # _fabric_token() gets your Fabric identity
-# --------------------------------------------------------------------
-
 def _fabric_token() -> str:
     errors = []
     try:
@@ -145,11 +145,8 @@ def _odbc_token_bytes(token: str) -> bytes:
     encoded = token.encode("utf-16-le")
     return struct.pack(f"<I{len(encoded)}s", len(encoded), encoded)
 
-# --------------------------------------------------------------------
 # Connect to the Fabric Warehouse using pyodbc and the Fabric token
 # connect_to_warehouse() opens the SQL connection
-# --------------------------------------------------------------------
-
 def connect_to_warehouse(cfg: ExportConfig) -> pyodbc.Connection:
     connection_string = (
         f"Driver={{{cfg.odbc_driver}}};Server={cfg.sql_server};"
@@ -211,10 +208,8 @@ def _read_submission_rows(
         raise ValueError(f"Warehouse object not found or not visible: {object_name}")
     if "submission_id" in columns:
         id_column = "submission_id"
-    elif "batch_id" in columns:
-        id_column = "batch_id"
     else:
-        raise ValueError(f"{object_name} has neither submission_id nor batch_id")
+        raise ValueError(f"{object_name} has no submission_id")
 
     ordering = [column for column in SORT_COLUMNS if column in columns]
     order_clause = " ORDER BY " + ", ".join(f"[{c}]" for c in ordering) if ordering else ""
@@ -246,6 +241,10 @@ def read_submission(cfg: ExportConfig) -> dict[str, list[dict[str, Any]]]:
             f"found {len(data['submission'])}."
         )
     return data
+
+# ---------------------------------------------------------------------
+# EXPORT TO XML
+# ---------------------------------------------------------------------
 
 # _xml_text() converts SQL/Python values into XML text
 def _xml_text(value: Any) -> str:
@@ -313,6 +312,7 @@ def _group_by_candidates(
     return grouped
 
 # build_xml() is the heart of the exporter
+# It constructs the XML tree according to the ALMP schema and the configuration.
 def build_xml(
     data: Mapping[str, Sequence[Mapping[str, Any]]], cfg: ExportConfig
 ) -> etree._ElementTree:
@@ -391,6 +391,9 @@ def build_xml(
         _add_element(client_node, "sysComment", client.get("sysComment"))
     return etree.ElementTree(root)
 
+# ---------------------------------------------------------------------
+# VALIDATION
+# ---------------------------------------------------------------------
 # _luhn_valid() checks that a SIN is nine digits and passes the MOD 10 checksum
 def _luhn_valid(value: str) -> bool:
     if not re.fullmatch(r"\d{9}", value or ""):
@@ -489,6 +492,10 @@ def _write_new(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("x", encoding="utf-8", newline="\n") as handle:
         handle.write(content)
+
+# ---------------------------------------------------------------------
+# MAIN FUNCTION
+# ---------------------------------------------------------------------
 
 # run_export() orchestrates everything
 def run_export(cfg: ExportConfig) -> dict[str, Any]:
