@@ -1,49 +1,55 @@
 /*
-Populate ref.code_map for PRISM client coded fields.
+Assumption:
+    ref.code_map has been truncated before this script runs.
 
-Assumes ref.code_map has been truncated.
+Source:
+    stg.prism_choice
 
-PRISM:
-    source_value = source code
-    source_label = source description
+ALMP reference:
+    ref.almp_code
 
-ALMP:
-    almp_code  = federal code
-    almp_value = federal description from ref.almp_code
+Target:
+    ref.code_map
 */
 
-WITH prism AS
+WITH prism_choices AS
 (
     SELECT DISTINCT
         CAST('PRISM_CLT' AS VARCHAR(50))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_system,
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS source_system,
 
         CAST('contact' AS VARCHAR(100))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_table,
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS source_table,
 
-        LOWER(TRIM(pc.COLUMN_NAME))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_column,
+        LOWER(LTRIM(RTRIM(pc.COLUMN_NAME)))
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS source_column,
 
-        CAST(pc.CHOICE_VALUE AS VARCHAR(200))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_value,
+        CAST(LTRIM(RTRIM(pc.CHOICE_NAME)) AS VARCHAR(200))
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS source_label,
 
-        CAST(TRIM(pc.CHOICE_NAME) AS VARCHAR(500))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_label,
+        CAST(pc.CHOICE_VALUE AS VARCHAR(20))
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS source_code,
 
-        LOWER(TRIM(pc.CHOICE_NAME))
-            COLLATE Latin1_General_100_BIN2_UTF8 AS source_label_lower
+        LOWER(LTRIM(RTRIM(pc.CHOICE_NAME)))
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS normalized_value
 
-    FROM stg.prism_choice pc
+    FROM stg.prism_choice AS pc
 
-    WHERE LOWER(TRIM(pc.MODULE_NAME))
+    WHERE LOWER(LTRIM(RTRIM(pc.MODULE_NAME)))
               COLLATE Latin1_General_100_BIN2_UTF8
           = 'client'
 
-      AND LOWER(TRIM(pc.TABLE_NAME))
+      AND LOWER(LTRIM(RTRIM(pc.TABLE_NAME)))
               COLLATE Latin1_General_100_BIN2_UTF8
           = 'contact'
 
-      AND LOWER(TRIM(pc.COLUMN_NAME))
+      AND LOWER(LTRIM(RTRIM(pc.COLUMN_NAME)))
               COLLATE Latin1_General_100_BIN2_UTF8
           IN
           (
@@ -57,12 +63,15 @@ WITH prism AS
           )
 ),
 
-mapped AS
+mapped_choices AS
 (
     SELECT
-        *,
+        source_system,
+        source_table,
+        source_column,
+        source_label,
+        source_code,
 
-        /* Target ALMP element */
         CASE source_column
             WHEN 'gendercode'
                 THEN 'gender'
@@ -87,33 +96,32 @@ mapped AS
         END COLLATE Latin1_General_100_BIN2_UTF8
             AS almp_element,
 
-
-        /* Target ALMP code */
         CASE
-
             /* =====================================================
-               GENDER
-               ALMP:
-               1 Male
-               2 Female
-               3 Unspecified
-               9 Prefer not to report
+               Gender
+               1 = Male
+               2 = Female
+               3 = Unspecified
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column = 'gendercode'
-             AND source_label_lower = 'male'
+             AND normalized_value = 'male'
                 THEN '1'
 
             WHEN source_column = 'gendercode'
-             AND source_label_lower = 'female'
+             AND normalized_value = 'female'
                 THEN '2'
 
             WHEN source_column = 'gendercode'
              AND
              (
-                 source_label_lower LIKE '%prefer%'
-                 OR source_label_lower LIKE '%declin%'
-                 OR source_label_lower LIKE '%refus%'
+                 normalized_value LIKE '%prefer%'
+                 OR normalized_value LIKE '%declin%'
+                 OR normalized_value LIKE '%refus%'
+                 OR normalized_value LIKE '%not respond%'
+                 OR normalized_value LIKE '%not report%'
+                 OR normalized_value LIKE '%not disclose%'
              )
                 THEN '9'
 
@@ -122,30 +130,31 @@ mapped AS
 
 
             /* =====================================================
-               MARITAL STATUS
-               ALMP:
-               1 Married/equivalent
-               2 Single
-               9 Prefer not to report
+               Marital status
+               1 = Married/equivalent
+               2 = Single
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column = 'familystatuscode'
              AND
              (
-                 source_label_lower LIKE '%married%'
-                 OR source_label_lower LIKE '%common law%'
-                 OR source_label_lower LIKE '%common-law%'
-                 OR source_label_lower LIKE '%partner%'
+                 normalized_value LIKE '%married%'
+                 OR normalized_value LIKE '%common law%'
+                 OR normalized_value LIKE '%common-law%'
+                 OR normalized_value LIKE '%partner%'
              )
                 THEN '1'
 
             WHEN source_column = 'familystatuscode'
              AND
              (
-                 source_label_lower LIKE '%prefer%'
-                 OR source_label_lower LIKE '%declin%'
-                 OR source_label_lower LIKE '%refus%'
-                 OR source_label_lower LIKE '%unknown%'
+                 normalized_value LIKE '%prefer%'
+                 OR normalized_value LIKE '%declin%'
+                 OR normalized_value LIKE '%refus%'
+                 OR normalized_value LIKE '%unknown%'
+                 OR normalized_value LIKE '%not respond%'
+                 OR normalized_value LIKE '%not report%'
              )
                 THEN '9'
 
@@ -154,25 +163,24 @@ mapped AS
 
 
             /* =====================================================
-               LANGUAGE
-               ALMP:
-               2 English only
-               3 French only
-               6 English & French
-               9 Not a federal official language
+               Language spoken
+               2 = English only
+               3 = French only
+               6 = English and French
+               9 = Not a federal official language
                ===================================================== */
 
             WHEN source_column = 'ict_languageofservices'
-             AND source_label_lower LIKE '%english%'
-             AND source_label_lower LIKE '%french%'
+             AND normalized_value LIKE '%english%'
+             AND normalized_value LIKE '%french%'
                 THEN '6'
 
             WHEN source_column = 'ict_languageofservices'
-             AND source_label_lower LIKE '%english%'
+             AND normalized_value LIKE '%english%'
                 THEN '2'
 
             WHEN source_column = 'ict_languageofservices'
-             AND source_label_lower LIKE '%french%'
+             AND normalized_value LIKE '%french%'
                 THEN '3'
 
             WHEN source_column = 'ict_languageofservices'
@@ -180,18 +188,18 @@ mapped AS
 
 
             /* =====================================================
-               DISABILITY
-               1 Yes
-               2 No
-               9 Prefer not to report
+               Disability
+               1 = Yes
+               2 = No
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column = 'ict_disability'
-             AND source_label_lower = 'yes'
+             AND normalized_value = 'yes'
                 THEN '1'
 
             WHEN source_column = 'ict_disability'
-             AND source_label_lower = 'no'
+             AND normalized_value = 'no'
                 THEN '2'
 
             WHEN source_column = 'ict_disability'
@@ -199,30 +207,30 @@ mapped AS
 
 
             /* =====================================================
-               INDIGENOUS IDENTITY
-               1 Yes
-               2 No
-               9 Prefer not to report
+               Indigenous identity
+               1 = Yes
+               2 = No
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column = 'ict_indigenousidentity'
              AND
              (
-                 source_label_lower LIKE '%first nation%'
-                 OR source_label_lower LIKE '%metis%'
-                 OR source_label_lower LIKE '%métis%'
-                 OR source_label_lower LIKE '%inuit%'
-                 OR source_label_lower = 'indigenous'
-                 OR source_label_lower = 'yes'
+                 normalized_value LIKE '%first nation%'
+                 OR normalized_value LIKE '%metis%'
+                 OR normalized_value LIKE '%métis%'
+                 OR normalized_value LIKE '%inuit%'
+                 OR normalized_value = 'indigenous'
+                 OR normalized_value = 'yes'
              )
                 THEN '1'
 
             WHEN source_column = 'ict_indigenousidentity'
              AND
              (
-                 source_label_lower = 'no'
-                 OR source_label_lower LIKE '%non-indigenous%'
-                 OR source_label_lower LIKE '%not indigenous%'
+                 normalized_value = 'no'
+                 OR normalized_value LIKE '%non-indigenous%'
+                 OR normalized_value LIKE '%not indigenous%'
              )
                 THEN '2'
 
@@ -231,20 +239,22 @@ mapped AS
 
 
             /* =====================================================
-               IMMIGRANT
-               1 Yes
-               2 No
-               9 Prefer not to report
+               Immigrant
+               1 = Yes
+               2 = No
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column =
                  'ict_citizenshipimmigrationstatus'
              AND
              (
-                 source_label_lower LIKE '%prefer%'
-                 OR source_label_lower LIKE '%declin%'
-                 OR source_label_lower LIKE '%refus%'
-                 OR source_label_lower LIKE '%unknown%'
+                 normalized_value LIKE '%prefer%'
+                 OR normalized_value LIKE '%declin%'
+                 OR normalized_value LIKE '%refus%'
+                 OR normalized_value LIKE '%unknown%'
+                 OR normalized_value LIKE '%not respond%'
+                 OR normalized_value LIKE '%not report%'
              )
                 THEN '9'
 
@@ -252,11 +262,11 @@ mapped AS
                  'ict_citizenshipimmigrationstatus'
              AND
              (
-                 source_label_lower LIKE '%canadian citizen%'
-                 OR source_label_lower = 'citizen'
-                 OR source_label_lower LIKE '%born in canada%'
-                 OR source_label_lower LIKE '%non-immigrant%'
-                 OR source_label_lower = 'no'
+                 normalized_value LIKE '%canadian citizen%'
+                 OR normalized_value = 'citizen'
+                 OR normalized_value LIKE '%born in canada%'
+                 OR normalized_value LIKE '%non-immigrant%'
+                 OR normalized_value = 'no'
              )
                 THEN '2'
 
@@ -266,18 +276,18 @@ mapped AS
 
 
             /* =====================================================
-               VISIBLE MINORITY
-               1 Yes
-               2 No
-               9 Prefer not to report
+               Visible minority
+               1 = Yes
+               2 = No
+               9 = Prefer not to report
                ===================================================== */
 
             WHEN source_column = 'ict_visibleminority'
-             AND source_label_lower = 'yes'
+             AND normalized_value = 'yes'
                 THEN '1'
 
             WHEN source_column = 'ict_visibleminority'
-             AND source_label_lower = 'no'
+             AND normalized_value = 'no'
                 THEN '2'
 
             WHEN source_column = 'ict_visibleminority'
@@ -288,43 +298,80 @@ mapped AS
 
         CASE
             WHEN source_column = 'gendercode'
-             AND source_label_lower NOT IN ('male', 'female')
-             AND source_label_lower NOT LIKE '%prefer%'
-             AND source_label_lower NOT LIKE '%declin%'
-             AND source_label_lower NOT LIKE '%refus%'
+             AND normalized_value NOT IN ('male', 'female')
+             AND normalized_value NOT LIKE '%prefer%'
+             AND normalized_value NOT LIKE '%declin%'
+             AND normalized_value NOT LIKE '%refus%'
                 THEN
-                    'Judgement: source gender mapped to ALMP Unspecified.'
+                    'Judgement: mapped source gender to ALMP Unspecified.'
 
             WHEN source_column = 'familystatuscode'
              AND
              (
-                 source_label_lower LIKE '%divorc%'
-                 OR source_label_lower LIKE '%separat%'
-                 OR source_label_lower LIKE '%widow%'
+                 normalized_value LIKE '%divorc%'
+                 OR normalized_value LIKE '%separat%'
+                 OR normalized_value LIKE '%widow%'
              )
                 THEN
-                    'Judgement: non-partnered marital status mapped to ALMP Single.'
+                    'Judgement: mapped non-partnered status to ALMP Single.'
 
             WHEN source_column =
                  'ict_citizenshipimmigrationstatus'
-             AND source_label_lower NOT LIKE '%canadian citizen%'
-             AND source_label_lower <> 'citizen'
-             AND source_label_lower NOT LIKE '%born in canada%'
-             AND source_label_lower NOT LIKE '%non-immigrant%'
-             AND source_label_lower <> 'no'
-             AND source_label_lower NOT LIKE '%prefer%'
-             AND source_label_lower NOT LIKE '%declin%'
-             AND source_label_lower NOT LIKE '%refus%'
-             AND source_label_lower NOT LIKE '%unknown%'
+             AND normalized_value NOT LIKE '%canadian citizen%'
+             AND normalized_value <> 'citizen'
+             AND normalized_value NOT LIKE '%born in canada%'
+             AND normalized_value NOT LIKE '%non-immigrant%'
+             AND normalized_value <> 'no'
+             AND normalized_value NOT LIKE '%prefer%'
+             AND normalized_value NOT LIKE '%declin%'
+             AND normalized_value NOT LIKE '%refus%'
+             AND normalized_value NOT LIKE '%unknown%'
                 THEN
-                    'Judgement: source immigration status mapped to ALMP immigrant Yes.'
+                    'Judgement: mapped immigration status to ALMP immigrant Yes.'
 
             ELSE
                 'Direct PRISM-to-ALMP client mapping.'
         END COLLATE Latin1_General_100_BIN2_UTF8
             AS mapping_note
 
-    FROM prism
+    FROM prism_choices
+),
+
+almp_codes AS
+(
+    SELECT DISTINCT
+        ac.code_domain
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS almp_element,
+
+        ac.almp_code
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS almp_code,
+
+        CAST(ac.almp_label AS VARCHAR(200))
+            COLLATE Latin1_General_100_BIN2_UTF8
+            AS almp_label
+
+    FROM ref.almp_code AS ac
+
+    WHERE ac.schema_version
+              COLLATE Latin1_General_100_BIN2_UTF8
+          = '1.5'
+
+      AND ac.is_active = 1
+
+      AND ac.code_domain
+              COLLATE Latin1_General_100_BIN2_UTF8
+          IN
+          (
+              'gender',
+              'maritalStatus',
+              'languageSpoken',
+              'disability',
+              'indigenousIdentity',
+              'immigrant',
+              'visibleMinority'
+          )
 )
 
 INSERT INTO ref.code_map
@@ -332,12 +379,12 @@ INSERT INTO ref.code_map
     source_system,
     source_table,
     source_column,
-    source_value,
     source_label,
+    source_code,
 
     almp_element,
+    almp_label,
     almp_code,
-    almp_value,
     almp_program_type,
     almp_schema_version,
 
@@ -347,45 +394,29 @@ INSERT INTO ref.code_map
 )
 
 SELECT DISTINCT
-    m.source_system,
-    m.source_table,
-    m.source_column,
-    m.source_value,
-    m.source_label,
+    source.source_system,
+    source.source_table,
+    source.source_column,
+    source.source_label,
+    source.source_code,
 
-    m.almp_element,
-    m.almp_code,
+    source.almp_element,
+    target.almp_label,
+    source.almp_code,
 
-    /* authoritative ALMP description */
-    CAST(a.almp_value AS VARCHAR(20))
-        COLLATE Latin1_General_100_BIN2_UTF8,
+    'BOTH' AS almp_program_type,
+    '1.5' AS almp_schema_version,
 
-    'BOTH',
-    '1.5',
+    CAST('2026-04-15' AS DATE) AS effective_from,
+    NULL AS effective_to,
 
-    CAST('2026-04-15' AS DATE),
-    NULL,
+    source.mapping_note
 
-    m.mapping_note
+FROM mapped_choices AS source
 
-FROM mapped m
+INNER JOIN almp_codes AS target
+    ON target.almp_element =
+       source.almp_element
 
-INNER JOIN ref.almp_code a
-    ON a.code_domain
-           COLLATE Latin1_General_100_BIN2_UTF8
-       =
-       m.almp_element
-           COLLATE Latin1_General_100_BIN2_UTF8
-
-   AND a.almp_code
-           COLLATE Latin1_General_100_BIN2_UTF8
-       =
-       m.almp_code
-           COLLATE Latin1_General_100_BIN2_UTF8
-
-   AND a.schema_version
-           COLLATE Latin1_General_100_BIN2_UTF8
-       =
-       '1.5'
-
-   AND a.is_active = 1;
+   AND target.almp_code =
+       source.almp_code;
