@@ -1,0 +1,30 @@
+INSERT INTO ref.code_map
+(
+    source_system,
+    source_table,
+    source_column,
+    source_value,
+    source_label,
+    almp_element_name,
+    almp_code,
+    almp_program_type,
+    almp_schema_version,
+    effective_from,
+    effective_to,
+    mapping_note
+)
+VALUES
+(
+    'PRISM_CLT',
+    'contact',
+    'gendercode',
+    'PUT_PRISM_VALUE_HERE',
+    'PUT_PRISM_LABEL_HERE',
+    'gender',
+    '3',
+    'BOTH',
+    '1.5',
+    '2026-04-15',
+    NULL,
+    'Manual mapping to ALMP gender Unspecified.'
+);

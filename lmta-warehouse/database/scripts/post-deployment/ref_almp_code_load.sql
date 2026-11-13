@@ -7,7 +7,7 @@ INSERT INTO ref.almp_code
     code_domain,
     xsd_type_name,
     almp_code,
-    description,
+    almp_value,
     program_type,
     is_bypass_value,
     schema_version,
