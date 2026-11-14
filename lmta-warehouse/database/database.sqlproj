@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="int" />
-    <Folder Include="int\Tables" />
     <Folder Include="scripts" />
     <Folder Include="scripts\post-deployment" />
     <Folder Include="scripts\pre-deployment" />
