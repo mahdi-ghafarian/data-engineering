@@ -10,17 +10,19 @@
   Mapping:
       [ref].[code_map]
 
-  Behavior:
+  Behaviour:
       1. Truncate the current integration table.
       2. Load active PRISM clients.
       3. Generate a run-scoped bigint client_id.
-      4. Use the single active Schema 1.5 mapping.
-      5. Constrain strings to target/XSD maximum lengths.
+      4. Set source_system to PRISM.
+      5. Use the single active Schema 1.5 mapping.
+      6. Constrain strings to target/XSD maximum lengths.
 
   Important:
       - client_id is regenerated on every refresh.
-      - client_id is only a technical hierarchy key.
-      - clientID remains the federal/provincial business field.
+      - client_id is a technical hierarchy key.
+      - source_system identifies the source of the integrated row.
+      - clientID remains the provincial/federal business field.
 ==============================================================*/
 
 TRUNCATE TABLE [int].[client];
@@ -135,7 +137,7 @@ prepared_client AS
             30
         ) AS clientID,
 
-        /* Normalize before validating SIN */
+        /* Normalize SIN before validating */
         NULLIF
         (
             REPLACE
@@ -196,7 +198,8 @@ prepared_client AS
             100
         ) AS firstName,
 
-        TRY_CONVERT(date, c.ict_dateofbirth) AS dateOfBirth,
+        TRY_CONVERT(date, c.ict_dateofbirth)
+            AS dateOfBirth,
 
         /* Email address: maximum 254 characters */
         LEFT
@@ -221,7 +224,7 @@ prepared_client AS
         TRY_CONVERT(int, c.ict_yearofpermanentresidency)
             AS immigrationYearNumber,
 
-        /* Combine and constrain address to maximum 150 characters */
+        /* Combine address lines and constrain to 150 characters */
         LEFT
         (
             NULLIF
@@ -235,7 +238,11 @@ prepared_client AS
                         (
                             RTRIM
                             (
-                                CAST(c.address1_line1 AS varchar(4000))
+                                CAST
+                                (
+                                    c.address1_line1
+                                    AS varchar(4000)
+                                )
                             )
                         ),
                         ''
@@ -246,7 +253,11 @@ prepared_client AS
                         (
                             RTRIM
                             (
-                                CAST(c.address1_line2 AS varchar(4000))
+                                CAST
+                                (
+                                    c.address1_line2
+                                    AS varchar(4000)
+                                )
                             )
                         ),
                         ''
@@ -274,7 +285,7 @@ prepared_client AS
             100
         ) AS municipality,
 
-        /* Postal code: normalize and constrain to maximum 10 */
+        /* Normalize postal code and constrain to 10 characters */
         LEFT
         (
             UPPER
@@ -303,7 +314,7 @@ prepared_client AS
             10
         ) AS postalZIPCode,
 
-        /* Select preferred phone and constrain to maximum 30 */
+        /* Select preferred telephone and constrain to 30 characters */
         LEFT
         (
             COALESCE
@@ -442,7 +453,8 @@ mapped_client AS
     FROM prepared_client AS pc
 
     LEFT JOIN gender_map AS gender
-        ON gender.source_code = pc.genderSourceCode
+        ON gender.source_code =
+           pc.genderSourceCode
 
     LEFT JOIN marital_status_map AS marital_status
         ON marital_status.source_code =
@@ -479,7 +491,7 @@ numbered_client AS
             Run-scoped bigint hierarchy key.
 
             clientID provides meaningful ordering.
-            contactid is the unique PRISM tie-breaker.
+            contactid provides the unique PRISM tie-breaker.
         */
         CAST
         (
@@ -520,6 +532,7 @@ numbered_client AS
 INSERT INTO [int].[client]
 (
     client_id,
+    source_system,
     clientID,
     socialInsuranceNumber,
     lastName,
@@ -545,12 +558,16 @@ INSERT INTO [int].[client]
 )
 SELECT
     nc.client_id,
+
+    /* Entity-level data source */
+    CAST('PRISM' AS varchar(50))
+        AS source_system,
+
     nc.clientID,
 
     /*
-        Store the SIN only if normalization produces exactly
-        nine characters. Invalid values remain NULL and are
-        reported by submission validation.
+        Store SIN only when normalization produces exactly
+        nine characters. Invalid values remain NULL.
     */
     CASE
         WHEN LEN(nc.normalizedSIN) = 9
@@ -599,7 +616,7 @@ SELECT
     nc.postalZIPCode,
     nc.contactPhoneNumber,
 
-    /* No current PRISM source field assigned to this element */
+    /* No current PRISM field is assigned to this element */
     CAST(NULL AS varchar(100))
         AS addressSysComment,
 
@@ -614,12 +631,15 @@ GO
 ==============================================================*/
 
 
-/* Summary */
+/* Load summary */
 SELECT
     COUNT(*) AS client_count,
-    COUNT(DISTINCT client_id) AS distinct_client_id_count,
-    MIN(client_id) AS minimum_client_id,
-    MAX(client_id) AS maximum_client_id,
+    COUNT(DISTINCT client_id)
+        AS distinct_client_id_count,
+    MIN(client_id)
+        AS minimum_client_id,
+    MAX(client_id)
+        AS maximum_client_id,
     SUM
     (
         CASE
@@ -643,7 +663,7 @@ HAVING client_id IS NULL
 GO
 
 
-/* Check for gaps in the current generated sequence */
+/* Check the generated sequence */
 SELECT
     COUNT(*) AS client_count,
     MIN(client_id) AS minimum_client_id,
@@ -672,6 +692,7 @@ GO
 /* Detect missing mandatory mapped values */
 SELECT
     client_id,
+    source_system,
     clientID,
     gender,
     maritalStatus,
@@ -693,6 +714,27 @@ WHERE gender IS NULL
 GO
 
 
+/* Confirm all rows have the expected source */
+SELECT
+    source_system,
+    COUNT(*) AS client_count
+FROM [int].[client]
+GROUP BY source_system
+ORDER BY source_system;
+GO
+
+
+/* This query must return zero rows */
+SELECT
+    client_id,
+    source_system,
+    clientID
+FROM [int].[client]
+WHERE source_system IS NULL
+   OR source_system <> 'PRISM';
+GO
+
+
 /* Confirm eligible source count matches target count */
 SELECT
     (
@@ -708,15 +750,22 @@ SELECT
 GO
 
 
-/* Confirm physical client_id type */
+/* Confirm physical client_id and source_system definitions */
 SELECT
     TABLE_SCHEMA,
     TABLE_NAME,
+    ORDINAL_POSITION,
     COLUMN_NAME,
     DATA_TYPE,
+    CHARACTER_MAXIMUM_LENGTH,
     IS_NULLABLE
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_SCHEMA = 'int'
   AND TABLE_NAME = 'client'
-  AND COLUMN_NAME = 'client_id';
+  AND COLUMN_NAME IN
+      (
+          'client_id',
+          'source_system'
+      )
+ORDER BY ORDINAL_POSITION;
 GO

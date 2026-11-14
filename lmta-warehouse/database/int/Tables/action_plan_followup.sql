@@ -3,6 +3,7 @@ CREATE TABLE [int].[action_plan_followup]
     /* Technical hierarchy keys */
     [action_plan_followup_id]                   bigint NOT NULL,
     [action_plan_id]                            bigint NOT NULL,
+    [source_system]                             varchar(50)      NOT NULL,
 
     /*
         Used to select at most five follow-ups deterministically.

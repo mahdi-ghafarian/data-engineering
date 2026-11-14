@@ -3,6 +3,7 @@ CREATE TABLE [int].[intervention_support]
     /* Technical hierarchy keys */
     [intervention_support_id]           bigint NOT NULL,
     [intervention_id]                   bigint NOT NULL,
+    [source_system]                     varchar(50)      NOT NULL,
 
     /*
         Used to select at most ten supports deterministically.

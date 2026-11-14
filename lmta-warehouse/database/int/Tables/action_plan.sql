@@ -3,6 +3,7 @@ CREATE TABLE [int].[action_plan]
     /* Technical hierarchy keys */
     [action_plan_id]                            bigint NOT NULL,
     [client_id]                                 bigint NOT NULL,
+    [source_system]                             varchar(50)      NOT NULL,
 
     /* Action Plan business fields */
     [actionPlanID]                              varchar(30)      NULL,

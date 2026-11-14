@@ -3,6 +3,7 @@ CREATE TABLE [int].[intervention]
     /* Technical hierarchy keys */
     [intervention_id]                   bigint NOT NULL,
     [action_plan_id]                    bigint NOT NULL,
+    [source_system]                     varchar(50)      NOT NULL,
 
     /*
         Retained because it may simplify reporting-window selection
