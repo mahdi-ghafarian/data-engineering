@@ -1,14 +1,14 @@
 CREATE TABLE [int].[intervention]
 (
     /* Technical hierarchy keys */
-    [intervention_id]                   uniqueidentifier NOT NULL,
-    [action_plan_id]                    uniqueidentifier NOT NULL,
+    [intervention_id]                   bigint NOT NULL,
+    [action_plan_id]                    bigint NOT NULL,
 
     /*
         Retained because it may simplify reporting-window selection
         and hierarchy validation. It is not needed to serialize XML.
     */
-    [client_id]                         uniqueidentifier NULL,
+    [client_id]                         bigint NULL,
 
     /* Intervention business fields */
     [interventionID]                    varchar(30)      NULL,

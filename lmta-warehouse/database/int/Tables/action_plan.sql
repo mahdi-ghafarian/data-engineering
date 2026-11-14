@@ -1,8 +1,8 @@
 CREATE TABLE [int].[action_plan]
 (
     /* Technical hierarchy keys */
-    [action_plan_id]                            uniqueidentifier NOT NULL,
-    [client_id]                                 uniqueidentifier NOT NULL,
+    [action_plan_id]                            bigint NOT NULL,
+    [client_id]                                 bigint NOT NULL,
 
     /* Action Plan business fields */
     [actionPlanID]                              varchar(30)      NULL,

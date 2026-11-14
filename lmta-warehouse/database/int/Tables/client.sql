@@ -1,7 +1,7 @@
 CREATE TABLE [int].[client]
 (
     /* Technical hierarchy key */
-    [client_id]                         uniqueidentifier NOT NULL,
+    [client_id]                         bigint NOT NULL,
 
     /* Client business fields */
     [clientID]                          varchar(30)      NULL,
