@@ -1,1 +1,5 @@
 c:\Github (local)\data-engineering\lmta-warehouse\database\bin\Debug\database.dacpac
+C:\Github (local)\data-engineering\lmta-warehouse\database\obj\Debug\Model.xml
+C:\Github (local)\data-engineering\lmta-warehouse\database\obj\Debug\refactor.xml
+C:\Github (local)\data-engineering\lmta-warehouse\database\obj\Debug\postdeploy.sql
+C:\Github (local)\data-engineering\lmta-warehouse\database\obj\Debug\predeploy.sql
