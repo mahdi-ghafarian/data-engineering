@@ -1,6 +1,5 @@
 CREATE TABLE [ref].[almp_code] (
-    [code_domain]     VARCHAR (100) NOT NULL,
-    [xsd_type_name]   VARCHAR (100) NOT NULL,
+    [almp_element]    VARCHAR (100) NOT NULL,
     [almp_code]       VARCHAR (20)  NOT NULL,
     [almp_label]      VARCHAR (500) NOT NULL,
     [program_type]    VARCHAR (10)  NOT NULL,
