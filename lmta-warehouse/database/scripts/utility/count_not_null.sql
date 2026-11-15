@@ -4,7 +4,7 @@
 */
 
 DECLARE @SchemaName SYSNAME = N'stg';
-DECLARE @TableName  SYSNAME = N'prism_clt_contact';
+DECLARE @TableName  SYSNAME = N'prism_ctr_pcm_contract';
 
 DECLARE @Sql NVARCHAR(MAX);
 

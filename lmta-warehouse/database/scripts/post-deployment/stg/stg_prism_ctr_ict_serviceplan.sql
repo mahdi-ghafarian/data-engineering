@@ -1,0 +1,20 @@
+SELECT
+    ict_name,
+    createdon,
+    ict_client,
+    ict_closuredate,
+    ict_closurereason,
+    ict_contractid,
+    ict_goalstatement,
+    ict_responseoutcome,
+    ict_responsereceiveddate,
+    ict_serviceplanid,
+    ict_serviceplanstatus,
+    ict_startdate,
+    ict_summary,
+    ict_suppliername,
+    ict_surveysent,
+    modifiedon,
+    statecode,
+    statuscode
+FROM stg.prism_ctr_ict_serviceplan;
