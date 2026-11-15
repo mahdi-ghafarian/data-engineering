@@ -37,7 +37,7 @@ WITH active_code_map AS
         cm.almp_element,
         cm.almp_code
     FROM [ref].[code_map] AS cm
-    WHERE cm.source_system = 'PRISM_CLT'
+    WHERE cm.source_system = 'PRISM'
       AND cm.source_table = 'contact'
       AND cm.almp_program_type = 'BOTH'
       AND cm.almp_schema_version = '1.5'
