@@ -7,7 +7,7 @@ CREATE TABLE [ref].[code_map] (
     [almp_element]        VARCHAR (100) NOT NULL,
     [almp_label]          VARCHAR (200) NOT NULL,
     [almp_code]           VARCHAR (20)  NOT NULL,
-    [almp_program_type]   VARCHAR (10)  NOT NULL,
+    [almp_program_type]   VARCHAR (10)  NULL,
     [almp_schema_version] VARCHAR (10)  NOT NULL,
     [effective_from]      DATE          NOT NULL,
     [effective_to]        DATE          NULL,

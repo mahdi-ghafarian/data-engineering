@@ -1,56 +1,47 @@
 SELECT
+    
     ict_clientid,
-    ict_sin,
-    contactid,
-
-    firstname,
-    middlename,
-    lastname,
     fullname,
-
-    ict_dateofbirth,
-
-    gendercode,
-    familystatuscode,
-    numberofchildren,
-    educationcode,
-
-    emailaddress1,
-    mobilephone,
-    telephone1,
-    telephone2,
-
+    contactid,
+    address1_city,
+    address1_country,
     address1_line1,
     address1_line2,
     address1_line3,
-    address1_city,
-    address1_stateorprovince,
     address1_postalcode,
-    address1_country,
-
+    address1_stateorprovince,
+    address2_city,
+    address2_country,
     address2_line1,
     address2_line2,
     address2_line3,
-    address2_city,
-    address2_stateorprovince,
     address2_postalcode,
-    address2_country,
-
+    address2_stateorprovince,
+    createdon,
+    educationcode,
+    emailaddress1,
+    familystatuscode,
+    firstname,
+    gendercode,
     ict_citizenshipimmigrationstatus,
     ict_countryoforigin,
-    ict_everbeenapermanentresident,
-    ict_yearofpermanentresidency,
-
+    ict_dateofbirth,
     ict_disability,
-    ict_indigenousidentity,
-    ict_visibleminority,
-
-    ict_languageofservices,
     ict_employmentstatus,
-
+    ict_everbeenapermanentresident,
+    ict_indigenousidentity,
+    ict_languageofservices,
+    ict_message,
+    ict_sin,
+    ict_visibleminority,
+    ict_yearofpermanentresidency,
+    lastname,
+    middlename,
+    mobilephone,
+    modifiedon,
+    numberofchildren,
     statecode,
     statuscode,
-    createdon,
-    modifiedon
-
+    telephone1,
+    telephone2
 FROM ICT_PER_TBL_001;
