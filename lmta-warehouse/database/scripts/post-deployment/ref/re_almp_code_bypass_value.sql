@@ -1,5 +1,5 @@
 UPDATE ref.almp_code
-SET is_bypass_value =
+SET is_bypass =
     CASE
         WHEN almp_label IN (
             'Not Available',
