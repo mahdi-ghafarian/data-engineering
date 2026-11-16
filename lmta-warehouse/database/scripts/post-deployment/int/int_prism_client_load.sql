@@ -17,32 +17,22 @@ SELECT
     immigrant.almp_code                                 AS immigrant,
     LEFT(c.ict_yearofpermanentresidency, 4)             AS immigrationYear,
     minority.almp_code                                  AS visibleMinority,
-
-    LEFT(
-        CONCAT_WS(
-            ', ',
-            NULLIF(LTRIM(RTRIM(c.address1_line1)), ''),
-            NULLIF(LTRIM(RTRIM(c.address1_line2)), ''),
-            NULLIF(LTRIM(RTRIM(c.address1_line3)), '')
-        ),
-        150
-    )                                                   AS streetAddress,
-
+    LEFT(c.address1_line1, 150) AS streetAddress,
     LEFT(c.address1_city, 100)                          AS municipality,
     province.almp_code                                  AS province,
     LEFT(c.address1_postalcode, 10)                     AS postalZIPCode,
 
     LEFT(
         COALESCE(
-            NULLIF(LTRIM(RTRIM(c.mobilephone)), ''),
-            NULLIF(LTRIM(RTRIM(c.telephone2)), ''),
-            NULLIF(LTRIM(RTRIM(c.telephone1)), '')
+            NULLIF(TRIM(c.mobilephone), ''),
+            NULLIF(TRIM(c.telephone2), ''),
+            NULLIF(TRIM(c.telephone1), '')
         ),
         30
     )                                                   AS contactPhoneNumber,
 
     CAST(NULL AS varchar(100))                          AS addressSysComment,
-    LEFT(c.ict_message, 100)                            AS sysComment
+    CAST(NULL AS varchar(100))                          AS sysComment
 
 FROM stg.prism_clt_contact AS c
 
@@ -106,7 +96,7 @@ LEFT JOIN ref.code_map AS province
     ON  province.source_system = 'PRISM'
     AND province.source_table = 'contact'
     AND province.source_column = 'address1_stateorprovince'
-    AND province.source_code = c.address1_stateorprovince
+    AND province.source_label = c.address1_stateorprovince
     AND province.almp_element = 'province'
     AND province.is_active = 1
 

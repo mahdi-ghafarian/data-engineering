@@ -1,0 +1,32 @@
+INSERT INTO ref.code_map (
+    source_system,
+    source_table,
+    source_column,
+    source_label,
+    source_code,
+    almp_element,
+    almp_label,
+    almp_code,
+    almp_program_type,
+    almp_schema_version,
+    effective_from,
+    effective_to,
+    is_active
+)
+VALUES
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Newfoundland and Labrador', NULL, 'province', 'Newfoundland and Labrador', '1',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Nova Scotia',               NULL, 'province', 'Nova Scotia',               '2',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'New Brunswick',             NULL, 'province', 'New Brunswick',             '3',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Prince Edward Island',      NULL, 'province', 'Prince Edward Island',      '4',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Quebec',                    NULL, 'province', 'Quebec',                    '5',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Ontario',                   NULL, 'province', 'Ontario',                   '6',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Manitoba',                  NULL, 'province', 'Manitoba',                  '7',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Saskatchewan',              NULL, 'province', 'Saskatchewan',              '8',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Alberta',                   NULL, 'province', 'Alberta',                   '9',  NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Northwest Territories',     NULL, 'province', 'Northwest Territories',     '10', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'British Columbia',          NULL, 'province', 'British Columbia',          '11', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Yukon',                     NULL, 'province', 'Yukon',                     '12', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'United States',             NULL, 'province', 'United States',             '13', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Other country',             NULL, 'province', 'Other country',             '14', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Nunavut',                   NULL, 'province', 'Nunavut',                   '16', NULL, '1.5', '2026-04-15', NULL, 1),
+    ('PRISM', 'contact', 'address1_stateorprovince', 'Not Available',             NULL, 'province', 'Not Available',             '98', NULL, '1.5', '2026-04-15', NULL, 1);

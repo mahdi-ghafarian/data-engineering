@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ALMP:contentALMP xmlns:ALMP="http://servicecanada.gc.ca/ALMP/contentExchange" xmlns:p="http://servicecanada.gc.ca/ALMP/contentTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://servicecanada.gc.ca/ALMP/contentExchange/ALMP.xsd ">
+  <SchemaVersion>1.3</SchemaVersion>
+  <agreementHolderName>Saskatchewan</agreementHolderName>
+  <sysComment>Delete File</sysComment>
+  <sysAction>
+    <socialInsuranceNumber>647940477</socialInsuranceNumber>
+    <agreementNumber>999222008</agreementNumber>
+    <interventionID>211077</interventionID>
+    <systemAction>1</systemAction>
+    <sysComment>Delete intervention using SIN and interventionID</sysComment>
+  </sysAction>
+  <sysAction>
+    <socialInsuranceNumber>646279364</socialInsuranceNumber>
+    <agreementNumber>999222008</agreementNumber>
+    <interventionID>211130</interventionID>
+    <systemAction>1</systemAction>
+    <sysComment>Delete intervention using SIN and interventionID</sysComment>
+  </sysAction>
+  <sysAction>
+    <socialInsuranceNumber>684879216</socialInsuranceNumber>
+    <agreementNumber>999222008</agreementNumber>
+    <interventionID>211192</interventionID>
+    <systemAction>1</systemAction>
+    <sysComment>Delete intervention using SIN and interventionID</sysComment>
+  </sysAction>
+  <sysAction>
+    <socialInsuranceNumber>658412770</socialInsuranceNumber>
+    <agreementNumber>999222008</agreementNumber>
+    <interventionID>211226</interventionID>
+    <systemAction>1</systemAction>
+    <sysComment>Delete intervention using SIN and interventionID</sysComment>
+  </sysAction>
+  <sysAction>
+    <socialInsuranceNumber>944374107</socialInsuranceNumber>
+    <agreementNumber>999222008</agreementNumber>
+    <interventionID>213503</interventionID>
+    <systemAction>1</systemAction>
+    <sysComment>Delete intervention using SIN and interventionID</sysComment>
+  </sysAction>
+</ALMP:contentALMP>
