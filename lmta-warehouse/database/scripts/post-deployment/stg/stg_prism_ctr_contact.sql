@@ -67,4 +67,4 @@ SELECT
     yomifirstname,
     yomifullname,
     yomilastname
-FROM stg.prism_ctr_contact;
+FROM ICT_PER_TBL_002;

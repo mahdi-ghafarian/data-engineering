@@ -18,4 +18,4 @@ SELECT
     statecode,
     statuscode
 
-FROM stg.prism_clt_ict_actionplan;
+FROM ICT_PLN_TBL_001;

@@ -1,8 +1,8 @@
 SELECT
     accountnumber,
     name,
-    accountclassificationcode,
     accountid,
+    accountclassificationcode,
     accountratingcode,
     address1_addressid,
     address1_addresstypecode,
@@ -83,4 +83,4 @@ SELECT
     timezoneruleversionnumber,
     transactioncurrencyid,
     websiteurl
-FROM stg.prism_ctr_account;
+FROM ICT_ORG_TBL_003;

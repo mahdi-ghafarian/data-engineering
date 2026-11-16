@@ -1,6 +1,5 @@
 SELECT
     ict_name,
-    createdon,
     ict_client,
     ict_closuredate,
     ict_closurereason,
@@ -14,7 +13,8 @@ SELECT
     ict_summary,
     ict_suppliername,
     ict_surveysent,
+    createdon,
     modifiedon,
     statecode,
     statuscode
-FROM stg.prism_ctr_ict_serviceplan;
+FROM ICT_PLN_TBL_002;

@@ -1,6 +1,7 @@
 SELECT
-    contactid,
     ict_clientid,
+    ict_sin,
+    contactid,
 
     firstname,
     middlename,
@@ -37,7 +38,6 @@ SELECT
 
     ict_citizenshipimmigrationstatus,
     ict_countryoforigin,
-    ict_countryoforiginname,
     ict_everbeenapermanentresident,
     ict_yearofpermanentresidency,
 
@@ -48,11 +48,9 @@ SELECT
     ict_languageofservices,
     ict_employmentstatus,
 
-    ict_sin,
-
-    createdon,
-    modifiedon,
     statecode,
-    statuscode
+    statuscode,
+    createdon,
+    modifiedon
 
-FROM contact;
+FROM ICT_PER_TBL_001;

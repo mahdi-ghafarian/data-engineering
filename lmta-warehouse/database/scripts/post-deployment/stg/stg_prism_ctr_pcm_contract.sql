@@ -190,4 +190,4 @@ SELECT
     statecode,
     statuscode,
     timezoneruleversionnumber
-FROM stg.prism_ctr_pcm_contract;
+FROM ICT_CTR_TBL_001;

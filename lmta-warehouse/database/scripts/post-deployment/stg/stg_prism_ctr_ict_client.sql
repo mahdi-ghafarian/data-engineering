@@ -1,6 +1,8 @@
 SELECT
-    ict_name,
     ict_clientidid,
+    ict_name,
+    ict_clientid,
+    ict_clientcontactid,
     crdb7_consentdate,
     createdon,
     emailaddress,
@@ -8,8 +10,6 @@ SELECT
     ict_approveddate,
     ict_birthdate,
     ict_canvasapp_clientid,
-    ict_clientcontactid,
-    ict_clientid,
     ict_contract,
     ict_contractnum,
     ict_email,
@@ -23,4 +23,4 @@ SELECT
     statecode,
     statuscode,
     timezoneruleversionnumber
-FROM stg.prism_ctr_ict_client;
+FROM ICT_PER_TBL_003;
