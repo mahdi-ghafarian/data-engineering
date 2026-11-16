@@ -1,4 +1,7 @@
 /*
+ARCHIVE:
+DON'T USE THIS SCRIPT.
+
 Assumption:
     ref.code_map has been truncated before this script runs.
 
