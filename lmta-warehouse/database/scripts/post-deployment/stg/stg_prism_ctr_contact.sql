@@ -31,7 +31,6 @@ SELECT
     exchangerate,
     firstname,
     followemail,
-    fullname,
     gendercode,
     ict_accountid,
     ict_activedirectoryid,
