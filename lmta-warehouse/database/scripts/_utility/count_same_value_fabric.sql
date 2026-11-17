@@ -1,5 +1,5 @@
-DECLARE @SchemaName sysname = 'stg';
-DECLARE @TableName  sysname = 'prism_clt_ict_actionplan';
+DECLARE @SchemaName sysname = 'dbo';
+DECLARE @TableName  sysname = 'ICT_PGM_TBL_002';
 DECLARE @SQL        nvarchar(max);
 
 SELECT @SQL =

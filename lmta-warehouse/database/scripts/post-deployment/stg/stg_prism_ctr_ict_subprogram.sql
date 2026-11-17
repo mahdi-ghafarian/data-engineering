@@ -1,0 +1,16 @@
+SELECT 
+       [ict_subprogramid]
+      ,[ict_name]
+      ,[ict_contracttypeid]
+      ,[ict_accountcode]
+      ,[ict_entitycode]
+      ,[ict_future]
+      ,[ict_programcode]
+      ,[ict_projectcode]
+      ,[ict_projectdescription]
+      ,[ict_siteextension]
+      ,[createdon]
+      ,[modifiedon]
+      ,[statecode]
+      ,[statuscode]
+FROM [dbo].[ICT_PGM_TBL_001];

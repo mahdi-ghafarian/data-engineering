@@ -65,23 +65,23 @@
     This query returns the distribution of action plans across clients.
 */
 --------------------------------------------------------------------------------
--- WITH ActionPlanCountByClient AS
--- (
---     SELECT
---         c.contactid,
---         COUNT(ap.ict_actionplanid) AS action_plan_count
---     FROM stg.prism_clt_contact AS c
---     LEFT JOIN stg.prism_clt_ict_actionplan AS ap
---         ON ap.ict_client = c.contactid
---     WHERE c.ict_clientid IS NOT NULL
---     GROUP BY
---         c.contactid
--- )
--- SELECT
---     action_plan_count AS number_of_action_plans,
---     COUNT(*) AS number_of_clients
--- FROM ActionPlanCountByClient
--- GROUP BY
---     action_plan_count
--- ORDER BY
---     number_of_action_plans;
+WITH ActionPlanCountByClient AS
+(
+    SELECT
+        c.contactid,
+        COUNT(ap.ict_actionplanid) AS action_plan_count
+    FROM stg.prism_clt_contact AS c
+    LEFT JOIN stg.prism_clt_ict_actionplan AS ap
+        ON ap.ict_client = c.contactid
+    WHERE c.ict_clientid IS NOT NULL
+    GROUP BY
+        c.contactid
+)
+SELECT
+    action_plan_count AS number_of_action_plans,
+    COUNT(*) AS number_of_clients
+FROM ActionPlanCountByClient
+GROUP BY
+    action_plan_count
+ORDER BY
+    number_of_action_plans;
