@@ -8,9 +8,12 @@
     <ModelCollation>1033, CI</ModelCollation>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="dbo" />
     <Folder Include="scripts" />
     <Folder Include="scripts\post-deployment" />
     <Folder Include="scripts\pre-deployment" />
+    <Folder Include="util" />
+    <Folder Include="util\StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="scripts\post-deployment\PostDeployment.sql" />
