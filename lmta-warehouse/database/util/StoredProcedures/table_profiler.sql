@@ -108,7 +108,7 @@ FABRIC COMPATIBILITY
 */
 
 
-CREATE OR ALTER PROCEDURE util.table_profiler
+CREATE   PROCEDURE util.table_profiler
 
     @SchemaName varchar(128),
 
@@ -2234,3 +2234,4 @@ BEGIN
 
 END;
 GO
+

@@ -7,7 +7,7 @@ EXEC dbo.column_profiler
     @TopN = 20;
 */
 
-CREATE OR ALTER PROCEDURE util.column_profiler
+CREATE   PROCEDURE util.column_profiler
     @SchemaName           varchar(128),
     @TableName            varchar(128),
     @ColumnName           varchar(128),
@@ -1804,3 +1804,4 @@ BEGIN
         metric_order;
 END;
 GO
+
