@@ -504,9 +504,10 @@ SELECT
     i.intervention_type,
     i.intervention_id,
     i.intervention_title,
+    i.subprogram,
     i.contract_number,
     i.contract,
-    i.subprogram,
+
     i.intervention_start_date,
 
     /* Actual PRISM closure date. */
