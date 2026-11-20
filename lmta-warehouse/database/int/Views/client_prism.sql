@@ -1,4 +1,4 @@
-CREATE   VIEW int.prism_client
+CREATE   VIEW int.client_prism
 AS
 SELECT
     CAST('PRISM' AS varchar(50))                        AS source_system,

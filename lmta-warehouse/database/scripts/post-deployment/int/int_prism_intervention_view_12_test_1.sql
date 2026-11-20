@@ -8,7 +8,7 @@ WITH action_plans AS
         action_plan_end_date,
         action_plan_status
 
-    FROM int.prism_intervention
+    FROM int.intervention_prism
 )
 SELECT
     client_id,

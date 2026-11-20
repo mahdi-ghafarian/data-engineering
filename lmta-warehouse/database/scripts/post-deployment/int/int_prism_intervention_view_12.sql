@@ -1,4 +1,4 @@
-CREATE OR ALTER VIEW int.prism_intervention
+CREATE OR ALTER VIEW int.intervention_prism
 AS
 
 /*==============================================================================

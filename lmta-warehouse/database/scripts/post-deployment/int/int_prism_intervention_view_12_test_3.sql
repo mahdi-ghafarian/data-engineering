@@ -15,7 +15,7 @@ WITH action_plans AS
         client_id,
         action_plan_id,
         COUNT(*) AS intervention_count
-    FROM int.prism_intervention
+    FROM int.intervention_prism
     GROUP BY
         client_id,
         action_plan_id

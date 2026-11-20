@@ -1,6 +1,6 @@
 /*==============================================================================
     MICROSOFT FABRIC WAREHOUSE
-    VALIDATION OF int.prism_intervention
+    VALIDATION OF int.intervention_prism
 
     - Uses CTEs only
     - No temporary tables
@@ -31,7 +31,7 @@ WITH intervention AS
         intervention_status_label,
         intervention_closure_reason_label,
         intervention_guid
-    FROM int.prism_intervention
+    FROM int.intervention_prism
 ),
 
 /*==============================================================================
