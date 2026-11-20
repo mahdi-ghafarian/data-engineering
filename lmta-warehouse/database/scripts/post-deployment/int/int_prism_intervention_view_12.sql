@@ -290,8 +290,7 @@ sequenced_interventions AS
             PARTITION BY i.client_id
             ORDER BY
                 i.intervention_start_date,
-                i.intervention_type,
-                i.intervention_guid
+                i.intervention_type
         )
             AS client_intervention_sequence,
 
@@ -300,8 +299,7 @@ sequenced_interventions AS
             PARTITION BY i.client_id
             ORDER BY
                 i.intervention_start_date,
-                i.intervention_type,
-                i.intervention_guid
+                i.intervention_type
         )
             AS previous_intervention_start_date
 
